@@ -13,9 +13,13 @@ import type { BookPage } from './components/types'
 const items = ref<BookPage[]>(bookJson)
 
 // Computed filtered lists
-// list 1: default, list 2: unsorted
-const listOne = computed(() => items.value.filter((item) => item.list === 1))
-const listTwo = computed(() => items.value.filter((item) => item.list === 2))
+// list 1: unsorted, list 2: sorted
+const listOne = computed(() =>
+  items.value.filter((item) => item.list === 1).sort((a, b) => a.order - b.order),
+)
+const listTwo = computed(() =>
+  items.value.filter((item) => item.list === 2).sort((a, b) => a.order - b.order),
+)
 
 // Drag start handler
 function startDrag(evt: DragEvent, item: BookPage) {
@@ -30,18 +34,48 @@ function startDrag(evt: DragEvent, item: BookPage) {
 }
 
 // On drop handler
-function onDrop(evt: DragEvent, targetList: number) {
+function onDrop(evt: DragEvent, targetList: number, targetIndex?: number) {
   if (!evt.dataTransfer) return
+
   // Retrieve value previously attached to drag event
   const idStr = evt.dataTransfer.getData('itemID')
+
   // Convert id back to a number
   const id = Number(idStr)
+
   // Find the matching item in original `items` array
-  const found = items.value.find((i) => i.id === id)
-  // Move `found` item into the new target list
-  if (found) {
-    found.list = targetList
+  const dragEl = items.value.find((i) => i.id === id)
+  if (!dragEl) return
+
+  // Add found item to sorted list
+  dragEl.list = targetList
+
+  // Sort items (only for list 2)
+  if (typeof targetIndex == 'number' && targetList === 2) {
+    sortListTwo(dragEl, targetIndex)
   }
+}
+
+function sortListTwo(dragEl: BookPage, targetIndex: number) {
+  // Get current list
+  const listItems = items.value.filter((i) => i.list === 2).sort((a, b) => a.order - b.order)
+
+  // Remove dragged element from its old position in the sorted array
+  const oldIndex = listItems.findIndex((i) => {
+    console.log('>>>>>> PAGE ', dragEl.id)
+    return i.id === dragEl.id
+  }) // `findIndex()` returns -1 if item is not in list
+  console.log('>>> old index: ', oldIndex)
+  if (oldIndex !== -1) listItems.splice(oldIndex, 1)
+
+  // Insert item into the new position
+  console.log('>>> insert index: ', targetIndex)
+  listItems.splice(targetIndex, 0, dragEl)
+
+  // Reassign order values
+  listItems.forEach((item, i) => {
+    item.order = i
+  })
 }
 </script>
 
@@ -67,14 +101,20 @@ function onDrop(evt: DragEvent, targetList: number) {
     </section>
 
     <!-- Drop zone for list 2 -->
-    <section class="dropzone" @drop="onDrop($event, 2)" @dragover.prevent @dragenter.prevent>
+    <section
+      class="dropzone"
+      @drop="onDrop($event, 2, listTwo.length)"
+      @dragover.prevent
+      @dragenter.prevent
+    >
       <h2>Sorted pages</h2>
       <div class="dropzone__card-list">
         <div
-          v-for="item in listTwo"
+          v-for="(item, index) in listTwo"
           :key="item.id"
           draggable="true"
           @dragstart="startDrag($event, item)"
+          @drop.stop="onDrop($event, 2, index)"
         >
           <Card ref="page.id" :page="item" />
         </div>
@@ -89,6 +129,7 @@ function onDrop(evt: DragEvent, targetList: number) {
   border-radius: var(--border-radius);
   background-color: var(--color-background-mute);
   margin-bottom: var(--gap-section);
+  min-height: 200px;
 }
 .dropzone__card-list {
   display: flex;
