@@ -1,4 +1,5 @@
 export type BookPage = {
-  number: number
+  id: number
   content: string
+  list: number
 }

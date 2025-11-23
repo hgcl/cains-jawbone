@@ -1,27 +1,42 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PageModal from './PageModal.vue'
+import type { BookPage } from './types'
 
 defineProps<{
-  pages: { number: number; content: string }[]
+  page: BookPage
 }>()
 
 // Selected page that should be shown in the dialog
-const selectedPage = ref<{ number: number; content: string } | null>(null)
+const selectedPage = ref<BookPage | null>(null)
 
 // The dialog component exposes `.open()` through a template ref
 const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
-function openDialog(page: { number: number; content: string }) {
+function openDialog(page: BookPage) {
   selectedPage.value = page
   dialogRef.value?.open() // Call dialog.showModal() internally
+}
+
+function truncate(string: string, truncatePosition: 'start' | 'end') {
+  let subString = string
+  if (truncatePosition === 'end') {
+    subString = string.slice(0, 60)
+    return string.slice(0, subString.lastIndexOf(' '))
+  }
+  if (truncatePosition === 'start') {
+    subString = string.slice(string.length - 60)
+    return string.slice(subString.indexOf(' ') - 60)
+  }
 }
 </script>
 
 <template>
-  <article class="card" v-for="page in pages" :key="page.number">
-    <h3 class="card__page">Page {{ page.number }}</h3>
-    <p class="card__preview">{{ page.content.slice(0, 60) }}...</p>
+  <article class="card">
+    <h3 class="card__page">Page {{ page.id }}</h3>
+    <p class="card__preview">
+      {{ truncate(page.content, 'end') }} [...] {{ truncate(page.content, 'start') }}
+    </p>
     <button class="card__button" @click="openDialog(page)">View page</button>
   </article>
 
@@ -32,19 +47,19 @@ function openDialog(page: { number: number; content: string }) {
 .card {
   border: var(--border);
   border-radius: var(--border-radius);
-  background-color: var(--background-color-mute);
+  background-color: var(--color-background);
   display: flex;
   flex-direction: column;
   width: 200px;
-  height: 200px;
+  height: 296px;
   padding: var(--padding-m);
+  cursor: pointer;
 }
 .card__page {
   font-weight: bold;
 }
 .card__preview {
+  font-family: var(--font-family-serif);
   color: var(--color-text-mute);
-}
-.card__button {
 }
 </style>

@@ -7,7 +7,7 @@
   --token-white-mute: #f2f2f2;
 
   --token-black: #181818;
-  --token-black-mute: #8c8c8c;
+  --token-black-mute: #363636;
 
   --token-divider-light: rgba(60, 60, 60, 0.29);
   --token-divider-dark: rgba(84, 84, 84, 0.65);
@@ -30,13 +30,20 @@
   --color-backdrop: rgba(60, 60, 60, 0.2);
 
   /* SPACING */
-  --section-gap: 160px;
   --padding-l: 3rem;
   --padding-m: 1.5rem;
+  --gap-m: 1rem;
+  --gap-section: 3rem;
 
   /* BORDER */
   --border: solid 1px var(--color-border);
   --border-radius: 8px;
+
+  /* TYPOGRAPHY */
+  --font-family-sans:
+    Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+  --font-family-serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+  --line-height: 1.6;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -67,8 +74,8 @@ body {
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: 1.6;
-  font-family: Inter, sans-serif;
+  line-height: var(--line-height);
+  font-family: var(--font-family-sans);
   font-size: 15px;
   font-weight: normal;
   text-rendering: optimizeLegibility;
