@@ -8,10 +8,18 @@ import DropZones from './components/DropZones/DropZones.vue'
   </header>
 
   <main>
+    <h1>Cain's Jawbone</h1>
     <DropZones />
   </main>
 </template>
 
 <style scoped>
-/* TODO */
+h1 {
+  text-align: center;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-l);
+}
 </style>

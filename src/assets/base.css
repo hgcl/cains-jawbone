@@ -47,7 +47,8 @@
   --padding-xl: 4rem;
   --padding-l: 3rem;
   --padding-m: 1.5rem;
-  --padding-s: 0.5rem;
+  --padding-s: 1rem;
+  --padding-xs: 0.5rem;
   --gap-l: 2rem;
   --gap-m: 1rem;
 
@@ -59,10 +60,12 @@
   --font-family-heading: 'Grenze Gotisch', serif;
   --font-family-body: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
 
-  --line-height-heading: 1.2;
-  --line-height-body: 1.6;
+  --line-height-tighter: 1;
+  --line-height-tight: 1.2;
+  --line-height-loose: 1.6;
 
   --font-size-body-m: 1rem;
+  --font-size-heading-l: 4rem;
   --font-size-heading-m: 3rem;
   --font-size-heading-s: 1.5rem;
   --font-size-heading-xs: 1.2rem;
@@ -99,7 +102,7 @@ body {
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: var(--line-height-body);
+  line-height: var(--line-height-loose);
   font-family: var(--font-family-body);
   font-size: 16px;
   font-weight: normal;
@@ -112,17 +115,42 @@ body {
   TYPOGRAPHY
  */
 
-h1,
 h2,
 h3 {
   font-family: var(--font-family-heading);
-  line-height: var(--line-height-heading);
+}
+
+h1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-heading-l);
+  line-height: var(--line-height-tighter);
 }
 
 h2 {
   font-size: var(--font-size-heading-m);
+  line-height: var(--line-height-tight);
 }
 
 h3 {
   font-size: var(--font-size-heading-s);
+  line-height: var(--line-height-tight);
+}
+
+/** 
+  UTILS
+ */
+
+/* ACCESSIBILITY */
+/* Util to visually hide an element, but read by screen reader. 
+ * Source: https://www.scottohara.me/blog/2017/04/14/inclusively-hidden.html */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

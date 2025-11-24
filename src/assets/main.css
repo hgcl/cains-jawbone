@@ -3,5 +3,12 @@
 #app {
   max-width: 1280px;
   margin: auto;
-  padding: 2rem;
+  /* Updated through media queries */
+  padding: var(--padding-m) var(--padding-xs);
+}
+
+@media (width > 568px) {
+  #app {
+    padding: var(--padding-m);
+  }
 }
