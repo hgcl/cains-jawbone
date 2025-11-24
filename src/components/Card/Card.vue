@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PageModal from '../PageModal/PageModal.vue'
+import Button from '../Button/Button.vue'
 import type { BookPage } from '../../types'
 import { truncateText, useOpenDialog } from './Card.utils'
 
@@ -19,11 +20,11 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 
 <template>
   <article class="card">
-    <h3 class="card__page">Page {{ page.id }}</h3>
+    <!-- <h3 class="card__page">Page {{ page.id }}</h3> -->
     <p class="card__preview">
       {{ truncateText(page.content, 'end') }} [...] {{ truncateText(page.content, 'start') }}
     </p>
-    <button class="card__button" @click="openDialog(page)">View page</button>
+    <Button @click="openDialog(page)">View page {{ page.id }}</Button>
   </article>
 
   <PageModal ref="dialogRef" :page="selectedPage" />
@@ -31,22 +32,24 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 
 <style scoped>
 .card {
-  border: var(--border);
-  border-radius: var(--border-radius);
-  background-color: var(--color-background);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 200px;
   height: 296px;
   padding: var(--padding-m);
+  border: var(--border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-background);
   cursor: grab;
 }
 .card__page {
+  font-size: var(--font-size-heading-xs);
   font-weight: bold;
+  text-align: center;
 }
 .card__preview {
-  font-family: var(--font-family-serif);
-  color: var(--color-text-mute);
+  color: var(--color-foreground);
 }
 
 /* INTERACTIONS */
