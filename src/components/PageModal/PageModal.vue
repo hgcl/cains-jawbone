@@ -27,7 +27,7 @@ defineExpose({ open, close })
       <h3 v-if="page">Page {{ page.id }}</h3>
       <Button class="page-modal__header__close-button" @click="close">Close</Button>
     </header>
-    <p class="page-modal__content" v-if="page">{{ page.content }}</p>
+    <p class="page-modal__content" v-if="page" v-html="page.content"></p>
   </dialog>
 </template>
 
@@ -61,5 +61,6 @@ defineExpose({ open, close })
 }
 .page-modal__content {
   font-family: var(--font-family-body);
+  white-space: pre-line;
 }
 </style>

@@ -20,9 +20,9 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 
 <template>
   <article class="card">
-    <!-- <h3 class="card__page">Page {{ page.id }}</h3> -->
     <p class="card__preview">
-      {{ truncateText(page.content, 'end') }} [...] {{ truncateText(page.content, 'start') }}
+      <span v-html="truncateText(page.content, 'end')"></span> [...]
+      <span v-html="truncateText(page.content, 'start')"></span>
     </p>
     <Button @click="openDialog(page)">View page {{ page.id }}</Button>
   </article>
