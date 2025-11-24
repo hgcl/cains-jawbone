@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PageModal from '../PageModal/PageModal.vue'
-import type { BookPage } from '../types'
+import type { BookPage } from '../../types'
+import { truncateText, useOpenDialog } from './Card.utils'
 
 defineProps<{
   page: BookPage
@@ -13,29 +14,14 @@ const selectedPage = ref<BookPage | null>(null)
 // The dialog component exposes `.open()` through a template ref
 const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
-function openDialog(page: BookPage) {
-  selectedPage.value = page
-  dialogRef.value?.open() // Call dialog.showModal() internally
-}
-
-function truncate(string: string, truncatePosition: 'start' | 'end') {
-  let subString = string
-  if (truncatePosition === 'end') {
-    subString = string.slice(0, 60)
-    return string.slice(0, subString.lastIndexOf(' '))
-  }
-  if (truncatePosition === 'start') {
-    subString = string.slice(string.length - 60)
-    return string.slice(subString.indexOf(' ') - 60)
-  }
-}
+const openDialog = useOpenDialog(selectedPage, dialogRef)
 </script>
 
 <template>
   <article class="card">
     <h3 class="card__page">Page {{ page.id }}</h3>
     <p class="card__preview">
-      {{ truncate(page.content, 'end') }} [...] {{ truncate(page.content, 'start') }}
+      {{ truncateText(page.content, 'end') }} [...] {{ truncateText(page.content, 'start') }}
     </p>
     <button class="card__button" @click="openDialog(page)">View page</button>
   </article>

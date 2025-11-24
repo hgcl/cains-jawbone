@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, defineExpose } from 'vue'
-import type { BookPage } from '../types'
+import { ref } from 'vue'
+import type { BookPage } from '../../types'
 
 defineProps<{
   page: BookPage | null
