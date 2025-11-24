@@ -107,7 +107,7 @@ function onDropList1() {
     @drop.prevent="onDropList1"
   >
     <h2>Unsorted</h2>
-    <p>Drag the pages to the sorted section above.</p>
+    <p>Start ordering the pages by dragging them to the sorted section above.</p>
     <div class="dropzone__card-list">
       <div
         v-for="item in sortedList1"
@@ -128,15 +128,22 @@ function onDropList1() {
   display: flex;
   flex-direction: column;
   gap: var(--gap-m);
-  min-height: 200px;
   padding: var(--padding-m);
   background: var(--color-background-mute);
   border-radius: var(--border-radius);
-  margin-bottom: var(--gap-section);
+  margin-bottom: var(--gap-l);
 }
 .dropzone__card-list {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap-m);
+  border: dashed var(--color-background);
+  padding: var(--padding-s);
+  min-height: 100px;
+}
+
+.dropzone__list-one p,
+.dropzone__list-two p {
+  color: var(--color-foreground);
 }
 </style>

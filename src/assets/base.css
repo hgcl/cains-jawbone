@@ -1,16 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Grenze+Gotisch');
+
 /**
  * TOKENS
 */
 :root {
   /* COLOR TOKENS */
-  --token-white: #ffffff;
-  --token-white-mute: #f2f2f2;
+  --token-white: hsl(43, 100%, 99%);
 
-  --token-black: #181818;
-  --token-black-mute: #363636;
+  --token-yellow: hsl(60, 45%, 98%);
+  --token-yellow-mute: hsl(29, 42%, 88%);
 
-  --token-divider-light: rgba(60, 60, 60, 0.29);
-  --token-divider-dark: rgba(84, 84, 84, 0.65);
+  --token-black: rgb(42, 38, 56);
+
+  --token-blue: rgb(0, 3, 199);
+  --token-blue-no-opacity: 0, 3, 199;
+
+  --token-blue-dark: rgb(171, 188, 247);
+  --token-blue-dark-no-opacity: 171, 188, 247;
+
+  --token-blue-mute: rgb(66, 67, 100);
+
+  --token-grey-light: rgba(60, 84, 121, 0.29);
+  --token-grey-dark: rgba(76, 78, 99, 0.65);
 }
 
 /**
@@ -18,44 +29,58 @@
 */
 :root {
   /* COLOR */
-  --color-background: var(--token-white);
-  --color-background-mute: var(--token-white-mute);
+  --color-background: var(--token-yellow);
+  --color-background-mute: var(--token-yellow-mute);
 
-  --color-border: var(--token-divider-light);
-  --color-border-hover: var(--token-divider-light);
+  --color-accent: var(--token-blue);
+  --color-on-accent: var(--token-yellow);
+  --color-accent-subtle: rgba(var(--token-blue-no-opacity), 0.4);
 
-  --color-text: var(--token-black);
-  --color-text-mute: var(--token-black-mute);
+  --color-foreground-strong: var(--token-blue);
+  --color-foreground: var(--token-blue-mute);
 
-  --color-backdrop: rgba(60, 60, 60, 0.2);
+  --color-border: var(--token-grey-light);
+
+  --color-backdrop: rgba(60, 60, 60, 0.4);
 
   /* SPACING */
+  --padding-xl: 4rem;
   --padding-l: 3rem;
   --padding-m: 1.5rem;
+  --padding-s: 0.5rem;
+  --gap-l: 2rem;
   --gap-m: 1rem;
-  --gap-section: 3rem;
 
   /* BORDER */
   --border: solid 1px var(--color-border);
-  --border-radius: 8px;
+  --border-radius: 4px;
 
   /* TYPOGRAPHY */
-  --font-family-sans:
-    Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-  --font-family-serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
-  --line-height: 1.6;
+  --font-family-heading: 'Grenze Gotisch', serif;
+  --font-family-body: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+
+  --line-height-heading: 1.2;
+  --line-height-body: 1.6;
+
+  --font-size-body-m: 1rem;
+  --font-size-heading-m: 3rem;
+  --font-size-heading-s: 1.5rem;
+  --font-size-heading-xs: 1.2rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--token-black);
-    --color-background-mute: var(--token-black-mute);
+    --color-background-mute: var(--token-blue-mute);
 
-    --color-border: var(--token-divider-dark);
-    --color-border-hover: var(--token-divider-dark);
+    --color-accent: var(--token-blue-dark);
+    --color-on-accent: var(--token-black);
+    --color-accent-subtle: rgba(var(--token-blue-dark-no-opacity), 0.4);
 
-    --color-text: var(--token-white);
-    --color-text-mute: var(--token-white-mute);
+    --color-border: var(--token-grey-dark);
+
+    --color-foreground-strong: var(--token-blue-dark);
+    --color-foreground: var(--token-white);
   }
 }
 
@@ -69,16 +94,35 @@
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
+  color: var(--color-foreground-strong);
   background: var(--color-background);
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: var(--line-height);
-  font-family: var(--font-family-sans);
-  font-size: 15px;
+  line-height: var(--line-height-body);
+  font-family: var(--font-family-body);
+  font-size: 16px;
   font-weight: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+  TYPOGRAPHY
+ */
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-family-heading);
+  line-height: var(--line-height-heading);
+}
+
+h2 {
+  font-size: var(--font-size-heading-m);
+}
+
+h3 {
+  font-size: var(--font-size-heading-s);
 }
