@@ -39,7 +39,7 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   width: 200px;
   height: 296px;
   padding: var(--padding-m);
-  cursor: pointer;
+  cursor: grab;
 }
 .card__page {
   font-weight: bold;
@@ -47,5 +47,10 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 .card__preview {
   font-family: var(--font-family-serif);
   color: var(--color-text-mute);
+}
+
+/* INTERACTIONS */
+.card:active {
+  cursor: grabbing;
 }
 </style>

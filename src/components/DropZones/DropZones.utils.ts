@@ -19,8 +19,8 @@ export function useDragDrop(
   const listTwo = computed(() =>
     items.value.filter((item) => item.list === 2).sort((a, b) => a.order - b.order),
   )
-  // Preview for list 2, used when dragging
-  const previewListTwo = computed(() => {
+  // Temp list 2, used when dragging
+  const tempListTwo = computed(() => {
     const list = items.value.filter((i) => i.list === 2).sort((a, b) => a.order - b.order)
 
     if (!draggingItem.value || draggedOverIndex.value === undefined) return list
@@ -50,11 +50,6 @@ export function useDragDrop(
 
     draggingItem.value = item
     draggedOverIndex.value = listTwo.value.findIndex((i) => i.id === item.id)
-
-    // Hide current card when dragging
-    const dropzoneTwo = document.querySelector('#dropzone-two')
-    const htmlEl = dropzoneTwo?.querySelector('.card-' + item.id)
-    htmlEl?.setAttribute('style', 'display: none;')
   }
 
   /**
@@ -68,11 +63,6 @@ export function useDragDrop(
    * On drag end handler: when the mouse leaves the card
    */
   function onDragEnd(item: BookPage) {
-    // Show current card again
-    const dropzoneTwo = document.querySelector('#dropzone-two')
-    const htmlEl = dropzoneTwo?.querySelector('.card-' + item.id)
-    htmlEl?.setAttribute('style', 'display: block;')
-
     // Reset
     draggedOverIndex.value = undefined
     draggingItem.value = null
@@ -128,7 +118,8 @@ export function useDragDrop(
   return {
     listOne,
     listTwo,
-    previewListTwo,
+    // tempListOne,
+    tempListTwo,
     draggedOverIndex,
     startDrag,
     onDragEnter,

@@ -1,81 +1,142 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import bookJson from '../../assets/book.json'
 import Card from '../../components/Card/Card.vue'
-import { useDragDrop } from './DropZones.utils'
 import type { BookPage } from '../../types'
 
-// Initial list of items
-const items = ref<BookPage[]>(bookJson)
-
-// Index of the element being dragged over
-let draggedOverIndexInit = ref<number | undefined>(undefined)
+// Initial lists of items
+const list1 = ref<BookPage[]>(bookJson)
+const list2 = ref<BookPage[]>([])
 
 // Item being dragged
-const draggingItem = ref<BookPage | null>(null) // preview array necessary, so that `items` is only updated on drop
+const draggingItem = ref<BookPage | null>(null)
+// Index of the item being dragged over
+const draggedOverIndex = ref<number | null>(null)
 
-const { listOne, previewListTwo, draggedOverIndex, startDrag, onDragEnter, onDragEnd, onDrop } =
-  useDragDrop(items, draggedOverIndexInit, draggingItem)
+// List 1: always sorted by `id`
+// List 2: sorted based by `order`
+const sortedList1 = computed(() => [...list1.value].sort((a, b) => a.id - b.id))
+const sortedList2 = computed(() => [...list2.value].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)))
+
+// Drag start
+function onDragStart(item: BookPage) {
+  draggingItem.value = item
+}
+
+// List 2 drag over
+function onDragOverList2(index: number) {
+  draggedOverIndex.value = index
+}
+
+// Drop into list 2
+function onDropList2() {
+  if (!draggingItem.value) return
+
+  // Remove from original list (it will be added to list 2 later)
+  if (draggingItem.value.list === 1) {
+    list1.value = list1.value.filter((i) => i.id !== draggingItem.value!.id)
+  } else {
+    list2.value = list2.value.filter((i) => i.id !== draggingItem.value!.id)
+  }
+
+  // Insert into list 2 at `draggedOverIndex`
+  const insertIndex = draggedOverIndex.value ?? list2.value.length
+  draggingItem.value.list = 2
+  list2.value.splice(insertIndex, 0, { ...draggingItem.value })
+
+  // Reorder list 2
+  list2.value.forEach((item, i) => (item.order = i))
+
+  // Reset temp values
+  draggingItem.value = null
+  draggedOverIndex.value = null
+}
+
+// Drop into list 1
+function onDropList1() {
+  if (!draggingItem.value) return
+
+  // Remove from original list
+  if (draggingItem.value.list === 2) {
+    list2.value = list2.value.filter((i) => i.id !== draggingItem.value!.id)
+    list2.value.forEach((item, i) => (item.order = i))
+  } else {
+    list1.value = list1.value.filter((i) => i.id !== draggingItem.value!.id)
+  }
+
+  // İnsert into list 1 (no order)
+  draggingItem.value.list = 1
+  list1.value.push({ ...draggingItem.value })
+
+  // Reset temp values
+  draggingItem.value = null
+  draggedOverIndex.value = null
+}
 </script>
 
 <template>
-  <!-- Drop zone for list 1 -->
-  <section class="dropzone" @drop="onDrop($event, 1)" @dragover.prevent @dragenter.prevent>
-    <h2>Unsorted pages</h2>
+  <!-- LIST 2: SORTED -->
+  <section
+    class="dropzone__list-two"
+    @dragover.prevent
+    @dragenter.prevent
+    @drop.prevent="onDropList2"
+  >
+    <h2>Sorted</h2>
+    <p>Drag the pages to change their order in the book.</p>
+    <p>Pages order: {{ sortedList2.map((el) => el.id).toString() }}</p>
     <div class="dropzone__card-list">
       <div
-        v-for="item in listOne"
+        v-for="(item, index) in sortedList2"
         :key="item.id"
+        class="card"
         draggable="true"
-        @dragstart="startDrag($event, item)"
+        @dragstart="onDragStart(item)"
+        @dragover.prevent="onDragOverList2(index)"
       >
         <Card ref="page.id" :page="item" />
       </div>
     </div>
   </section>
 
-  <!-- Drop zone for list 2 -->
-  <section class="dropzone" @drop="onDrop($event, 2)" @dragover.prevent @dragenter.prevent>
-    <h2>Sorted pages</h2>
-    <div class="dropzone__card-list" id="dropzone-two">
-      <template v-for="(item, index) in previewListTwo" :key="item.id">
-        <div v-if="draggedOverIndex === index" class="preview-zone"></div>
-        <div
-          :class="`card-${item.id}`"
-          draggable="true"
-          @dragstart="startDrag($event, item)"
-          @dragenter.prevent="onDragEnter(index)"
-          @dragend="onDragEnd(item)"
-          @drop.stop="onDrop($event, 2)"
-        >
-          <Card ref="page.id" :page="item" />
-        </div>
-      </template>
+  <!-- LIST 1: UNSORTED -->
+  <section
+    class="dropzone__list-one"
+    @dragover.prevent
+    @dragenter.prevent
+    @drop.prevent="onDropList1"
+  >
+    <h2>Unsorted</h2>
+    <p>Drag the pages to the sorted section above.</p>
+    <div class="dropzone__card-list">
+      <div
+        v-for="item in sortedList1"
+        :key="item.id"
+        class="card"
+        draggable="true"
+        @dragstart="onDragStart(item)"
+      >
+        <Card ref="page.id" :page="item" />
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.dropzone {
-  padding: var(--padding-m);
-  border-radius: var(--border-radius);
-  background-color: var(--color-background-mute);
-  margin-bottom: var(--gap-section);
+.dropzone__list-one,
+.dropzone__list-two {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-m);
   min-height: 200px;
+  padding: var(--padding-m);
+  background: var(--color-background-mute);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--gap-section);
 }
 .dropzone__card-list {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap-m);
-}
-</style>
-<style>
-.preview-zone {
-  background-color: var(--color-background);
-  border: var(--border);
-  border-radius: var(--border-radius);
-  width: 200px;
-  height: 296px;
-  opacity: 0.6;
 }
 </style>
