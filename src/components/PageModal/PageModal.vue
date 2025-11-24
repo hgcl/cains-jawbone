@@ -18,7 +18,7 @@ function close() {
 }
 
 // Expose methods to parent
-defineExpose({ open, close })
+defineExpose({ open })
 </script>
 
 <template>

@@ -6,7 +6,7 @@ const emit = defineEmits<{
 
 <template>
   <button @click="(e) => emit('click', e)">
-    <slot />
+    <slot></slot>
   </button>
 </template>
 
@@ -24,7 +24,7 @@ button {
   background: transparent;
   border: 1px solid var(--color-accent-subtle);
   border-radius: var(--border-radius);
-  padding: var(--padding-s);
+  padding: var(--padding-xs);
 }
 
 /* INTERACTIONS */

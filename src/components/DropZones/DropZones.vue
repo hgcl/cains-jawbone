@@ -72,6 +72,16 @@ function onDropList1() {
   draggingItem.value = null
   draggedOverIndex.value = null
 }
+
+function sendToSort(page: BookPage) {
+  onDragStart(page)
+  onDropList2()
+}
+
+function sendToUnsorted(page: BookPage) {
+  onDragStart(page)
+  onDropList1()
+}
 </script>
 
 <template>
@@ -94,7 +104,7 @@ function onDropList1() {
         @dragstart="onDragStart(item)"
         @dragover.prevent="onDragOverList2(index)"
       >
-        <Card ref="page.id" :page="item" />
+        <Card ref="page.id" :page="item" @clickSendToUnsorted="sendToUnsorted(item)" />
       </div>
     </div>
   </section>
@@ -116,7 +126,7 @@ function onDropList1() {
         draggable="true"
         @dragstart="onDragStart(item)"
       >
-        <Card ref="page.id" :page="item" />
+        <Card ref="page.id" :page="item" @clickSendToSort="sendToSort(item)" />
       </div>
     </div>
   </section>
@@ -128,22 +138,36 @@ function onDropList1() {
   display: flex;
   flex-direction: column;
   gap: var(--gap-m);
-  padding: var(--padding-m);
   background: var(--color-background-mute);
   border-radius: var(--border-radius);
-  margin-bottom: var(--gap-l);
+  /* Updated through media queries */
+  padding: var(--padding-s);
 }
 .dropzone__card-list {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--gap-m);
-  border: dashed var(--color-background);
-  padding: var(--padding-s);
-  min-height: 100px;
+  border: 2px dashed var(--color-background);
+  border-radius: var(--border-radius);
+  padding: var(--padding-xs);
+  min-height: 14rem;
+  /* Updated through media queries */
+  flex-direction: column;
 }
 
 .dropzone__list-one p,
 .dropzone__list-two p {
   color: var(--color-foreground);
+}
+
+/* MEDIA QUERIES */
+@media (width > 568px) {
+  .dropzone__list-one,
+  .dropzone__list-two {
+    padding: var(--padding-m);
+  }
+  .dropzone__card-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 </style>

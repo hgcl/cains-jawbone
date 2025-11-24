@@ -10,7 +10,7 @@ export function truncateText(string: string, truncatePosition: 'start' | 'end') 
   }
   if (truncatePosition === 'start') {
     subString = string.slice(string.length - 60)
-    return string.slice(subString.indexOf(' ') - 60)
+    return string.slice(subString.indexOf(' ') - 55)
   }
 }
 

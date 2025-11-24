@@ -8,6 +8,10 @@ import { truncateText, useOpenDialog } from './Card.utils'
 defineProps<{
   page: BookPage
 }>()
+const emit = defineEmits<{
+  (e: 'clickSendToSort', event: MouseEvent): void
+  (e: 'clickSendToUnsorted', event: MouseEvent): void
+}>()
 
 // Selected page that should be shown in the dialog
 const selectedPage = ref<BookPage | null>(null)
@@ -20,11 +24,20 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 
 <template>
   <article class="card">
+    <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
     <p class="card__preview">
       <span v-html="truncateText(page.content, 'end')"></span> [...]
       <span v-html="truncateText(page.content, 'start')"></span>
     </p>
-    <Button @click="openDialog(page)">View page {{ page.id }}</Button>
+    <div class="card__buttons">
+      <Button @click="openDialog(page)">View</Button>
+      <Button v-if="page.list === 1" @click="(e) => emit('clickSendToSort', e)"
+        >Sort<span aria-hidden="true"> &uarr;</span></Button
+      >
+      <Button v-if="page.list === 2" @click="(e) => emit('clickSendToUnsorted', e)"
+        >Remove<span aria-hidden="true"> &darr;</span></Button
+      >
+    </div>
   </article>
 
   <PageModal ref="dialogRef" :page="selectedPage" />
@@ -35,20 +48,43 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 200px;
-  height: 296px;
-  padding: var(--padding-m);
+  gap: var(--gap-m);
   border: var(--border);
   border-radius: var(--border-radius);
   background-color: var(--color-background);
   cursor: grab;
+  /* Updated through media queries */
+  width: 100%;
+  padding: var(--padding-s);
 }
 .card__preview {
   color: var(--color-foreground);
+}
+.card__preview > span:last-of-type {
+  /* Updated through media queries */
+  display: none;
+}
+.card__buttons {
+  display: flex;
+  gap: var(--gap-m);
+  justify-content: center;
 }
 
 /* INTERACTIONS */
 .card:active {
   cursor: grabbing;
+}
+
+/* MEDIA QUERIES */
+@media (width > 568px) {
+  .card {
+    height: 312px;
+    width: 100%;
+    max-width: 216px;
+    padding: var(--padding-m);
+  }
+  .card__preview > span:last-of-type {
+    display: unset;
+  }
 }
 </style>

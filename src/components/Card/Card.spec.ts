@@ -14,7 +14,7 @@ describe('Card', () => {
   it('renders properly', () => {
     const wrapper = mount(Card, { props: { page: pageMock } })
     // `page.id` gives the page number
-    expect(wrapper.find('button').text().toLowerCase()).toContain('page 5')
+    expect(wrapper.find('.card__page').text().toLowerCase()).toContain('page 5')
     expect(wrapper.find('.card__preview').text()).toContain('Some lines flying off the page')
   })
 })
