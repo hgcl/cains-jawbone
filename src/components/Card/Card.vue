@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import PageModal from './PageModal.vue'
-import type { BookPage } from './types'
+import PageModal from '../PageModal/PageModal.vue'
+import type { BookPage } from '../types'
 
 defineProps<{
   page: BookPage

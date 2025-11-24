@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import bookJson from '../src/assets/book.json'
-import Card from './components/Card.vue'
+import Card from './components/Card/Card.vue'
 import { computed, ref } from 'vue'
 import type { BookPage } from './components/types'
 
