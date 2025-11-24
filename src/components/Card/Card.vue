@@ -43,11 +43,6 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   background-color: var(--color-background);
   cursor: grab;
 }
-.card__page {
-  font-size: var(--font-size-heading-xs);
-  font-weight: bold;
-  text-align: center;
-}
 .card__preview {
   color: var(--color-foreground);
 }
