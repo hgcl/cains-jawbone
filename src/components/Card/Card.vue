@@ -31,10 +31,16 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
     </p>
     <div class="card__buttons">
       <Button @click="openDialog(page)">View</Button>
-      <Button v-if="page.list === 1" @click="(e) => emit('clickSendToSort', e)"
+      <Button
+        class="card__button_sort"
+        v-if="page.list === 1"
+        @click="(e) => emit('clickSendToSort', e)"
         >Sort<span aria-hidden="true"> &uarr;</span></Button
       >
-      <Button v-if="page.list === 2" @click="(e) => emit('clickSendToUnsorted', e)"
+      <Button
+        class="card__button_remove"
+        v-if="page.list === 2"
+        @click="(e) => emit('clickSendToUnsorted', e)"
         >Remove<span aria-hidden="true"> &darr;</span></Button
       >
     </div>
