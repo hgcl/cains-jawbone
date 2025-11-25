@@ -11,7 +11,6 @@ const emit = defineEmits<{
 const cssVars = computed(() => ({
   mask: props.icon ? `url("${props.icon}") no-repeat center` : '',
 }))
-// console.log(cssVars.value)
 </script>
 
 <template>
