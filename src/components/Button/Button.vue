@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps<{
+const { variant = 'primary', icon } = defineProps<{
+  variant?: 'primary' | 'secondary'
   icon?: string
 }>()
+
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
 
 const cssVars = computed(() => ({
-  mask: props.icon ? `url("${props.icon}") no-repeat center` : '',
+  mask: icon ? `url("${icon}") no-repeat center` : '',
 }))
 </script>
 
 <template>
-  <button @click="(e) => emit('click', e)">
-    <div v-show="props.icon" :style="cssVars" class="button__icon"></div>
+  <button @click="(e) => emit('click', e)" :class="[`button__${variant}`]">
+    <div v-show="icon" :style="cssVars" class="button__icon"></div>
     <slot></slot>
   </button>
 </template>
@@ -36,8 +38,10 @@ button {
   text-transform: uppercase;
   font-weight: bold;
   background: transparent;
-  border: 1px solid var(--color-accent-subtle);
   border-radius: var(--border-radius);
+}
+.button__primary {
+  border: 1px solid var(--color-accent-subtle);
   padding: var(--padding-xs);
 }
 button > .button__icon {

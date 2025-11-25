@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import PageModal from '../PageModal/PageModal.vue'
 import Button from '../Button/Button.vue'
+import arrowLeft from '../../assets/arrow-left-feathericons.svg'
+import arrowRight from '../../assets/arrow-right-feathericons.svg'
 import type { BookPage } from '../../types'
 import { truncateText, useOpenDialog } from './Card.utils'
 
@@ -29,8 +31,14 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
       <span v-html="truncateText(page.content, 'end')"></span> [...]
       <span v-html="truncateText(page.content, 'start')"></span>
     </p>
+    <div v-if="page.list === 2" class="card__arrows">
+      <Button :icon="arrowLeft" :variant="'secondary'"></Button
+      ><Button :icon="arrowRight" :variant="'secondary'"></Button>
+    </div>
     <div class="card__buttons">
-      <Button @click="openDialog(page)">View</Button>
+      <Button @click="openDialog(page)"
+        >View<span class="visually-hidden"> page {{ page.id }}</span></Button
+      >
       <Button
         class="card__button_sort"
         v-if="page.list === 1"
@@ -61,7 +69,12 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   cursor: grab;
   /* Updated through media queries */
   width: 100%;
-  padding: var(--padding-s);
+  padding: var(--padding-s) var(--padding-m);
+  /* Necessary for .card__arrows positioning */
+  position: relative;
+}
+.card__page {
+  text-align: center;
 }
 .card__preview {
   color: var(--color-foreground);
@@ -69,6 +82,15 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 .card__preview > span:last-of-type {
   /* Updated through media queries */
   display: none;
+}
+.card__arrows {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: 2rem;
+  left: 0;
+  padding: 0 0.5rem;
+  width: 100%;
 }
 .card__buttons {
   display: flex;
@@ -91,6 +113,16 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   }
   .card__preview > span:last-of-type {
     display: unset;
+  }
+  .card__arrows {
+    /* Arrows will be made visible on hover/focus */
+    opacity: 0;
+  }
+
+  /* INTERACTIONS */
+  .card:hover > .card__arrows,
+  .card:focus-within > .card__arrows {
+    opacity: 1;
   }
 }
 </style>
