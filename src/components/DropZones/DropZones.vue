@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import bookJson from '../../assets/book.json'
 import Card from '../../components/Card/Card.vue'
+import PageOrder from '../../components/PageOrder/PageOrder.vue'
 import type { BookPage } from '../../types'
 
 // Initial lists of items
@@ -17,6 +18,9 @@ const draggedOverIndex = ref<number | null>(null)
 // List 2: sorted based by `order`
 const sortedList1 = computed(() => [...list1.value].sort((a, b) => a.id - b.id))
 const sortedList2 = computed(() => [...list2.value].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)))
+
+// Final order (as a string)
+const orderString = computed(() => sortedList2.value.map((el) => el.id).join(', '))
 
 // Drag start
 function onDragStart(item: BookPage) {
@@ -94,7 +98,7 @@ function sendToUnsorted(page: BookPage) {
   >
     <h2>Sorted</h2>
     <p>Drag the pages to change their order in the book.</p>
-    <p>Pages order: {{ sortedList2.map((el) => el.id).toString() }}</p>
+    <PageOrder :orderString="orderString" />
     <div class="dropzone__card-list">
       <div
         v-for="(item, index) in sortedList2"
@@ -137,6 +141,7 @@ function sendToUnsorted(page: BookPage) {
 .dropzone__list-two {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--gap-m);
   background: var(--color-background-mute);
   border-radius: var(--border-radius);
@@ -150,6 +155,7 @@ function sendToUnsorted(page: BookPage) {
   border-radius: var(--border-radius);
   padding: var(--padding-xs);
   min-height: 14rem;
+  width: 100%;
   /* Updated through media queries */
   flex-direction: column;
 }

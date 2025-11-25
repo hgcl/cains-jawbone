@@ -51,6 +51,7 @@
   --padding-xs: 0.5rem;
   --gap-l: 2rem;
   --gap-m: 1rem;
+  --gap-s: 0.5rem;
 
   /* BORDER */
   --border: solid 1px var(--color-border);
@@ -65,6 +66,7 @@
   --line-height-loose: 1.6;
 
   --font-size-body-m: 1rem;
+  --font-size-body-s: 0.8rem;
   --font-size-heading-l: 4rem;
   --font-size-heading-m: 3rem;
   --font-size-heading-s: 1.5rem;
