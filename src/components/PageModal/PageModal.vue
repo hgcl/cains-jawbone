@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import type { BookPage } from '../../types'
 import Button from '../Button/Button.vue'
+import arrowLeft from '../../assets/arrow-left-feathericons.svg'
+import arrowRight from '../../assets/arrow-right-feathericons.svg'
 
 defineProps<{
   page: BookPage | null
@@ -28,6 +30,10 @@ defineExpose({ open })
       <Button class="page-modal__header__close-button" @click="close">Close</Button>
     </header>
     <p class="page-modal__content" v-if="page" v-html="page.content"></p>
+    <div class="page-modal__buttons">
+      <Button :variant="'secondary'" :iconBefore="arrowLeft">Previous page</Button
+      ><Button :variant="'secondary'" :iconAfter="arrowRight">Next page</Button>
+    </div>
   </dialog>
 </template>
 
@@ -41,7 +47,7 @@ defineExpose({ open })
   margin: auto;
   border-radius: var(--border-radius);
   max-width: 600px;
-  padding: var(--padding-m) var(--padding-m) var(--padding-xl) var(--padding-m);
+  padding: var(--padding-m);
 }
 .page-modal::backdrop {
   background-color: var(--color-backdrop);
@@ -62,5 +68,11 @@ defineExpose({ open })
 .page-modal__content {
   font-family: var(--font-family-body);
   white-space: pre-line;
+  margin-bottom: var(--gap-l);
+}
+.page-modal__buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-m);
 }
 </style>

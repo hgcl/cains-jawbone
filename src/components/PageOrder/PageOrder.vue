@@ -29,7 +29,9 @@ async function copyContent() {
     <label class="page-order__label">Pages order</label>
     <div class="page-order__input_wrapper">
       <input class="page-order__input" :value="pageOrder" readonly />
-      <Button class="page-order__copy-button" @click="copyContent" :icon="copySvg">Copy</Button>
+      <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg"
+        >Copy</Button
+      >
     </div>
   </div>
 </template>

@@ -4,13 +4,15 @@ import { computed } from 'vue'
 const {
   variant = 'primary',
   inverted = false,
-  icon,
+  iconBefore,
+  iconAfter,
   href,
   to,
 } = defineProps<{
   variant?: 'primary' | 'secondary'
   inverted?: boolean
-  icon?: string
+  iconBefore?: string
+  iconAfter?: string
   href?: string
   to?: string
 }>()
@@ -23,8 +25,11 @@ const emit = defineEmits<{
 }>()
 
 // Format CSS vars
-const iconStyles = computed(() => ({
-  mask: icon ? `url("${icon}") no-repeat center` : '',
+const iconBeforeStyles = computed(() => ({
+  mask: iconBefore ? `url("${iconBefore}") no-repeat center` : '',
+}))
+const iconAfterStyles = computed(() => ({
+  mask: iconAfter ? `url("${iconAfter}") no-repeat center` : '',
 }))
 const invertedClass = computed(() => (inverted ? 'button__inverted' : ''))
 
@@ -50,8 +55,9 @@ const linkComponent = computed(() => {
     @click="(e: MouseEvent) => emit('click', e)"
     :class="[`button button__${variant} ${invertedClass}`]"
   >
-    <div v-if="icon" :style="iconStyles" class="button__icon"></div>
+    <div v-if="iconBefore" :style="iconBeforeStyles" class="button__icon button__icon_before"></div>
     <slot>Label needed</slot>
+    <div v-if="iconAfter" :style="iconAfterStyles" class="button__icon button__icon_after"></div>
   </component>
 </template>
 
@@ -105,8 +111,8 @@ const linkComponent = computed(() => {
   text-decoration: underline;
   text-underline-offset: 0.25em;
 }
-.button:hover > .button__icon,
-.button:focus > .button__icon {
+.button__primary:hover > .button__primary,
+.button__primary:focus > .button__icon {
   background-color: var(--color-on-accent);
 }
 </style>
