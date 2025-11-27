@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const { variant = 'primary', icon } = defineProps<{
+const {
+  variant = 'primary',
+  inverted = false,
+  icon,
+  href,
+  to,
+} = defineProps<{
   variant?: 'primary' | 'secondary'
+  inverted?: boolean
   icon?: string
+  href?: string
+  to?: string
 }>()
 defineSlots<{
   default: string
@@ -13,41 +22,72 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
 
-const cssVars = computed(() => ({
+// Format CSS vars
+const iconStyles = computed(() => ({
   mask: icon ? `url("${icon}") no-repeat center` : '',
 }))
+const invertedClass = computed(() => (inverted ? 'button__inverted' : ''))
+
+// Determine which component to render
+const linkComponent = computed(() => {
+  // If there's a `to` prop, render as a <router-link>
+  if (to) {
+    return 'router-link'
+  }
+  // If there's an `href` prop, render as an <a> tag
+  if (href) {
+    return 'a'
+  }
+  // Otherwise, render as a <button>
+  return 'button'
+})
 </script>
 
 <template>
-  <button @click="(e) => emit('click', e)" :class="[`button__${variant}`]">
-    <div v-show="icon" :style="cssVars" class="button__icon"></div>
+  <component
+    :is="linkComponent"
+    :to="to"
+    @click="(e: MouseEvent) => emit('click', e)"
+    :class="[`button button__${variant} ${invertedClass}`]"
+  >
+    <div v-if="icon" :style="iconStyles" class="button__icon"></div>
     <slot>Label needed</slot>
-  </button>
+  </component>
 </template>
 
 <style scoped>
-button {
+.button {
   /* Reset styles */
   border: 0;
   padding: 0;
   font-family: unset;
   font-size: var(--font-size-body-s);
+  text-decoration: none;
   /* Ċustom styles */
+  transition: background-color 0.2s;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--color-accent);
+  width: fit-content;
   text-transform: uppercase;
   font-weight: bold;
-  background: transparent;
   border-radius: var(--border-radius);
   padding: var(--padding-xs);
+  color: var(--color-accent);
+  /* Different when inverted */
+  background-color: transparent;
 }
 .button__primary {
   border: 1px solid var(--color-accent-subtle);
 }
-button > .button__icon {
+
+.button__inverted {
+  background-color: var(--color-on-accent);
+  border: 1px solid var(--color-on-accent);
+}
+
+.button__icon {
   background-color: var(--color-accent);
   width: 24px;
   height: 24px;
@@ -65,8 +105,8 @@ button > .button__icon {
   text-decoration: underline;
   text-underline-offset: 0.25em;
 }
-button:hover > .button__icon,
-button:focus > .button__icon {
+.button:hover > .button__icon,
+.button:focus > .button__icon {
   background-color: var(--color-on-accent);
 }
 </style>
