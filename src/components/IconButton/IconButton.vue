@@ -12,14 +12,14 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
 
-const cssVars = computed(() => ({
+const iconStyles = computed(() => ({
   mask: icon ? `url("${icon}") no-repeat center` : '',
 }))
 </script>
 
 <template>
   <button @click="(e) => emit('click', e)">
-    <div v-show="icon" :style="cssVars" class="button__icon"></div>
+    <div v-if="icon" :style="iconStyles" class="button__icon"></div>
     <!-- The label displays as a tooltip on hover -->
     <span class="button__label"><slot>Label needed</slot></span>
   </button>

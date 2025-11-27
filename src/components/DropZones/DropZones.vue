@@ -175,6 +175,7 @@ function moveRight(page: BookPage, index: number) {
 }
 .dropzone__card-list {
   display: flex;
+  justify-content: center;
   gap: var(--gap-m);
   border: 2px dashed var(--color-background);
   border-radius: var(--border-radius);
