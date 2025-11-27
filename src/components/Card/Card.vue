@@ -2,8 +2,11 @@
 import { ref } from 'vue'
 import PageModal from '../PageModal/PageModal.vue'
 import Button from '../Button/Button.vue'
-import arrowLeft from '../../assets/arrow-left-feathericons.svg'
-import arrowRight from '../../assets/arrow-right-feathericons.svg'
+import IconButton from '../IconButton/IconButton.vue'
+import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
+import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
+import chevronsUp from '../../assets/chevrons-up-feathericons.svg'
+import chevronsDown from '../../assets/chevrons-down-feathericons.svg'
 import type { BookPage } from '../../types'
 import { truncateText, useOpenDialog } from './Card.utils'
 
@@ -13,6 +16,8 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'clickSendToSort', event: MouseEvent): void
   (e: 'clickSendToUnsorted', event: MouseEvent): void
+  (e: 'clickMoveLeft', event: MouseEvent): void
+  (e: 'clickMoveRight', event: MouseEvent): void
 }>()
 
 // Selected page that should be shown in the dialog
@@ -27,13 +32,24 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
 <template>
   <article class="card">
     <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
-    <p class="card__preview">
-      <span v-html="truncateText(page.content, 'end')"></span> [...]
-      <span v-html="truncateText(page.content, 'start')"></span>
-    </p>
-    <div v-if="page.list === 2" class="card__arrows">
-      <Button :icon="arrowLeft" :variant="'secondary'"></Button
-      ><Button :icon="arrowRight" :variant="'secondary'"></Button>
+    <div class="card__preview-arrows-wrapper">
+      <p class="card__preview">
+        <span v-html="truncateText(page.content, 'end')"></span> [...]
+        <span v-html="truncateText(page.content, 'start')"></span>
+      </p>
+      <div v-if="page.list === 2" class="card__arrows_desktop">
+        <IconButton :icon="chevronsLeft" @click="(e) => emit('clickMoveLeft', e)"
+          >Move left</IconButton
+        ><IconButton :icon="chevronsRight" @click="(e) => emit('clickMoveRight', e)"
+          >Move right</IconButton
+        >
+      </div>
+      <div v-if="page.list === 2" class="card__arrows_mobile">
+        <IconButton :icon="chevronsUp" @click="(e) => emit('clickMoveLeft', e)">Move up</IconButton
+        ><IconButton :icon="chevronsDown" @click="(e) => emit('clickMoveRight', e)"
+          >Move down</IconButton
+        >
+      </div>
     </div>
     <div class="card__buttons">
       <Button @click="openDialog(page)"
@@ -70,12 +86,14 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   /* Updated through media queries */
   width: 100%;
   padding: var(--padding-s) var(--padding-m);
-  /* Necessary for .card__arrows positioning */
+  /* Necessary for .card__arrows_desktop positioning */
   position: relative;
 }
 .card__page {
   text-align: center;
 }
+
+/* Content preview */
 .card__preview {
   color: var(--color-foreground);
 }
@@ -83,15 +101,25 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   /* Updated through media queries */
   display: none;
 }
-.card__arrows {
-  position: absolute;
+
+/* Move cards up-down/left-right */
+.card__preview-arrows-wrapper {
   display: flex;
-  justify-content: space-between;
-  top: 2rem;
-  left: 0;
-  padding: 0 0.5rem;
-  width: 100%;
+  align-items: center;
+  gap: var(--gap-s);
 }
+.card__arrows_desktop {
+  display: none;
+}
+.card__arrows_mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gap-s);
+  margin-right: -1rem;
+}
+
+/* View and sort/remove buttons */
 .card__buttons {
   display: flex;
   gap: var(--gap-m);
@@ -114,14 +142,26 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   .card__preview > span:last-of-type {
     display: unset;
   }
-  .card__arrows {
+
+  /* Move page up-down arrows are replaced by left-right */
+  .card__arrows_desktop {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    top: 1.5rem;
+    left: 0;
+    padding: 0 0.5rem;
+    width: 100%;
     /* Arrows will be made visible on hover/focus */
     opacity: 0;
   }
+  .card__arrows_mobile {
+    display: none;
+  }
 
   /* INTERACTIONS */
-  .card:hover > .card__arrows,
-  .card:focus-within > .card__arrows {
+  .card:hover .card__arrows_desktop,
+  .card:focus-within .card__arrows_desktop {
     opacity: 1;
   }
 }

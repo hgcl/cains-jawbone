@@ -77,14 +77,33 @@ function onDropList1() {
   draggedOverIndex.value = null
 }
 
+// From "sorted" list to "unsorted" list
 function sendToSort(page: BookPage) {
   onDragStart(page)
   onDropList2()
 }
-
 function sendToUnsorted(page: BookPage) {
   onDragStart(page)
   onDropList1()
+}
+
+// Move item up-down sorted list
+function moveLeft(page: BookPage, index: number) {
+  if (index === 0) return
+
+  draggingItem.value = page
+  draggedOverIndex.value = index - 1
+
+  onDropList2()
+}
+// Move item up-down sorted list
+function moveRight(page: BookPage, index: number) {
+  if (index === list2.value.length) return
+
+  draggingItem.value = page
+  draggedOverIndex.value = index + 1
+
+  onDropList2()
 }
 </script>
 
@@ -108,7 +127,13 @@ function sendToUnsorted(page: BookPage) {
         @dragstart="onDragStart(item)"
         @dragover.prevent="onDragOverList2(index)"
       >
-        <Card ref="page.id" :page="item" @clickSendToUnsorted="sendToUnsorted(item)" />
+        <Card
+          ref="page.id"
+          :page="item"
+          @clickSendToUnsorted="sendToUnsorted(item)"
+          @clickMoveLeft="moveLeft(item, index)"
+          @clickMoveRight="moveRight(item, index)"
+        />
       </div>
     </div>
   </section>
