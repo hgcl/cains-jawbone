@@ -65,12 +65,13 @@
   --line-height-tight: 1.2;
   --line-height-loose: 1.6;
 
+  --font-size-body-l: 1.2rem;
   --font-size-body-m: 1rem;
   --font-size-body-s: 0.8rem;
+  --font-size-heading-xl: 6rem;
   --font-size-heading-l: 4rem;
   --font-size-heading-m: 3rem;
   --font-size-heading-s: 1.5rem;
-  --font-size-heading-xs: 1.2rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -100,7 +101,7 @@
 body {
   min-height: 100vh;
   color: var(--color-foreground-strong);
-  background: var(--color-background);
+  background-color: var(--color-background);
   transition:
     color 0.5s,
     background-color 0.5s;

@@ -1,25 +1,28 @@
-<script setup lang="ts">
-import DropZones from './components/DropZones/DropZones.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <header>
-    <!-- TODO -->
-  </header>
-
-  <main>
-    <h1>Cain's Jawbone</h1>
-    <DropZones />
-  </main>
+  <transition name="fade">
+    <router-view />
+  </transition>
 </template>
 
-<style scoped>
-h1 {
-  text-align: center;
-}
-main {
+<style>
+#app {
   display: flex;
-  flex-direction: column;
-  gap: var(--gap-l);
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--color-accent);
+}
+
+/* TRANSITIONS */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+.fade-leave-to,
+.fade-enter-from {
+  opacity: 0;
 }
 </style>
