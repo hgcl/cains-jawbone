@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const { variant = 'primary', icon } = defineProps<{
-  variant?: 'primary' | 'secondary'
-  icon?: string
+const { icon } = defineProps<{
+  icon: string
 }>()
 defineSlots<{
   default: string
@@ -19,9 +18,10 @@ const cssVars = computed(() => ({
 </script>
 
 <template>
-  <button @click="(e) => emit('click', e)" :class="[`button__${variant}`]">
+  <button @click="(e) => emit('click', e)">
     <div v-show="icon" :style="cssVars" class="button__icon"></div>
-    <slot>Label needed</slot>
+    <!-- The label displays as a tooltip on hover -->
+    <span class="button__label"><slot>Label needed</slot></span>
   </button>
 </template>
 
@@ -31,7 +31,6 @@ button {
   border: 0;
   padding: 0;
   font-family: unset;
-  font-size: var(--font-size-body-s);
   /* Ċustom styles */
   cursor: pointer;
   display: flex;
@@ -39,34 +38,52 @@ button {
   gap: 0.25rem;
   color: var(--color-accent);
   text-transform: uppercase;
-  font-weight: bold;
   background: transparent;
-  border-radius: var(--border-radius);
   padding: var(--padding-xs);
-}
-.button__primary {
   border: 1px solid var(--color-accent-subtle);
+  border-radius: 1000px;
+  /* Necessary for .button__label positioning */
+  position: relative;
 }
-button > .button__icon {
+
+.button__icon {
   background-color: var(--color-accent);
   width: 24px;
   height: 24px;
   transform: scale(80%);
 }
 
+.button__label {
+  opacity: 0;
+  transition: opacity 0.3s;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--padding-xs);
+  color: var(--color-foreground);
+  background: var(--color-background);
+  font-size: var(--font-size-body-s);
+  font-weight: bold;
+  white-space: nowrap;
+}
+
 /* INTERACTIONS */
-.button__primary:hover,
-.button__primary:focus {
+button:hover,
+button:focus {
   color: var(--color-on-accent);
   background-color: var(--color-accent);
 }
-.button__secondary:hover,
-.button__secondary:focus {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
-}
+
 button:hover > .button__icon,
 button:focus > .button__icon {
   background-color: var(--color-on-accent);
+}
+
+button:hover > .button__label,
+button:focus > .button__label {
+  opacity: 1;
 }
 </style>
