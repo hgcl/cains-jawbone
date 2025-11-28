@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import PageModal from '../PageModal/PageModal.vue'
 import Button from '../Button/Button.vue'
 import IconButton from '../IconButton/IconButton.vue'
@@ -8,10 +8,11 @@ import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
 import chevronsUp from '../../assets/chevrons-up-feathericons.svg'
 import chevronsDown from '../../assets/chevrons-down-feathericons.svg'
 import type { BookPage } from '../../types'
-import { truncateText, useOpenDialog } from './Card.utils'
+import { truncateText, useGoPage, useOpenDialog } from './Card.utils'
 
-defineProps<{
-  page: BookPage
+const { pageIndex, pageList } = defineProps<{
+  pageIndex: number
+  pageList: BookPage[]
 }>()
 const emit = defineEmits<{
   (e: 'clickSendToSort', event: MouseEvent): void
@@ -20,31 +21,35 @@ const emit = defineEmits<{
   (e: 'clickMoveRight', event: MouseEvent): void
 }>()
 
-// Selected page that should be shown in the dialog
-const selectedPage = ref<BookPage | null>(null)
+// Selected page from `pageList`
+const currentIndex = ref(pageIndex)
+const currentPage = computed(() => pageList[currentIndex.value])
+
+// Functions called in `PageModal` component to display previous or next page
+const { toPreviousPage, toNextPage } = useGoPage(currentIndex, pageList)
 
 // The dialog component exposes `.open()` through a template ref
 const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
-
-const openDialog = useOpenDialog(selectedPage, dialogRef)
+// Function that opens a page dialog
+const openDialog = useOpenDialog(dialogRef)
 </script>
 
 <template>
   <article class="card">
-    <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
+    <h3 class="card__page" v-if="currentPage">Page {{ currentPage.id }}</h3>
     <div class="card__preview-arrows-wrapper">
       <p class="card__preview">
-        <span v-html="truncateText(page.content, 'end')"></span> [...]
-        <span v-html="truncateText(page.content, 'start')"></span>
+        <span v-html="truncateText(currentPage?.content ?? '', 'end')"></span> [...]
+        <span v-html="truncateText(currentPage?.content ?? '', 'start')"></span>
       </p>
-      <div v-if="page.list === 2" class="card__arrows_desktop">
+      <div v-if="currentPage?.list === 2" class="card__arrows_desktop">
         <IconButton :icon="chevronsLeft" @click="(e) => emit('clickMoveLeft', e)"
           >Move left</IconButton
         ><IconButton :icon="chevronsRight" @click="(e) => emit('clickMoveRight', e)"
           >Move right</IconButton
         >
       </div>
-      <div v-if="page.list === 2" class="card__arrows_mobile">
+      <div v-if="currentPage?.list === 2" class="card__arrows_mobile">
         <IconButton :icon="chevronsUp" @click="(e) => emit('clickMoveLeft', e)">Move up</IconButton
         ><IconButton :icon="chevronsDown" @click="(e) => emit('clickMoveRight', e)"
           >Move down</IconButton
@@ -52,25 +57,30 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
       </div>
     </div>
     <div class="card__buttons">
-      <Button @click="openDialog(page)"
-        >View<span class="visually-hidden"> page {{ page.id }}</span></Button
+      <Button @click="openDialog"
+        >View<span class="visually-hidden"> page {{ currentPage?.id }}</span></Button
       >
       <Button
         class="card__button_sort"
-        v-if="page.list === 1"
+        v-if="currentPage?.list === 1"
         @click="(e) => emit('clickSendToSort', e)"
         >Sort<span aria-hidden="true"> &uarr;</span></Button
       >
       <Button
         class="card__button_remove"
-        v-if="page.list === 2"
+        v-if="currentPage?.list === 2"
         @click="(e) => emit('clickSendToUnsorted', e)"
         >Remove<span aria-hidden="true"> &darr;</span></Button
       >
     </div>
   </article>
 
-  <PageModal ref="dialogRef" :page="selectedPage" />
+  <PageModal
+    ref="dialogRef"
+    :page="currentPage"
+    @clickNextPage="toNextPage"
+    @clickPreviousPage="toPreviousPage"
+  />
 </template>
 
 <style scoped>
@@ -116,7 +126,7 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
   flex-direction: column;
   justify-content: center;
   gap: var(--gap-s);
-  margin-right: -1rem;
+  margin-right: calc(-1 * var(--padding-s));
 }
 
 /* View and sort/remove buttons */
@@ -148,9 +158,9 @@ const openDialog = useOpenDialog(selectedPage, dialogRef)
     position: absolute;
     display: flex;
     justify-content: space-between;
-    top: 1.5rem;
+    top: var(--padding-m);
     left: 0;
-    padding: 0 0.5rem;
+    padding: 0 var(--padding-xs);
     width: 100%;
     /* Arrows will be made visible on hover/focus */
     opacity: 0;

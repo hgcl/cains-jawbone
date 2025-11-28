@@ -89,7 +89,7 @@ function sendToUnsorted(page: BookPage) {
 
 // Move item up-down sorted list
 function moveLeft(page: BookPage, index: number) {
-  if (index === 0) return
+  if (index <= 0) return
 
   draggingItem.value = page
   draggedOverIndex.value = index - 1
@@ -98,7 +98,7 @@ function moveLeft(page: BookPage, index: number) {
 }
 // Move item up-down sorted list
 function moveRight(page: BookPage, index: number) {
-  if (index === list2.value.length) return
+  if (index >= list2.value.length - 1) return
 
   draggingItem.value = page
   draggedOverIndex.value = index + 1
@@ -128,8 +128,8 @@ function moveRight(page: BookPage, index: number) {
         @dragover.prevent="onDragOverList2(index)"
       >
         <Card
-          ref="page.id"
-          :page="item"
+          :pageIndex="index"
+          :pageList="list2"
           @clickSendToUnsorted="sendToUnsorted(item)"
           @clickMoveLeft="moveLeft(item, index)"
           @clickMoveRight="moveRight(item, index)"
@@ -149,13 +149,13 @@ function moveRight(page: BookPage, index: number) {
     <p>Start ordering the pages by dragging them to the sorted section above.</p>
     <div class="dropzone__card-list">
       <div
-        v-for="item in sortedList1"
+        v-for="(item, index) in sortedList1"
         :key="item.id"
         class="card"
         draggable="true"
         @dragstart="onDragStart(item)"
       >
-        <Card ref="page.id" :page="item" @clickSendToSort="sendToSort(item)" />
+        <Card :pageIndex="index" :pageList="list1" @clickSendToSort="sendToSort(item)" />
       </div>
     </div>
   </section>

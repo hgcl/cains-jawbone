@@ -14,12 +14,23 @@ export function truncateText(string: string, truncatePosition: 'start' | 'end') 
   }
 }
 
-export function useOpenDialog(
-  selectedPage: Ref<BookPage | null>,
-  dialogRef: Ref<InstanceType<typeof PageModal> | null>,
-) {
-  return function openDialog(page: BookPage) {
-    selectedPage.value = page
+export function useGoPage(currentIndex: Ref<number>, pageList: BookPage[]) {
+  function toPreviousPage() {
+    if (currentIndex.value > 0) {
+      currentIndex.value--
+    }
+  }
+  function toNextPage() {
+    if (currentIndex.value < pageList.length - 1) {
+      currentIndex.value++
+    }
+  }
+
+  return { toPreviousPage, toNextPage }
+}
+
+export function useOpenDialog(dialogRef: Ref<InstanceType<typeof PageModal> | null>) {
+  return function openDialog() {
     dialogRef.value?.open()
   }
 }
