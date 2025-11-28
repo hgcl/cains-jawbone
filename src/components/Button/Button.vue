@@ -111,7 +111,7 @@ const linkComponent = computed(() => {
   text-decoration: underline;
   text-underline-offset: 0.25em;
 }
-.button__primary:hover > .button__primary,
+.button__primary:hover > .button__icon,
 .button__primary:focus > .button__icon {
   background-color: var(--color-on-accent);
 }
