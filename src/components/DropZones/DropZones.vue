@@ -116,7 +116,7 @@ function moveRight(page: BookPage, index: number) {
     @drop.prevent="onDropList2"
   >
     <h2>Sorted</h2>
-    <p>Drag the pages to change their order in the book.</p>
+    <p>Reorder the pages of the book by dragging them, or using the arrows.</p>
     <PageOrder :orderString="orderString" />
     <div class="dropzone__card-list">
       <div
