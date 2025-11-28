@@ -144,9 +144,10 @@ const openDialog = useOpenDialog(dialogRef)
 /* MEDIA QUERIES */
 @media (width > 568px) {
   .card {
-    height: 312px;
+    height: 100%;
     width: 100%;
-    max-width: 216px;
+    /* max-width must be in `em` so that the `font-size: 200%` test passes */
+    max-width: 12.5em;
     padding: var(--padding-m);
   }
   .card__preview > span:last-of-type {
