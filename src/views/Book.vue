@@ -25,8 +25,17 @@ main {
 
 /* MEDIA QUERIES */
 @media (width > 568px) {
+  h1 {
+    font-size: 10vw;
+  }
   main {
     padding: var(--padding-m);
+    gap: var(--gap-xl);
+  }
+}
+@media (width > 800px) {
+  main {
+    padding: var(--padding-l);
   }
 }
 </style>

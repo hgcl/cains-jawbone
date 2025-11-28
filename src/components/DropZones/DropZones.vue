@@ -196,6 +196,7 @@ function moveRight(page: BookPage, index: number) {
   .dropzone__list-one,
   .dropzone__list-two {
     padding: var(--padding-m);
+    gap: var(--gap-l);
   }
   .dropzone__card-list {
     flex-direction: row;

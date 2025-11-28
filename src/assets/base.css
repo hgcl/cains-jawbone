@@ -10,15 +10,15 @@
   --token-yellow: hsl(60, 45%, 98%);
   --token-yellow-mute: hsl(29, 42%, 88%);
 
-  --token-black: rgb(42, 38, 56);
+  --token-black: rgb(49, 43, 70);
 
   --token-blue: rgb(0, 3, 199);
   --token-blue-no-opacity: 0, 3, 199;
 
-  --token-blue-dark: rgb(171, 188, 247);
+  --token-blue-dark: rgb(43, 156, 248);
   --token-blue-dark-no-opacity: 171, 188, 247;
 
-  --token-blue-mute: rgb(66, 67, 100);
+  --token-blue-mute: rgb(46, 47, 92);
 
   --token-grey-light: rgba(60, 84, 121, 0.29);
   --token-grey-dark: rgba(76, 78, 99, 0.65);
@@ -49,6 +49,7 @@
   --padding-m: calc(1.5 * 16px);
   --padding-s: 16px;
   --padding-xs: calc(0.5 * 16px);
+  --gap-xl: calc(4 * 16px);
   --gap-l: calc(2 * 16px);
   --gap-m: 16px;
   --gap-s: calc(0.5 * 16px);
