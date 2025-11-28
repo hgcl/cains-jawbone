@@ -35,7 +35,7 @@ button {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--gap-xs);
   color: var(--color-accent);
   text-transform: uppercase;
   background: transparent;

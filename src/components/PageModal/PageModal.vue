@@ -8,6 +8,10 @@ import arrowRight from '../../assets/arrow-right-feathericons.svg'
 defineProps<{
   page: BookPage | null
 }>()
+const emit = defineEmits<{
+  (e: 'clickNextPage', event: MouseEvent): void
+  (e: 'clickPreviousPage', event: MouseEvent): void
+}>()
 
 const dialog = ref<HTMLDialogElement | null>(null)
 
@@ -31,8 +35,17 @@ defineExpose({ open })
     </header>
     <p class="page-modal__content" v-if="page" v-html="page.content"></p>
     <div class="page-modal__buttons">
-      <Button :variant="'secondary'" :iconBefore="arrowLeft">Previous page</Button
-      ><Button :variant="'secondary'" :iconAfter="arrowRight">Next page</Button>
+      <Button
+        :variant="'secondary'"
+        :iconBefore="arrowLeft"
+        @click="(e) => emit('clickPreviousPage', e)"
+        >Previous page</Button
+      ><Button
+        :variant="'secondary'"
+        :iconAfter="arrowRight"
+        @click="(e) => emit('clickNextPage', e)"
+        >Next page</Button
+      >
     </div>
   </dialog>
 </template>

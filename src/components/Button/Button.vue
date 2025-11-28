@@ -74,7 +74,7 @@ const linkComponent = computed(() => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--gap-xs);
   width: fit-content;
   text-transform: uppercase;
   font-weight: bold;

@@ -180,7 +180,7 @@ function moveRight(page: BookPage, index: number) {
   border: 2px dashed var(--color-background);
   border-radius: var(--border-radius);
   padding: var(--padding-xs);
-  min-height: 14rem;
+  min-height: calc(14 * 16px);
   width: 100%;
   /* Updated through media queries */
   flex-direction: column;

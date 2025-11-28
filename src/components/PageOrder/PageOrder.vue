@@ -50,8 +50,8 @@ async function copyContent() {
 .page-order__notification {
   display: none;
   position: absolute;
-  top: -0.25rem;
-  right: 0.9rem;
+  top: calc(-0.25 * 16px);
+  right: calc(0.9 * 16px);
   color: var(--color-accent);
 }
 .page-order__label {
