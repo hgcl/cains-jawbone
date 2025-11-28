@@ -66,13 +66,13 @@
   --line-height-tight: 1.2;
   --line-height-loose: 1.6;
 
-  --font-size-body-l: calc(1.2 * 16px);
-  --font-size-body-m: 16px;
-  --font-size-body-s: calc(0.8 * 16px);
-  --font-size-heading-xl: calc(6 * 16px);
-  --font-size-heading-l: calc(4 * 16px);
-  --font-size-heading-m: calc(3 * 16px);
-  --font-size-heading-s: calc(1.5 * 16px);
+  --font-size-body-l: calc(1.2 * 1em);
+  --font-size-body-m: 1em;
+  --font-size-body-s: calc(0.8 * 1em);
+  --font-size-heading-xl: calc(6 * 1rem);
+  --font-size-heading-l: calc(4 * 1rem);
+  --font-size-heading-m: calc(3 * 1rem);
+  --font-size-heading-s: calc(1.5 * 1em);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -108,7 +108,7 @@ body {
     background-color 0.5s;
   line-height: var(--line-height-loose);
   font-family: var(--font-family-body);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
