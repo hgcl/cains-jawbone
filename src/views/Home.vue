@@ -23,7 +23,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: var(--gap-l);
-  padding: var(--padding-m);
+  padding: var(--padding-l) var(--padding-m);
   font-size: var(--font-size-body-l);
   color: var(--color-on-accent);
   background-color: var(--color-accent);
