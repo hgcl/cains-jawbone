@@ -5,6 +5,12 @@ import Card from '../../components/Card/Card.vue'
 import PageOrder from '../../components/PageOrder/PageOrder.vue'
 import PageModal from '../PageModal/PageModal.vue'
 import type { BookPage } from '../../types'
+import {
+  useDragDrop,
+  useMovePage,
+  useNavigateBetweenPages,
+  useSendToList,
+} from './PageArrays.utils'
 
 // Initial lists of items
 const list1 = ref<BookPage[]>(bookJson.filter((i) => i.list === 1))
@@ -23,99 +29,30 @@ const sortedList2 = computed(() => [...list2.value].sort((a, b) => a.order - b.o
 // Final order (as a string)
 const orderString = computed(() => sortedList2.value.map((el) => el.id).join(', '))
 
-// Drag start
-function onDragStart(item: BookPage) {
-  draggingItem.value = item
-}
+// Drag and drop feature within list 2
+const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
+  list1,
+  list2,
+  draggedOverIndex,
+  draggingItem,
+)
 
-// List 2 drag over
-function onDragOverList2(index: number) {
-  draggedOverIndex.value = index
-}
-
-// Drop into list 2
-function onDropList2() {
-  if (!draggingItem.value) return
-
-  // Remove from original list (it will be added to list 2 later)
-  if (draggingItem.value.list === 1) {
-    list1.value = list1.value.filter((i) => i.id !== draggingItem.value!.id)
-  } else {
-    list2.value = list2.value.filter((i) => i.id !== draggingItem.value!.id)
-  }
-
-  // Insert into list 2 at `draggedOverIndex`
-  const insertIndex = draggedOverIndex.value ?? list2.value.length
-  draggingItem.value.list = 2
-  list2.value.splice(insertIndex, 0, { ...draggingItem.value })
-
-  // Reorder list 2
-  list2.value.forEach((item, i) => (item.order = i))
-
-  // Reset temp values
-  draggingItem.value = null
-  draggedOverIndex.value = null
-}
-
-// From "sorted" list to "unsorted" list
-function sendToSort(id: number) {
-  // Find page inside list 2
-  const page = list1.value.find((i) => i.id === id)
-  if (!page) return
-
-  // Remove from list 1
-  list1.value = list1.value.filter((i) => i.id !== id)
-
-  // Move to list 2
-  page.list = 2
-  page.order = 0
-  list2.value.unshift(page)
-
-  // Fix order indexes for list 2
-  list2.value.forEach((item, index) => (item.order = index))
-}
-function sendToUnsorted(id: number) {
-  // Find page inside list 2
-  const page = list2.value.find((i) => i.id === id)
-  if (!page) return
-
-  // Remove from list 2
-  list2.value = list2.value.filter((i) => i.id !== id)
-
-  // Fix order indexes for list 2
-  list2.value.forEach((item, index) => (item.order = index))
-
-  // Move to list 1
-  page.list = 1
-  page.order = 0
-  list1.value.unshift(page)
-}
+// Send pages from "sorted" to "unsorted" list (or back)
+const { sendToSort, sendToUnsorted } = useSendToList(list1, list2)
 
 // Move item up-down sorted list
-function moveLeft(page: BookPage, index: number) {
-  if (index <= 0) return
+const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
 
-  draggingItem.value = page
-  draggedOverIndex.value = index - 1
-
-  onDropList2()
-}
-// Move item up-down sorted list
-function moveRight(page: BookPage, index: number) {
-  if (index >= list2.value.length - 1) return
-
-  draggingItem.value = page
-  draggedOverIndex.value = index + 1
-
-  onDropList2()
-}
-
-// The dialog component exposes `.open()` through a template ref
+/**
+ * PAGE MODAL related
+ */
 const modalPage = ref<BookPage | null>(null)
 const modalIndex = ref<number>(0)
 const modalList = ref<BookPage[]>([])
+// The dialog component exposes `.open()` through a template ref
 const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
+// Opens page dialog on click
 function openDialog(initialPage: BookPage, initialIndex: number, list: BookPage[]) {
   modalPage.value = initialPage
   modalIndex.value = initialIndex
@@ -124,32 +61,16 @@ function openDialog(initialPage: BookPage, initialIndex: number, list: BookPage[
 }
 
 // Navigate between pages
-function toPreviousPage(index: number, list: BookPage[]) {
-  if (index > 0) {
-    modalPage.value = list[index - 1] as BookPage
-    modalIndex.value--
-  }
-}
-function toNextPage(index: number, list: BookPage[]) {
-  if (index < list.length - 1) {
-    modalPage.value = list[index + 1] as BookPage
-    modalIndex.value++
-  }
-}
+const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex)
 </script>
 
 <template>
   <!-- LIST 2: SORTED -->
-  <section
-    class="dropzone__list-two"
-    @dragover.prevent
-    @dragenter.prevent
-    @drop.prevent="onDropList2"
-  >
+  <section class="page-array__two" @dragover.prevent @dragenter.prevent @drop.prevent="onDropList2">
     <h2>Sorted</h2>
     <p>Reorder the pages of the book by dragging them, or using the arrows.</p>
     <PageOrder :orderString="orderString" />
-    <div class="dropzone__card-list">
+    <div class="page-array__card-list">
       <div
         v-for="(item, index) in sortedList2"
         :key="item.id"
@@ -170,10 +91,10 @@ function toNextPage(index: number, list: BookPage[]) {
   </section>
 
   <!-- LIST 1: UNSORTED -->
-  <section class="dropzone__list-one">
+  <section class="page-array__one">
     <h2>Unsorted</h2>
     <p>Start ordering the pages by dragging them to the sorted section above.</p>
-    <div class="dropzone__card-list">
+    <div class="page-array__card-list">
       <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
         <Card
           :page="item"
@@ -194,8 +115,8 @@ function toNextPage(index: number, list: BookPage[]) {
 </template>
 
 <style scoped>
-.dropzone__list-one,
-.dropzone__list-two {
+.page-array__one,
+.page-array__two {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -205,7 +126,7 @@ function toNextPage(index: number, list: BookPage[]) {
   /* Updated through media queries */
   padding: var(--padding-s);
 }
-.dropzone__card-list {
+.page-array__card-list {
   display: flex;
   justify-content: center;
   gap: var(--gap-m);
@@ -218,19 +139,19 @@ function toNextPage(index: number, list: BookPage[]) {
   flex-direction: column;
 }
 
-.dropzone__list-one p,
-.dropzone__list-two p {
+.page-array__one p,
+.page-array__two p {
   color: var(--color-foreground);
 }
 
 /* MEDIA QUERIES */
 @media (width > 568px) {
-  .dropzone__list-one,
-  .dropzone__list-two {
+  .page-array__one,
+  .page-array__two {
     padding: var(--padding-m);
     gap: var(--gap-l);
   }
-  .dropzone__card-list {
+  .page-array__card-list {
     flex-direction: row;
     flex-wrap: wrap;
   }
