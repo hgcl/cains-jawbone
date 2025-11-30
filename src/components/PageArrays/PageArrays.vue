@@ -9,6 +9,7 @@ import {
   useDragDrop,
   useMovePage,
   useNavigateBetweenPages,
+  useOpenDialog,
   useSendToList,
 } from './PageArrays.utils'
 
@@ -53,12 +54,7 @@ const modalList = ref<BookPage[]>([])
 const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
 // Opens page dialog on click
-function openDialog(initialPage: BookPage, initialIndex: number, list: BookPage[]) {
-  modalPage.value = initialPage
-  modalIndex.value = initialIndex
-  modalList.value = list
-  dialogRef.value?.open()
-}
+const openDialog = useOpenDialog(modalPage, modalIndex, modalList, dialogRef)
 
 // Navigate between pages
 const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex)

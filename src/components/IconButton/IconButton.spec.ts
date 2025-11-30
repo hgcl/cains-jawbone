@@ -6,6 +6,9 @@ import IconButton from './IconButton.vue'
 describe('IconButton', () => {
   it('renders label properly', async () => {
     const wrapper = mount(IconButton, {
+      props: {
+        icon: 'icon-path-exists',
+      },
       slots: {
         default: 'some content',
       },
@@ -26,7 +29,11 @@ describe('IconButton', () => {
   })
 
   it('button component emits action to parent', () => {
-    const wrapper = mount(IconButton)
+    const wrapper = mount(IconButton, {
+      props: {
+        icon: 'icon-path-exists',
+      },
+    })
 
     wrapper.find('button').trigger('click')
 
