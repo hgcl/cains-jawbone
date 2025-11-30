@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import DropZones from '../components/DropZones/DropZones.vue'
+import PageArrays from '../components/PageArrays/PageArrays.vue'
 </script>
 
 <template>
   <main>
     <h1>Cain's Jawbone</h1>
-    <DropZones />
+    <PageArrays />
   </main>
 </template>
 
