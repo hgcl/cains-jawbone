@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import PageModal from '../PageModal/PageModal.vue'
 import Button from '../Button/Button.vue'
 import IconButton from '../IconButton/IconButton.vue'
 import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
@@ -8,48 +6,36 @@ import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
 import chevronsUp from '../../assets/chevrons-up-feathericons.svg'
 import chevronsDown from '../../assets/chevrons-down-feathericons.svg'
 import type { BookPage } from '../../types'
-import { truncateText, useGoPage, useOpenDialog } from './Card.utils'
+import { truncateText } from './Card.utils'
 
-const { pageIndex, pageList } = defineProps<{
-  pageIndex: number
-  pageList: BookPage[]
+const { page } = defineProps<{
+  page: BookPage
 }>()
 const emit = defineEmits<{
   (e: 'clickSendToSort', event: MouseEvent): void
   (e: 'clickSendToUnsorted', event: MouseEvent): void
   (e: 'clickMoveLeft', event: MouseEvent): void
   (e: 'clickMoveRight', event: MouseEvent): void
+  (e: 'clickOpenDialog', event: MouseEvent): void
 }>()
-
-// Selected page from `pageList`
-const currentIndex = ref(pageIndex)
-const currentPage = computed(() => pageList[currentIndex.value])
-
-// Functions called in `PageModal` component to display previous or next page
-const { toPreviousPage, toNextPage } = useGoPage(currentIndex, pageList)
-
-// The dialog component exposes `.open()` through a template ref
-const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
-// Function that opens a page dialog
-const openDialog = useOpenDialog(dialogRef)
 </script>
 
 <template>
   <article class="card">
-    <h3 class="card__page" v-if="currentPage">Page {{ currentPage.id }}</h3>
+    <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
     <div class="card__preview-arrows-wrapper">
       <p class="card__preview">
-        <span v-html="truncateText(currentPage?.content ?? '', 'end')"></span> [...]
-        <span v-html="truncateText(currentPage?.content ?? '', 'start')"></span>
+        <span v-html="truncateText(page.content, 'end')"></span> [...]
+        <span v-html="truncateText(page.content, 'start')"></span>
       </p>
-      <div v-if="currentPage?.list === 2" class="card__arrows_desktop">
+      <div v-if="page.list === 2" class="card__arrows_desktop">
         <IconButton :icon="chevronsLeft" @click="(e) => emit('clickMoveLeft', e)"
           >Move left</IconButton
         ><IconButton :icon="chevronsRight" @click="(e) => emit('clickMoveRight', e)"
           >Move right</IconButton
         >
       </div>
-      <div v-if="currentPage?.list === 2" class="card__arrows_mobile">
+      <div v-if="page.list === 2" class="card__arrows_mobile">
         <IconButton :icon="chevronsUp" @click="(e) => emit('clickMoveLeft', e)">Move up</IconButton
         ><IconButton :icon="chevronsDown" @click="(e) => emit('clickMoveRight', e)"
           >Move down</IconButton
@@ -57,30 +43,23 @@ const openDialog = useOpenDialog(dialogRef)
       </div>
     </div>
     <div class="card__buttons">
-      <Button @click="openDialog"
-        >View<span class="visually-hidden"> page {{ currentPage?.id }}</span></Button
+      <Button @click="(e) => emit('clickOpenDialog', e)"
+        >View<span class="visually-hidden"> page {{ page.id }}</span></Button
       >
       <Button
         class="card__button_sort"
-        v-if="currentPage?.list === 1"
+        v-if="page.list === 1"
         @click="(e) => emit('clickSendToSort', e)"
         >Sort<span aria-hidden="true"> &uarr;</span></Button
       >
       <Button
         class="card__button_remove"
-        v-if="currentPage?.list === 2"
+        v-if="page.list === 2"
         @click="(e) => emit('clickSendToUnsorted', e)"
         >Remove<span aria-hidden="true"> &darr;</span></Button
       >
     </div>
   </article>
-
-  <PageModal
-    ref="dialogRef"
-    :page="currentPage"
-    @clickNextPage="toNextPage"
-    @clickPreviousPage="toPreviousPage"
-  />
 </template>
 
 <style scoped>

@@ -6,7 +6,7 @@ import arrowLeft from '../../assets/arrow-left-feathericons.svg'
 import arrowRight from '../../assets/arrow-right-feathericons.svg'
 
 defineProps<{
-  page: BookPage | undefined
+  page: BookPage | null
 }>()
 const emit = defineEmits<{
   (e: 'clickNextPage', event: MouseEvent): void
