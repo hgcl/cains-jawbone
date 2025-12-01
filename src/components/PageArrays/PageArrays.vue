@@ -11,7 +11,6 @@ import {
   useNavigateBetweenPages,
   useOpenDialog,
   useSendToList,
-  switchTab,
   useSelectTab,
 } from './PageArrays.utils'
 
