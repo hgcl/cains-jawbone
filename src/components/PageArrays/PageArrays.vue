@@ -11,6 +11,7 @@ import {
   useNavigateBetweenPages,
   useOpenDialog,
   useSendToList,
+  useSelectTab,
 } from './PageArrays.utils'
 
 // Initial lists of items
@@ -39,7 +40,7 @@ const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
 )
 
 // Send pages from "sorted" to "unsorted" list (or back)
-const { sendToSort, sendToUnsorted } = useSendToList(list1, list2)
+const toggleSorted = useSendToList(list1, list2)
 
 // Move item up-down sorted list
 const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
@@ -58,48 +59,78 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, dialogRef)
 
 // Navigate between pages
 const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex)
+
+/**
+ * TABS
+ */
+const selectedIndex = ref(0)
+const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }]
+
+const { selectTab, switchTab } = useSelectTab(selectedIndex)
 </script>
 
 <template>
-  <!-- LIST 2: SORTED -->
-  <section class="page-array__two" @dragover.prevent @dragenter.prevent @drop.prevent="onDropList2">
-    <h2>Sorted</h2>
-    <p>Reorder the pages of the book by dragging them, or using the arrows.</p>
-    <PageOrder :orderString="orderString" />
-    <div class="page-array__card-list">
-      <div
-        v-for="(item, index) in sortedList2"
-        :key="item.id"
-        class="card"
-        draggable="true"
-        @dragstart="onDragStart(item)"
-        @dragover.prevent="onDragOverList2(index)"
-      >
-        <Card
-          :page="item"
-          @clickOpenDialog="openDialog(item, index, sortedList2)"
-          @clickSendToUnsorted="sendToUnsorted(item.id)"
-          @clickMoveLeft="moveLeft(item, index)"
-          @clickMoveRight="moveRight(item, index)"
-        />
+  <div>
+    <ul role="tablist">
+      <li role="presentation" v-for="(tab, index) in tabs" :key="tab.title">
+        <button
+          role="tab"
+          :id="`tab${index + 1}`"
+          :tabindex="selectedIndex === index ? 0 : -1"
+          :aria-selected="selectedIndex === index ? true : false"
+          @keydown="switchTab($event, index)"
+          @click="selectTab(index)"
+        >
+          {{ tab.title }}
+        </button>
+      </li>
+    </ul>
+    <!-- LIST 1: UNSORTED -->
+    <section id="page-array__1" role="tabpanel" aria-labelledby="tab1" v-if="selectedIndex === 0">
+      <p>Start ordering the pages by moving them to the "Sorted pages" tab.</p>
+      <div class="page-array__card-list">
+        <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
+          <Card
+            :page="item"
+            @clickOpenDialog="openDialog(item, index, sortedList1)"
+            @toggleSorted="toggleSorted(item, $event)"
+          />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- LIST 1: UNSORTED -->
-  <section class="page-array__one">
-    <h2>Unsorted</h2>
-    <p>Start ordering the pages by dragging them to the sorted section above.</p>
-    <div class="page-array__card-list">
-      <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
-        <Card
-          :page="item"
-          @clickOpenDialog="openDialog(item, index, sortedList1)"
-          @clickSendToSort="sendToSort(item.id)"
-        />
+    <!-- LIST 2: SORTED -->
+    <section
+      id="page-array__2"
+      role="tabpanel"
+      aria-labelledby="tab2"
+      v-if="selectedIndex === 1"
+      @dragover.prevent
+      @dragenter.prevent
+      @drop.prevent="onDropList2"
+    >
+      <p>Reorder the pages of the book by dragging them, or using the arrows.</p>
+      <PageOrder :orderString="orderString" />
+      <div class="page-array__card-list">
+        <div
+          v-for="(item, index) in sortedList2"
+          :key="item.id"
+          class="card"
+          draggable="true"
+          @dragstart="onDragStart(item)"
+          @dragover.prevent="onDragOverList2(index)"
+        >
+          <Card
+            :page="item"
+            @clickOpenDialog="openDialog(item, index, sortedList2)"
+            @toggleSorted="toggleSorted(item, $event)"
+            @clickMoveLeft="moveLeft(item, index)"
+            @clickMoveRight="moveRight(item, index)"
+          />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- COMMON DIALOG -->
   <PageModal
@@ -111,16 +142,17 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 </template>
 
 <style scoped>
-.page-array__one,
-.page-array__two {
+#page-array__1,
+#page-array__2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--gap-m);
+  gap: var(--gap-l);
   background: var(--color-background-mute);
+  border: 1px solid var(--color-accent-subtle);
   border-radius: var(--border-radius);
   /* Updated through media queries */
-  padding: var(--padding-s);
+  padding: var(--padding-m) var(--padding-s);
 }
 .page-array__card-list {
   display: flex;
@@ -135,17 +167,49 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
   flex-direction: column;
 }
 
-.page-array__one p,
-.page-array__two p {
+#page-array__1 p,
+#page-array__2 p {
   color: var(--color-foreground);
+}
+
+/* Tabs */
+[role='tablist'] {
+  /* Reset styles */
+  list-style-type: none;
+  padding: 0;
+  /* Custom styles */
+  display: flex;
+}
+[role='tablist'] li button {
+  /* Reset styles */
+  font-family: var(--font-family-body);
+  text-decoration: none;
+  color: var(--color-accent);
+  /* Custom styles */
+  cursor: pointer;
+  display: block;
+  padding: var(--padding-s);
+  background-color: var(--color-background-mute);
+  border: 1px solid var(--color-background-mute);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  text-transform: uppercase;
+  font-size: var(--font-size-body-s);
+  font-weight: bold;
+  position: static;
+}
+[role='tablist'] [aria-selected='true'] {
+  border-color: var(--color-accent-subtle) var(--color-accent-subtle) var(--color-background-mute)
+    var(--color-accent-subtle);
+  /* Necessary to hide the top border of the panel */
+  position: relative;
+  top: 2px;
 }
 
 /* MEDIA QUERIES */
 @media (width > 568px) {
-  .page-array__one,
-  .page-array__two {
-    padding: var(--padding-m);
-    gap: var(--gap-l);
+  #page-array__1,
+  #page-array__2 {
+    padding: var(--padding-l) var(--padding-m);
   }
   .page-array__card-list {
     flex-direction: row;

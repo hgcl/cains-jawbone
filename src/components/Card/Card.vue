@@ -12,8 +12,7 @@ const { page } = defineProps<{
   page: BookPage
 }>()
 const emit = defineEmits<{
-  (e: 'clickSendToSort', event: MouseEvent): void
-  (e: 'clickSendToUnsorted', event: MouseEvent): void
+  (e: 'toggleSorted', value: boolean): void
   (e: 'clickMoveLeft', event: MouseEvent): void
   (e: 'clickMoveRight', event: MouseEvent): void
   (e: 'clickOpenDialog', event: MouseEvent): void
@@ -46,18 +45,15 @@ const emit = defineEmits<{
       <Button @click="(e) => emit('clickOpenDialog', e)"
         >View<span class="visually-hidden"> page {{ page.id }}</span></Button
       >
-      <Button
-        class="card__button_sort"
-        v-if="page.list === 1"
-        @click="(e) => emit('clickSendToSort', e)"
-        >Sort<span aria-hidden="true"> &uarr;</span></Button
-      >
-      <Button
-        class="card__button_remove"
-        v-if="page.list === 2"
-        @click="(e) => emit('clickSendToUnsorted', e)"
-        >Remove<span aria-hidden="true"> &darr;</span></Button
-      >
+      <div class="card__checkbox">
+        <input
+          type="checkbox"
+          :id="`sorted${page.id}`"
+          :name="`sorted${page.id}`"
+          :checked="page.list === 2"
+          @change="emit('toggleSorted', ($event.target as HTMLInputElement).checked)"
+        /><label :for="`sorted${page.id}`">Sorted</label>
+      </div>
     </div>
   </article>
 </template>
@@ -108,11 +104,27 @@ const emit = defineEmits<{
   margin-right: calc(-1 * var(--padding-s));
 }
 
-/* View and sort/remove buttons */
+/* View and sort/view buttons */
 .card__buttons {
   display: flex;
   gap: var(--gap-m);
   justify-content: center;
+}
+.card__checkbox {
+  /* Reset styles */
+  /* Custom styles -- similar to <Button> */
+  display: flex;
+  gap: var(--gap-xs);
+  border: 1px solid var(--color-accent-subtle);
+  border-radius: var(--border-radius);
+  padding: var(--padding-xs);
+}
+.card__checkbox,
+.card__checkbox > * {
+  cursor: pointer;
+  font-size: var(--font-size-body-s);
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 /* INTERACTIONS */

@@ -53,7 +53,7 @@ defineExpose({ open })
 <style scoped>
 .page-modal {
   /* Reset dialog styles */
-  border: none;
+  border: 1px solid var(--color-accent-subtle);
   /* Custom styles */
   background-color: var(--color-background);
   color: var(--color-foreground);
