@@ -11,6 +11,8 @@ import {
   useNavigateBetweenPages,
   useOpenDialog,
   useSendToList,
+  switchTab,
+  useSelectTab,
 } from './PageArrays.utils'
 
 // Initial lists of items
@@ -62,40 +64,10 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 /**
  * TABS
  */
-
 const selectedIndex = ref(0)
 const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }]
 
-function selectTab(index: number) {
-  selectedIndex.value = index
-
-  // Move focus to the newly selected tab
-  const tabEl = document.getElementById(`tab${index + 1}`)
-  tabEl?.focus()
-
-  // Scroll to the correct panel
-  const newPanel = 'page-array__' + (index + 1)
-  window?.document?.getElementById(newPanel)?.scrollIntoView()
-}
-
-function switchTab(event: KeyboardEvent, index: number) {
-  console.log('index', index)
-
-  let direction = event.key
-
-  if (direction === 'ArrowDown') {
-    event.preventDefault()
-    selectTab(index)
-  } else if (direction === 'ArrowLeft') {
-    event.preventDefault()
-    if (index === 0) return
-    selectTab(index - 1)
-  } else if (direction === 'ArrowRight') {
-    event.preventDefault()
-    if (index === 1) return
-    selectTab(index + 1)
-  }
-}
+const selectTab = useSelectTab(selectedIndex)
 </script>
 
 <template>
@@ -107,7 +79,7 @@ function switchTab(event: KeyboardEvent, index: number) {
           :id="`tab${index + 1}`"
           :tabindex="selectedIndex === index ? 0 : -1"
           :aria-selected="selectedIndex === index ? true : false"
-          @keydown="switchTab($event, index)"
+          @keydown="switchTab($event, index, selectTab)"
           @click="selectTab(index)"
         >
           {{ tab.title }}
