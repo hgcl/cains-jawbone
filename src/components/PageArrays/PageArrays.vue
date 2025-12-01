@@ -41,7 +41,7 @@ const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
 )
 
 // Send pages from "sorted" to "unsorted" list (or back)
-const { sendToSort, sendToUnsorted } = useSendToList(list1, list2)
+const toggleSorted = useSendToList(list1, list2)
 
 // Move item up-down sorted list
 const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
@@ -94,7 +94,7 @@ const selectTab = useSelectTab(selectedIndex)
           <Card
             :page="item"
             @clickOpenDialog="openDialog(item, index, sortedList1)"
-            @clickSendToSort="sendToSort(item.id)"
+            @toggleSorted="toggleSorted(item, $event)"
           />
         </div>
       </div>
@@ -124,7 +124,7 @@ const selectTab = useSelectTab(selectedIndex)
           <Card
             :page="item"
             @clickOpenDialog="openDialog(item, index, sortedList2)"
-            @clickSendToUnsorted="sendToUnsorted(item.id)"
+            @toggleSorted="toggleSorted(item, $event)"
             @clickMoveLeft="moveLeft(item, index)"
             @clickMoveRight="moveRight(item, index)"
           />

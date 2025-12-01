@@ -55,7 +55,9 @@ export function useDragDrop(
 }
 
 export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
-  // Send page from unsorted list to sorted list (1 -> 2)
+  /**
+   * Send page from unsorted list to sorted list (1 -> 2)
+   */
   function sendToSort(id: number) {
     // Find page inside list 2
     const page = list1.value.find((i) => i.id === id)
@@ -73,7 +75,9 @@ export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
     list2.value.forEach((item, index) => (item.order = index))
   }
 
-  // Send page from sorted list to unsorted list (2 -> 1)
+  /**
+   * Send page from sorted list to unsorted list (2 -> 1)
+   */
   function sendToUnsorted(id: number) {
     // Find page inside list 2
     const page = list2.value.find((i) => i.id === id)
@@ -91,7 +95,18 @@ export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
     list1.value.unshift(page)
   }
 
-  return { sendToSort, sendToUnsorted }
+  /**
+   * Toggle "sorted" checkbox
+   */
+  function toggleSorted(page: BookPage, checked: boolean) {
+    if (checked) {
+      sendToSort(page.id)
+    } else {
+      sendToUnsorted(page.id)
+    }
+  }
+
+  return toggleSorted
 }
 
 export function useMovePage(
