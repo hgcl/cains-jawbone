@@ -177,22 +177,23 @@ export function useSelectTab(selectedIndex: Ref<number>) {
     const newPanel = 'page-array__' + (index + 1)
     window?.document?.getElementById(newPanel)?.scrollIntoView()
   }
-  return selectTab
-}
 
-export function switchTab(event: KeyboardEvent, index: number, selectTab: (index: number) => void) {
-  let direction = event.key
+  function switchTab(event: KeyboardEvent, index: number) {
+    let direction = event.key
 
-  if (direction === 'ArrowDown') {
-    event.preventDefault()
-    selectTab(index)
-  } else if (direction === 'ArrowLeft') {
-    event.preventDefault()
-    if (index === 0) return
-    selectTab(index - 1)
-  } else if (direction === 'ArrowRight') {
-    event.preventDefault()
-    if (index === 1) return
-    selectTab(index + 1)
+    if (direction === 'ArrowDown') {
+      event.preventDefault()
+      selectTab(index)
+    } else if (direction === 'ArrowLeft') {
+      event.preventDefault()
+      if (index === 0) return
+      selectTab(index - 1)
+    } else if (direction === 'ArrowRight') {
+      event.preventDefault()
+      if (index === 1) return
+      selectTab(index + 1)
+    }
   }
+
+  return { selectTab, switchTab }
 }

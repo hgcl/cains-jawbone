@@ -67,7 +67,7 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 const selectedIndex = ref(0)
 const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }]
 
-const selectTab = useSelectTab(selectedIndex)
+const { selectTab, switchTab } = useSelectTab(selectedIndex)
 </script>
 
 <template>
@@ -79,7 +79,7 @@ const selectTab = useSelectTab(selectedIndex)
           :id="`tab${index + 1}`"
           :tabindex="selectedIndex === index ? 0 : -1"
           :aria-selected="selectedIndex === index ? true : false"
-          @keydown="switchTab($event, index, selectTab)"
+          @keydown="switchTab($event, index)"
           @click="selectTab(index)"
         >
           {{ tab.title }}
