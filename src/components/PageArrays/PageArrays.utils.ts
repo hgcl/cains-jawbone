@@ -8,7 +8,6 @@ import PageModal from '../PageModal/PageModal.vue'
  */
 
 export function useDragDrop(
-  list1: Ref<BookPage[]>,
   list2: Ref<BookPage[]>,
   draggedOverIndex: Ref<number | null>,
   draggingItem: Ref<BookPage | null>,
@@ -28,11 +27,7 @@ export function useDragDrop(
     if (!draggingItem.value) return
 
     // Remove from original list (it will be added to list 2 later)
-    if (draggingItem.value.list === 1) {
-      list1.value = list1.value.filter((i) => i.id !== draggingItem.value!.id)
-    } else {
-      list2.value = list2.value.filter((i) => i.id !== draggingItem.value!.id)
-    }
+    list2.value = filterPageFromList(list2.value, draggingItem.value!.id)
 
     // Insert into list 2 at `draggedOverIndex`
     const insertIndex = draggedOverIndex.value ?? list2.value.length
@@ -40,7 +35,7 @@ export function useDragDrop(
     list2.value.splice(insertIndex, 0, { ...draggingItem.value })
 
     // Reorder list 2
-    list2.value.forEach((item, i) => (item.order = i))
+    reorderList(list2.value)
 
     // Reset temp values
     draggingItem.value = null
@@ -60,19 +55,19 @@ export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
    */
   function sendToSort(id: number) {
     // Find page inside list 2
-    const page = list1.value.find((i) => i.id === id)
+    const page = findPageInList(list1.value, id)
     if (!page) return
 
     // Remove from list 1
-    list1.value = list1.value.filter((i) => i.id !== id)
+    list1.value = filterPageFromList(list1.value, id)
 
     // Move to list 2
     page.list = 2
     page.order = 0
     list2.value.unshift(page)
 
-    // Fix order indexes for list 2
-    list2.value.forEach((item, index) => (item.order = index))
+    // Reorder list 2
+    reorderList(list2.value)
   }
 
   /**
@@ -80,14 +75,14 @@ export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
    */
   function sendToUnsorted(id: number) {
     // Find page inside list 2
-    const page = list2.value.find((i) => i.id === id)
+    const page = findPageInList(list2.value, id)
     if (!page) return
 
     // Remove from list 2
-    list2.value = list2.value.filter((i) => i.id !== id)
+    list2.value = filterPageFromList(list2.value, id)
 
-    // Fix order indexes for list 2
-    list2.value.forEach((item, index) => (item.order = index))
+    // Reorder list 2
+    reorderList(list2.value)
 
     // Move to list 1
     page.list = 1
@@ -196,4 +191,20 @@ export function useSelectTab(selectedIndex: Ref<number>) {
   }
 
   return { selectTab, switchTab }
+}
+
+/**
+ * Helpers
+ */
+
+function reorderList(list: BookPage[]) {
+  list.forEach((item, index) => (item.order = index))
+}
+
+function filterPageFromList(list: BookPage[], pageId: number) {
+  return list.filter((item) => item.id !== pageId)
+}
+
+function findPageInList(list: BookPage[], pageId: number) {
+  return list.find((item) => item.id === pageId)
 }
