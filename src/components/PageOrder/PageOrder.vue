@@ -33,8 +33,18 @@ async function copyContent() {
   }
 }
 
-// TODO limit character input
-// https://stackoverflow.com/questions/16434174/only-allow-certain-characters-to-be-entered-in-html-textinput
+// TODO: for now, duplicates are still possible
+function checkAllowedCharacters(event: KeyboardEvent) {
+  const key: any = event.key
+
+  // Character is valid (number, comma, space)
+  if (key === ' ' || key === ',' || !isNaN(Number(key))) {
+    return
+  }
+
+  // Prevent invalid keys
+  event.preventDefault()
+}
 </script>
 
 <template>
@@ -42,7 +52,12 @@ async function copyContent() {
     <div class="page-order__notification">Copied!</div>
     <label class="page-order__label">Pages order</label>
     <div class="page-order__input_wrapper">
-      <input class="page-order__input" v-model="inputModel" type="text" />
+      <input
+        class="page-order__input"
+        v-model="inputModel"
+        type="text"
+        @keydown="checkAllowedCharacters($event)"
+      />
       <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg"
         >Copy</Button
       >
