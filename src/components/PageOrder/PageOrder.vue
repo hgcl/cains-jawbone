@@ -1,17 +1,28 @@
 <script setup lang="ts">
 import Button from '../../components/Button/Button.vue'
 import copySvg from '../../assets/copy-feathericons.svg'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
-const props = defineProps<{
+const { orderString } = defineProps<{
   orderString: string
 }>()
+const emit = defineEmits<{
+  (e: 'updateOrderString', value: string): void
+}>()
 
-const pageOrder = computed(() => props.orderString)
+// Writable computed for v-model
+const inputModel = computed({
+  // when the input is first displayed (or when parent updates `orderString`)
+  get: () => orderString,
+  // when the user types in the input
+  set: (value: string) => {
+    emit('updateOrderString', value)
+  },
+})
 
 async function copyContent() {
   try {
-    await navigator.clipboard.writeText(pageOrder.value)
+    await navigator.clipboard.writeText(inputModel.value)
 
     // Show and hide "Copied!" notification
     const notificationEl = document.querySelector('.page-order__notification')
@@ -21,6 +32,9 @@ async function copyContent() {
     console.error('Failed to copy: ', err)
   }
 }
+
+// TODO limit character input
+// https://stackoverflow.com/questions/16434174/only-allow-certain-characters-to-be-entered-in-html-textinput
 </script>
 
 <template>
@@ -28,7 +42,7 @@ async function copyContent() {
     <div class="page-order__notification">Copied!</div>
     <label class="page-order__label">Pages order</label>
     <div class="page-order__input_wrapper">
-      <input class="page-order__input" :value="pageOrder" readonly />
+      <input class="page-order__input" v-model="inputModel" type="text" />
       <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg"
         >Copy</Button
       >

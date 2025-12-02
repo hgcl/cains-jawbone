@@ -104,6 +104,9 @@ export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
   return toggleSorted
 }
 
+/**
+ * MOVE PAGE LEFT-RIGHT
+ */
 export function useMovePage(
   list2: Ref<BookPage[]>,
   draggedOverIndex: Ref<number | null>,
@@ -146,6 +149,9 @@ export function useNavigateBetweenPages(modalPage: Ref<BookPage | null>, modalIn
   return { toPreviousPage, toNextPage }
 }
 
+/**
+ * OPENING PAGE MODAL
+ */
 export function useOpenDialog(
   modalPage: Ref<BookPage | null>,
   modalIndex: Ref<number>,
@@ -160,6 +166,9 @@ export function useOpenDialog(
   }
 }
 
+/**
+ * TABS
+ */
 export function useSelectTab(selectedIndex: Ref<number>) {
   function selectTab(index: number) {
     selectedIndex.value = index
@@ -191,6 +200,41 @@ export function useSelectTab(selectedIndex: Ref<number>) {
   }
 
   return { selectTab, switchTab }
+}
+
+/**
+ * INPUT CONTROL
+ */
+export function useHandleOrderString(
+  list1: Ref<BookPage[]>,
+  list2: Ref<BookPage[]>,
+  bookJson: BookPage[],
+) {
+  function handleOrderString(string: string) {
+    const array = string.split(',')
+    let newList2: BookPage[] = []
+
+    array.forEach((el, index) => {
+      // Find equivalent page in `bookJson`
+      const pageNumber = Number(el)
+      const pageObject = bookJson.find(({ id }) => id === pageNumber)
+
+      // Add `list: 2` prop to object, and adjust order position
+      if (!pageObject) return
+      pageObject.list = 2
+      pageObject.order = index
+
+      newList2.push(pageObject)
+
+      // Remove object from list 1
+      list1.value = filterPageFromList(list1.value, pageObject.id)
+    })
+
+    // Replace `list2` with `newList2`
+    list2.value = newList2
+  }
+
+  return { handleOrderString }
 }
 
 /**
