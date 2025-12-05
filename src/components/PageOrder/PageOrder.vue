@@ -14,8 +14,8 @@ const emit = defineEmits<{
 }>()
 
 const localInput = ref<string>(orderString)
-const copyRef = ref(null)
-const warningRef = ref(null)
+const copyRef = ref<InstanceType<typeof ShowBox> | null>(null)
+const warningRef = ref<InstanceType<typeof ShowBox> | null>(null)
 const warningMessage = ref<string>()
 
 const warningIcon = computed(() => ({
@@ -42,21 +42,26 @@ function reviewOrderString() {
   if (!isValid) {
     warningMessage.value =
       'Remove the invalid characters to apply the new order. Only numbers, commas, and spaces are allowed.'
-    warningRef.value.show()
+    warningRef.value?.show()
     return
   }
 
-  let numberArray = localInput.value.split(',').map(Number)
+  let numberArray = localInput.value
+    .split(',')
+    .map(Number)
+    // When there are 2 consecutive commas, a `0` is added to the array
+    .filter((item) => item != 0)
 
   // 2. Check if there are duplicates
   const duplicates = numberArray.filter((item, index) => numberArray.indexOf(item) !== index)
   if (duplicates.length > 0) {
     warningMessage.value = 'Remove the duplicates to apply the new order.'
-    warningRef.value.show()
+    warningRef.value?.show()
     return
   }
 
   // If all is valid, emit safely
+  warningRef.value?.hide()
   emit('updateOrderString', numberArray)
 }
 
