@@ -117,7 +117,10 @@ const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
       @dragenter.prevent
       @drop.prevent="onDropList2"
     >
-      <p>Reorder the pages of the book by dragging them, or using the arrows.</p>
+      <p>
+        Reorder the pages of the book by dragging them, using the arrows, or editing the field
+        below.
+      </p>
       <PageOrder :orderString="orderString" @updateOrderString="handleOrderString" />
       <div class="page-array__card-list">
         <div
