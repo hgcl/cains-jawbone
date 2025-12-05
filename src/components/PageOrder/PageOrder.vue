@@ -1,38 +1,97 @@
 <script setup lang="ts">
 import Button from '../../components/Button/Button.vue'
+import ShowBox from '../../components/ShowBox/ShowBox.vue'
 import copySvg from '../../assets/copy-feathericons.svg'
-import { computed } from 'vue'
+import alertSvg from '../../assets/alert-triangle-feathericons.svg'
+import { useCopyContent } from './PageOrder.utils'
+import { computed, ref, watch } from 'vue'
 
-const props = defineProps<{
+const { orderString } = defineProps<{
   orderString: string
 }>()
+const emit = defineEmits<{
+  (e: 'updateOrderString', value: number[]): void
+}>()
 
-const pageOrder = computed(() => props.orderString)
+const localInput = ref<string>(orderString)
+const copyRef = ref<InstanceType<typeof ShowBox> | null>(null)
+const warningRef = ref<InstanceType<typeof ShowBox> | null>(null)
+const warningMessage = ref<string>()
 
-async function copyContent() {
-  try {
-    await navigator.clipboard.writeText(pageOrder.value)
+const warningIcon = computed(() => ({
+  mask: `url("${alertSvg}") no-repeat center`,
+}))
 
-    // Show and hide "Copied!" notification
-    const notificationEl = document.querySelector('.page-order__notification')
-    notificationEl?.setAttribute('style', 'display: inline;')
-    setTimeout(() => notificationEl?.setAttribute('style', 'display: none;'), 2000)
-  } catch (err) {
-    console.error('Failed to copy: ', err)
+watch(
+  () => orderString,
+  (val) => {
+    if (val !== localInput.value) {
+      localInput.value = val
+    }
+  },
+)
+
+function reviewOrderString() {
+  // 1. Check if string only contains valid characters
+
+  // REGEX MEMO:
+  // ^ and $ => match the entire string
+  // [0-9,\s] => allows digits, commas, and spaces
+  // * => pattern can be repeated
+  const isValid = /^[0-9,\s]*$/.test(localInput.value)
+  if (!isValid) {
+    warningMessage.value =
+      'Remove the invalid characters to apply the new page order. Only numbers, commas, and spaces are allowed.'
+    warningRef.value?.show()
+    return
   }
+
+  // 2. Transform into array of numbers (= pages)
+  let numberArray = localInput.value
+    .split(',')
+    .map(Number)
+    // When there are 2 consecutive commas, a `0` is added to the array
+    .filter((item) => item !== 0)
+
+  // 3. Check if there are duplicates
+  const duplicates = numberArray.filter((item, index) => numberArray.indexOf(item) !== index)
+  if (duplicates.length > 0) {
+    warningMessage.value = `Remove the following duplicates to apply the new page order: ${duplicates.join(', ')}`
+    warningRef.value?.show()
+    return
+  }
+
+  // 4. Check if there are invalid numbers
+  const invalidNumbers = numberArray.filter((item) => item > 100 || item < 1)
+  if (invalidNumbers.length > 0) {
+    warningMessage.value = `Remove these invalid page numbers: ${invalidNumbers.join(', ')}`
+    warningRef.value?.show()
+    return
+  }
+
+  // 5. If all is valid, emit safely
+  warningRef.value?.hide()
+  emit('updateOrderString', numberArray)
 }
+
+const { copyContent } = useCopyContent(localInput, copyRef)
 </script>
 
 <template>
   <div class="page-order">
-    <div class="page-order__notification">Copied!</div>
-    <label class="page-order__label">Pages order</label>
+    <ShowBox ref="copyRef" class="page-order__copied">Copied!</ShowBox>
+    <label class="page-order__label">Page order</label>
     <div class="page-order__input_wrapper">
-      <input class="page-order__input" :value="pageOrder" readonly />
+      <input class="page-order__input" v-model="localInput" type="text" />
+      <Button @click="reviewOrderString">Apply</Button>
       <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg"
         >Copy</Button
       >
     </div>
+    <ShowBox ref="warningRef" class="page-order__warning"
+      ><div :style="warningIcon"></div>
+      {{ warningMessage }}</ShowBox
+    >
   </div>
 </template>
 
@@ -44,15 +103,31 @@ async function copyContent() {
   width: 100%;
   max-width: 560px;
   color: var(--color-foreground);
-  /* Necessary for .page-order__notification positioning */
+  /* Necessary for .page-order__copied positioning */
   position: relative;
 }
-.page-order__notification {
-  display: none;
+.page-order__copied {
   position: absolute;
   top: calc(-0.25 * 16px);
-  right: calc(0.9 * 16px);
+  right: calc(0.5 * 16px);
   color: var(--color-accent);
+}
+.page-order__warning {
+  display: flex;
+  gap: var(--gap-s);
+  padding: var(--padding-xs);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-foreground-danger);
+  color: var(--color-foreground-danger);
+  background: var(--color-background-danger);
+  font-size: var(--font-size-body-s);
+  font-weight: bold;
+}
+.page-order__warning > div {
+  background-color: var(--color-foreground-danger);
+  width: 24px;
+  height: 24px;
+  transform: scale(80%);
 }
 .page-order__label {
   text-transform: uppercase;

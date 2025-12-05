@@ -26,10 +26,10 @@ const emit = defineEmits<{
 
 // Format CSS vars
 const iconBeforeStyles = computed(() => ({
-  mask: iconBefore ? `url("${iconBefore}") no-repeat center` : '',
+  maskImage: iconBefore ? `url("${iconBefore}")` : '',
 }))
 const iconAfterStyles = computed(() => ({
-  mask: iconAfter ? `url("${iconAfter}") no-repeat center` : '',
+  maskImage: iconAfter ? `url("${iconAfter}")` : '',
 }))
 const invertedClass = computed(() => (inverted ? 'button__inverted' : ''))
 
@@ -95,9 +95,11 @@ const linkComponent = computed(() => {
 
 .button__icon {
   background-color: var(--color-accent);
-  width: 24px;
-  height: 24px;
-  transform: scale(80%);
+  width: 1.3em;
+  height: 1.3em;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
 
 /* INTERACTIONS */

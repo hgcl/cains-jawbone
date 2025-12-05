@@ -59,6 +59,9 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
+#page-array__2 .card {
+  cursor: grab;
+}
 .card {
   display: flex;
   flex-direction: column;
@@ -67,7 +70,6 @@ const emit = defineEmits<{
   border: var(--border);
   border-radius: var(--border-radius);
   background-color: var(--color-background);
-  cursor: grab;
   /* Updated through media queries */
   width: 100%;
   padding: var(--padding-s) var(--padding-m);

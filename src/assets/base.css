@@ -32,6 +32,9 @@
   --color-background: var(--token-yellow);
   --color-background-mute: var(--token-yellow-mute);
 
+  --color-background-danger: rgb(255, 219, 219);
+  --color-foreground-danger: rgb(163, 35, 35);
+
   --color-accent: var(--token-blue);
   --color-on-accent: var(--token-yellow);
   --color-accent-subtle: rgba(var(--token-blue-no-opacity), 0.4);

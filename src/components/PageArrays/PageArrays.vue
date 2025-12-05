@@ -12,12 +12,16 @@ import {
   useOpenDialog,
   useSendToList,
   useSelectTab,
+  useHandleOrderString,
 } from './PageArrays.utils'
 
 // Initial lists of items
 const list1 = ref<BookPage[]>(bookJson.filter((i) => i.list === 1))
 const list2 = ref<BookPage[]>(bookJson.filter((i) => i.list === 2))
 
+/**
+ * DRAG AND DROP (IN LIST 2)
+ */
 // Item being dragged
 const draggingItem = ref<BookPage | null>(null)
 // Index of the item being dragged over
@@ -33,7 +37,6 @@ const orderString = computed(() => sortedList2.value.map((el) => el.id).join(', 
 
 // Drag and drop feature within list 2
 const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
-  list1,
   list2,
   draggedOverIndex,
   draggingItem,
@@ -46,7 +49,7 @@ const toggleSorted = useSendToList(list1, list2)
 const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
 
 /**
- * PAGE MODAL related
+ * PAGE MODAL
  */
 const modalPage = ref<BookPage | null>(null)
 const modalIndex = ref<number>(0)
@@ -67,6 +70,11 @@ const selectedIndex = ref(0)
 const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }]
 
 const { selectTab, switchTab } = useSelectTab(selectedIndex)
+
+/**
+ * INPUT CONTROL
+ */
+const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
 </script>
 
 <template>
@@ -109,8 +117,11 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex)
       @dragenter.prevent
       @drop.prevent="onDropList2"
     >
-      <p>Reorder the pages of the book by dragging them, or using the arrows.</p>
-      <PageOrder :orderString="orderString" />
+      <p>
+        Reorder the pages of the book by dragging them, using the arrows, or editing the field
+        below.
+      </p>
+      <PageOrder :orderString="orderString" @updateOrderString="handleOrderString" />
       <div class="page-array__card-list">
         <div
           v-for="(item, index) in sortedList2"
