@@ -41,26 +41,35 @@ function reviewOrderString() {
   const isValid = /^[0-9,\s]*$/.test(localInput.value)
   if (!isValid) {
     warningMessage.value =
-      'Remove the invalid characters to apply the new order. Only numbers, commas, and spaces are allowed.'
+      'Remove the invalid characters to apply the new page order. Only numbers, commas, and spaces are allowed.'
     warningRef.value?.show()
     return
   }
 
+  // 2. Transform into array of numbers (= pages)
   let numberArray = localInput.value
     .split(',')
     .map(Number)
     // When there are 2 consecutive commas, a `0` is added to the array
-    .filter((item) => item != 0)
+    .filter((item) => item !== 0)
 
-  // 2. Check if there are duplicates
+  // 3. Check if there are duplicates
   const duplicates = numberArray.filter((item, index) => numberArray.indexOf(item) !== index)
   if (duplicates.length > 0) {
-    warningMessage.value = 'Remove the duplicates to apply the new order.'
+    warningMessage.value = `Remove the following duplicates to apply the new page order: ${duplicates.join(',')}`
     warningRef.value?.show()
     return
   }
 
-  // If all is valid, emit safely
+  // 4. Check if there are invalid numbers
+  const invalidNumbers = numberArray.filter((item) => item > 100 || item < 1)
+  if (invalidNumbers.length > 0) {
+    warningMessage.value = `Remove these invalid page numbers: ${invalidNumbers.join(',')}`
+    warningRef.value?.show()
+    return
+  }
+
+  // 5. If all is valid, emit safely
   warningRef.value?.hide()
   emit('updateOrderString', numberArray)
 }
@@ -71,7 +80,7 @@ const { copyContent } = useCopyContent(localInput, copyRef)
 <template>
   <div class="page-order">
     <ShowBox ref="copyRef" class="page-order__copied">Copied!</ShowBox>
-    <label class="page-order__label">Pages order</label>
+    <label class="page-order__label">Page order</label>
     <div class="page-order__input_wrapper">
       <input class="page-order__input" v-model="localInput" type="text" />
       <Button @click="reviewOrderString">Apply</Button>
