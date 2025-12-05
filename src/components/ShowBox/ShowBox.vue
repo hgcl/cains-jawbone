@@ -6,12 +6,11 @@ defineSlots<{
 }>()
 
 const visible = ref(false)
-let timer = null
 
 function showAndHide() {
   visible.value = true
 
-  timer = setTimeout(() => {
+  setTimeout(() => {
     visible.value = false
   }, 2000)
 }
@@ -20,7 +19,11 @@ function show() {
   visible.value = true
 }
 
-defineExpose({ show, showAndHide })
+function hide() {
+  visible.value = false
+}
+
+defineExpose({ show, showAndHide, hide })
 </script>
 
 <template>
