@@ -26,15 +26,12 @@ watch(
   () => orderString,
   (val) => {
     if (val !== localInput.value) {
-      console.log('WATCH BEFORE: ', localInput.value)
       localInput.value = val
-      console.log('WATCH AFTER: ', localInput.value)
     }
   },
 )
 
 function reviewOrderString() {
-  console.log(localInput.value)
   // 1. Check if string only contains valid characters
 
   // REGEX MEMO:

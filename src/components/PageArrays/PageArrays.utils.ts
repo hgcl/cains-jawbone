@@ -235,8 +235,6 @@ export function useHandleOrderString(
     // Replace `list2` and `list1` with updated versions
     list1.value = newList1
     list2.value = newList2
-    console.log('NEWLIST1: ', newList1)
-    console.log('NEWLIST2: ', newList2)
   }
 
   return { handleOrderString }
