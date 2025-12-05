@@ -210,19 +210,17 @@ export function useHandleOrderString(
   list2: Ref<BookPage[]>,
   bookJson: BookPage[],
 ) {
-  function handleOrderString(string: string) {
-    const stringArray = string.split(',')
-
+  function handleOrderString(pageArray: number[]) {
     let newList1: BookPage[] = []
     let newList2: BookPage[] = []
 
     bookJson.forEach((el, index) => {
       // const isInList2 = findPageInList(newList2, el.id)
-      const indexInList2 = stringArray.indexOf(el.id.toString())
+      const indexInList2 = pageArray.indexOf(el.id)
       const pageObject = el
 
       if (indexInList2 != -1) {
-        // If exists in `stringArray`, add to list 2
+        // If exists in `pageArray`, add to list 2
         pageObject.list = 2
         pageObject.order = indexInList2
         newList2.push(pageObject)
@@ -237,6 +235,8 @@ export function useHandleOrderString(
     // Replace `list2` and `list1` with updated versions
     list1.value = newList1
     list2.value = newList2
+    console.log('NEWLIST1: ', newList1)
+    console.log('NEWLIST2: ', newList2)
   }
 
   return { handleOrderString }
