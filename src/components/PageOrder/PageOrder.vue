@@ -56,7 +56,7 @@ function reviewOrderString() {
   // 3. Check if there are duplicates
   const duplicates = numberArray.filter((item, index) => numberArray.indexOf(item) !== index)
   if (duplicates.length > 0) {
-    warningMessage.value = `Remove the following duplicates to apply the new page order: ${duplicates.join(',')}`
+    warningMessage.value = `Remove the following duplicates to apply the new page order: ${duplicates.join(', ')}`
     warningRef.value?.show()
     return
   }
@@ -64,7 +64,7 @@ function reviewOrderString() {
   // 4. Check if there are invalid numbers
   const invalidNumbers = numberArray.filter((item) => item > 100 || item < 1)
   if (invalidNumbers.length > 0) {
-    warningMessage.value = `Remove these invalid page numbers: ${invalidNumbers.join(',')}`
+    warningMessage.value = `Remove these invalid page numbers: ${invalidNumbers.join(', ')}`
     warningRef.value?.show()
     return
   }
