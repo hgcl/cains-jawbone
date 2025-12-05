@@ -100,7 +100,7 @@ const { copyContent } = useCopyContent(localInput, copyRef)
 .page-order__copied {
   position: absolute;
   top: calc(-0.25 * 16px);
-  right: calc(0.9 * 16px);
+  right: calc(0.5 * 16px);
   color: var(--color-accent);
 }
 .page-order__warning {
