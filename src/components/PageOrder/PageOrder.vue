@@ -82,7 +82,7 @@ const { copyContent } = useCopyContent(localInput, copyRef)
     <ShowBox ref="copyRef" class="page-order__copied">Copied!</ShowBox>
     <label class="page-order__label">Page order</label>
     <div class="page-order__input_wrapper">
-      <input class="page-order__input" v-model="localInput" type="text" />
+      <input v-model="localInput" type="text" />
       <Button @click="reviewOrderString">Apply</Button>
       <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg"
         >Copy</Button
@@ -141,16 +141,5 @@ const { copyContent } = useCopyContent(localInput, copyRef)
   align-items: center;
   gap: var(--gap-s);
   width: 100%;
-  /* Necessary to set height, so that child input can be 100% height */
-  height: 42px;
-}
-.page-order__input {
-  /* Reset styles */
-  border: none;
-  /* Custom styles */
-  height: 100%;
-  width: 100%;
-  padding: var(--padding-xs);
-  border-radius: var(--border-radius);
 }
 </style>

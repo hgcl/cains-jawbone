@@ -55,9 +55,19 @@ const linkComponent = computed(() => {
     @click="(e: MouseEvent) => emit('click', e)"
     :class="[`button button__${variant} ${invertedClass}`]"
   >
-    <div v-if="iconBefore" :style="iconBeforeStyles" class="button__icon button__icon_before"></div>
+    <div
+      v-if="iconBefore"
+      :style="iconBeforeStyles"
+      class="button__icon button__icon_before"
+      aria-hidden="true"
+    ></div>
     <slot>Label needed</slot>
-    <div v-if="iconAfter" :style="iconAfterStyles" class="button__icon button__icon_after"></div>
+    <div
+      v-if="iconAfter"
+      :style="iconAfterStyles"
+      class="button__icon button__icon_after"
+      aria-hidden="true"
+    ></div>
   </component>
 </template>
 
@@ -79,13 +89,18 @@ const linkComponent = computed(() => {
   text-transform: uppercase;
   font-weight: bold;
   border-radius: var(--border-radius);
-  padding: var(--padding-xs);
   color: var(--color-accent);
   /* Different when inverted */
   background-color: transparent;
 }
 .button__primary {
   border: 1px solid var(--color-accent-subtle);
+  padding: var(--padding-xs);
+}
+.button__secondary,
+.button__secondary {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
 }
 
 .button__inverted {
@@ -107,11 +122,6 @@ const linkComponent = computed(() => {
 .button__primary:focus {
   color: var(--color-on-accent);
   background-color: var(--color-accent);
-}
-.button__secondary:hover,
-.button__secondary:focus {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
 }
 .button__primary:hover > .button__icon,
 .button__primary:focus > .button__icon {

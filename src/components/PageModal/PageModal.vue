@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { BookPage } from '../../types'
+import Modal from '../Modal/Modal.vue'
 import Button from '../Button/Button.vue'
 import arrowLeft from '../../assets/arrow-left-feathericons.svg'
 import arrowRight from '../../assets/arrow-right-feathericons.svg'
@@ -13,27 +14,19 @@ const emit = defineEmits<{
   (e: 'clickPreviousPage', event: MouseEvent): void
 }>()
 
-const dialog = ref<HTMLDialogElement | null>(null)
+const modalRef = ref<InstanceType<typeof Modal> | null>(null)
 
-function open() {
-  dialog.value?.showModal()
-}
-
-function close() {
-  dialog.value?.close()
-}
-
-// Expose methods to parent
-defineExpose({ open })
+// Forward exposed methods from Modal.vue
+defineExpose({
+  open: () => modalRef.value?.open(),
+  close: () => modalRef.value?.close(),
+})
 </script>
 
 <template>
-  <dialog ref="dialog" class="page-modal">
-    <header class="page-modal__header">
-      <h3 v-if="page">Page {{ page.id }}</h3>
-      <Button class="page-modal__header__close-button" @click="close">Close</Button>
-    </header>
-    <p class="page-modal__content" v-if="page" v-html="page.content"></p>
+  <Modal ref="modalRef">
+    <template #heading>Page {{ page?.id }}</template>
+    <p class="page-modal__content" v-html="page?.content"></p>
     <div class="page-modal__buttons">
       <Button
         :variant="'secondary'"
@@ -47,45 +40,18 @@ defineExpose({ open })
         >Next page</Button
       >
     </div>
-  </dialog>
+  </Modal>
 </template>
 
 <style scoped>
-.page-modal {
-  /* Reset dialog styles */
-  border: 1px solid var(--color-accent-subtle);
-  /* Custom styles */
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  margin: auto;
-  border-radius: var(--border-radius);
-  max-width: 600px;
-  padding: var(--padding-m);
-}
-.page-modal::backdrop {
-  background-color: var(--color-backdrop);
-}
-.page-modal__header {
+.page-modal__buttons {
   display: flex;
-  flex-direction: column-reverse;
-  margin-bottom: var(--gap-l);
-}
-.page-modal__header h3 {
-  font-size: var(--font-size-heading-m);
-  color: var(--color-accent);
-  text-align: center;
-}
-.page-modal__header__close-button {
-  align-self: flex-end;
+  justify-content: space-between;
+  gap: var(--gap-m);
 }
 .page-modal__content {
   font-family: var(--font-family-body);
   white-space: pre-line;
   margin-bottom: var(--gap-l);
-}
-.page-modal__buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--gap-m);
 }
 </style>
