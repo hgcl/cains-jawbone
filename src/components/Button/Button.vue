@@ -89,13 +89,13 @@ const linkComponent = computed(() => {
   text-transform: uppercase;
   font-weight: bold;
   border-radius: var(--border-radius);
-  padding: var(--padding-xs);
   color: var(--color-accent);
   /* Different when inverted */
   background-color: transparent;
 }
 .button__primary {
   border: 1px solid var(--color-accent-subtle);
+  padding: var(--padding-xs);
 }
 .button__secondary,
 .button__secondary {
