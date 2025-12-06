@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import bookJson from '../../assets/book.json'
 import Modal from '../Modal/Modal.vue'
 import Button from '../Button/Button.vue'
+import chevronLeftSvg from '../../assets/chevron-left-feathericons.svg'
 import type { BookPage } from '@/types'
 
 /**
@@ -12,9 +13,17 @@ const modalRef = ref<InstanceType<typeof Modal> | null>(null)
 
 // Forward exposed methods from Modal.vue
 defineExpose({
-  open: () => modalRef.value?.open(),
+  open: () => {
+    resetModal()
+    modalRef.value?.open()
+  },
   close: () => modalRef.value?.close(),
 })
+
+function resetModal() {
+  searchVisible.value = true
+  search.value = ''
+}
 
 /**
  * SEARCH FEATURE
@@ -58,6 +67,7 @@ const searchResults = computed<SearchResult[]>(() => {
 const searchVisible = ref<boolean>(true)
 const pageNumber = ref<number | null>(null)
 const pageContent = ref('')
+const pageList = ref<string>('')
 const heading = computed(() => (searchVisible.value ? 'Search' : `Page ${pageNumber.value}`))
 
 function showPage(page: BookPage) {
@@ -66,6 +76,7 @@ function showPage(page: BookPage) {
 
   pageNumber.value = page.id
   pageContent.value = page.content
+  pageList.value = page.list === 1 ? 'Unsorted page' : 'Sorted page'
 }
 
 function backToSearch() {
@@ -76,47 +87,65 @@ function backToSearch() {
 <template>
   <Modal ref="modalRef">
     <template #back
-      ><Button v-if="!searchVisible" @click="backToSearch()">Back to search</Button></template
+      ><Button
+        v-if="!searchVisible"
+        :variant="'secondary'"
+        @click="backToSearch()"
+        :iconBefore="chevronLeftSvg"
+        >Back to search</Button
+      ></template
     >
     <template #heading>{{ heading }}</template>
     <div v-if="searchVisible">
-      <input type="text" v-model="search" placeholder="Search book content" />
-      <ul>
-        <li v-for="result in searchResults" :key="result.page.id">
-          <Button variant="secondary" @click="showPage(result.page)"
+      <input
+        class="search-modal__input"
+        type="text"
+        v-model="search"
+        placeholder="Search the pages"
+      />
+      <p v-if="!searchResults.length">No results</p>
+      <ul class="search-modal__result-list" v-if="searchResults.length">
+        <li class="search-modal__result-item" v-for="result in searchResults" :key="result.page.id">
+          <Button :variant="'secondary'" @click="showPage(result.page)"
             >Page {{ result.page.id }}</Button
           >
-          <p>{{ result.snippet }}</p>
+          <p v-html="result.snippet"></p>
         </li>
       </ul>
     </div>
-    <div v-if="!searchVisible">
-      <p>{{ pageContent }}</p>
-    </div>
+    <div v-if="!searchVisible" class="search-modal__page-list">{{ pageList }}</div>
+    <p v-if="!searchVisible">{{ pageContent }}</p>
   </Modal>
 </template>
 
 <style scoped>
-h3 {
-  color: var(--color-accent);
-  text-align: center;
+.search-modal__input {
   margin-bottom: var(--gap-m);
 }
-ul {
+.search-modal__result-list {
   /* Reset styles */
   list-style: none;
   padding: 0;
   /* Custom styles */
   display: flex;
   flex-direction: column;
-  gap: var(--gap-s);
-  margin-top: var(--gap-m);
+  gap: var(--gap-m);
 }
-li {
+.search-modal__result-item {
   padding-bottom: var(--gap-s);
   border-bottom: 1px solid var(--color-accent-subtle);
 }
-li > p {
-  padding-left: var(--padding-s);
+.search-modal__result-item > p {
+  padding: var(--padding-xs);
+}
+.search-modal__page-list {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: var(--font-size-body-s);
+  font-weight: bold;
+}
+.search-modal__page-list::before,
+.search-modal__page-list::after {
+  content: ' — ';
 }
 </style>

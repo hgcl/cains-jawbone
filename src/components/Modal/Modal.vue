@@ -41,13 +41,15 @@ defineExpose({ open, close })
   max-width: 600px;
   padding: var(--padding-m) var(--padding-m) var(--padding-l) var(--padding-m);
 }
+.modal > *:not(:last-child) {
+  margin-bottom: var(--gap-l);
+}
 .modal::backdrop {
   background-color: var(--color-backdrop);
 }
 .modal__header {
   display: flex;
   flex-direction: column-reverse;
-  margin-bottom: var(--gap-l);
 }
 .modal__header__nav-buttons {
   display: flex;
