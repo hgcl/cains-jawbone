@@ -144,6 +144,17 @@ h3 {
   line-height: var(--line-height-tight);
 }
 
+input[type='text'] {
+  /* Reset styles */
+  border: none;
+  /* Custom styles */
+  width: 100%;
+  height: calc(1rem * 2.5);
+  padding: var(--padding-xs);
+  border: 1px solid var(--color-accent-subtle);
+  border-radius: var(--border-radius);
+}
+
 /** 
   UTILS
  */
