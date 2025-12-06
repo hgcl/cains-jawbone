@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import bookJson from '../../assets/book.json'
 import Modal from '../Modal/Modal.vue'
 import Button from '../Button/Button.vue'
 import chevronLeftSvg from '../../assets/chevron-left-feathericons.svg'
 import type { BookPage } from '@/types'
+import { filterResultsByQuery, useShowPage } from './SearchModal.utils'
 
 /**
  * MODAL RELATED
@@ -40,25 +40,9 @@ const searchResults = computed<SearchResult[]>(() => {
   if (!search.value) return []
 
   const query = search.value.toLowerCase()
+  const filteredResults = filterResultsByQuery(query)
 
-  return bookJson
-    .map((page) => {
-      // Search `query` in `bookJson`, if no result => index === -1
-      const index = page.content.toLowerCase().indexOf(query)
-      if (index === -1) return null
-
-      // Create snippet
-      const snippetLength = 30
-      const start = Math.max(0, index - snippetLength)
-      // `index + query.length` gives the position right after the end of the search term
-      const end = Math.min(page.content.length, index + query.length + snippetLength)
-      let snippet = page.content.slice(start, end)
-      if (start > 0) snippet = '...' + snippet
-      if (end < page.content.length) snippet = snippet + '...'
-
-      return { page, snippet }
-    })
-    .filter((result) => result !== null)
+  return filteredResults
 })
 
 /**
@@ -70,18 +54,7 @@ const pageContent = ref('')
 const pageList = ref<string>('')
 const heading = computed(() => (searchVisible.value ? 'Search' : `Page ${pageNumber.value}`))
 
-function showPage(page: BookPage) {
-  // Hide search (and show page)
-  searchVisible.value = false
-
-  pageNumber.value = page.id
-  pageContent.value = page.content
-  pageList.value = page.list === 1 ? 'Unsorted page' : 'Sorted page'
-}
-
-function backToSearch() {
-  searchVisible.value = true
-}
+const { showPage, backToSearch } = useShowPage(searchVisible, pageNumber, pageContent, pageList)
 </script>
 
 <template>
