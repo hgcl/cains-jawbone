@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from '../components/Button/Button.vue'
 import SearchModal from '../components/SearchModal/SearchModal.vue'
-import PageArrays from '../components/PageArrays/PageArrays.vue'
+import PagesOverview from '../components/PagesOverview/PagesOverview.vue'
 import searchSvg from '../assets/search-feathericons.svg'
 import { ref } from 'vue'
 
@@ -17,7 +17,7 @@ function openSearchModal() {
     <h1>Cain's Jawbone</h1>
     <Button @click="openSearchModal" :iconBefore="searchSvg">Search content</Button>
     <SearchModal ref="dialogRef" />
-    <PageArrays />
+    <PagesOverview />
   </main>
 </template>
 

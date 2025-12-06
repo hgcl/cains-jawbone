@@ -13,7 +13,7 @@ import {
   useOpenDialog,
   useSendToList,
   useHandleOrderString,
-} from './PageArrays.utils'
+} from './PagesOverview.utils'
 
 // Initial lists of items
 const list1 = ref<BookPage[]>(bookJson.filter((i) => i.list === 1))
