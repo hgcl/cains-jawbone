@@ -115,6 +115,11 @@ const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
         </div>
       </div>
     </template>
+
+    <!-- NOTES -->
+    <template #tab3>
+      <div><p>hello world</p></div>
+    </template>
   </Tabs>
 
   <!-- COMMON DIALOG -->

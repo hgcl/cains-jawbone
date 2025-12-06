@@ -6,9 +6,9 @@ import { useSelectTab } from './Tabs.utils'
  * TABS
  */
 const selectedIndex = ref(0)
-const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }]
+const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }, { title: 'Notes' }]
 
-const { selectTab, switchTab } = useSelectTab(selectedIndex)
+const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
 </script>
 
 <template>
@@ -37,6 +37,11 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex)
     <!-- LIST 2: SORTED -->
     <section role="tabpanel" aria-labelledby="tab2" v-if="selectedIndex === 1">
       <slot name="tab2"></slot>
+    </section>
+
+    <!-- NOTES -->
+    <section role="tabpanel" aria-labelledby="tab3" v-if="selectedIndex === 2">
+      <slot name="tab3"></slot>
     </section>
   </div>
 </template>
