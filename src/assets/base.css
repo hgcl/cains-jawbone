@@ -103,6 +103,10 @@
   font-weight: normal;
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   min-height: 100vh;
   color: var(--color-foreground-strong);
@@ -112,7 +116,7 @@ body {
     background-color 0.5s;
   line-height: var(--line-height-loose);
   font-family: var(--font-family-body);
-  font-size: 18px;
+  font-size: var(--font-size-body-m);
   font-weight: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
