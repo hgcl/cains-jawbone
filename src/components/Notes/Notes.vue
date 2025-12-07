@@ -94,13 +94,15 @@ function exportNotes() {
 /* ALL NOTES */
 
 .notes__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: var(--gap-l);
 }
-.notes__expand-buttons > * {
-  display: inline-block;
-}
+
 .notes__add-page {
   display: flex;
+  flex-direction: column;
   gap: var(--gap-s);
   align-items: center;
   margin-bottom: var(--gap-l);
@@ -110,6 +112,10 @@ function exportNotes() {
   font-weight: bold;
   font-size: var(--font-size-body-s);
   color: var(--color-accent);
+}
+
+.notes__expand-buttons > * {
+  display: inline-block;
 }
 
 /* ONE NOTE */

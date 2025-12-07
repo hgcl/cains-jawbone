@@ -177,6 +177,9 @@ textarea {
   border: 1px solid var(--color-accent-subtle);
   border-radius: var(--border-radius);
 }
+select {
+  height: 1.5rem;
+}
 
 /** 
   UTILS
