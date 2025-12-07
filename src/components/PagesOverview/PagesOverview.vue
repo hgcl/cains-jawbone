@@ -5,6 +5,7 @@ import Tabs from '../../components/Tabs/Tabs.vue'
 import Card from '../../components/Card/Card.vue'
 import PageOrder from '../../components/PageOrder/PageOrder.vue'
 import PageModal from '../PageModal/PageModal.vue'
+import Notes from '../Notes/Notes.vue'
 import type { BookPage } from '../../types'
 import {
   useDragDrop,
@@ -118,7 +119,7 @@ const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
 
     <!-- NOTES -->
     <template #tab3>
-      <div><p>hello world</p></div>
+      <Notes />
     </template>
   </Tabs>
 
@@ -138,11 +139,6 @@ const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
   flex-direction: column;
   align-items: center;
   gap: var(--gap-l);
-  background: var(--color-background-mute);
-  border: 1px solid var(--color-accent-subtle);
-  border-radius: var(--border-radius);
-  /* Updated through media queries */
-  padding: var(--padding-m) var(--padding-s);
 }
 .page-array__card-list {
   display: flex;
@@ -164,10 +160,6 @@ const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
 
 /* MEDIA QUERIES */
 @media (width > 568px) {
-  #page-array__1,
-  #page-array__2 {
-    padding: var(--padding-l) var(--padding-m);
-  }
   .page-array__card-list {
     flex-direction: row;
     flex-wrap: wrap;

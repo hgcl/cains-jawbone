@@ -12,7 +12,7 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
 </script>
 
 <template>
-  <div>
+  <div class="tabs__wrapper">
     <!-- TABLIST -->
     <ul role="tablist">
       <li role="presentation" v-for="(tab, index) in tabs" :key="tab.title">
@@ -47,13 +47,19 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
 </template>
 
 <style scoped>
-/* Tabs */
+.tabs__wrapper {
+  width: 100%;
+}
+
+/* TABLIST */
+
 [role='tablist'] {
   /* Reset styles */
   list-style-type: none;
   padding: 0;
   /* Custom styles */
   display: flex;
+  gap: 1px;
 }
 [role='tablist'] li button {
   /* Reset styles */
@@ -63,9 +69,10 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
   /* Custom styles */
   cursor: pointer;
   display: block;
+  height: 100%;
   padding: var(--padding-s);
   background-color: var(--color-background-mute);
-  border: 1px solid var(--color-background-mute);
+  border: 1px solid var(--color-background);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   text-transform: uppercase;
   font-size: var(--font-size-body-s);
@@ -78,5 +85,23 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
   /* Necessary to hide the top border of the panel */
   position: relative;
   top: 2px;
+}
+
+/* TABPANELS */
+
+[role='tabpanel'] {
+  background: var(--color-background-mute);
+  border: 1px solid var(--color-accent-subtle);
+  border-radius: var(--border-radius);
+  /* Updated through media queries */
+  padding: var(--padding-m) var(--padding-s);
+}
+
+/* MEDIA-QUERIES */
+
+@media (width > 568px) {
+  [role='tabpanel'] {
+    padding: var(--padding-l) var(--padding-m);
+  }
 }
 </style>
