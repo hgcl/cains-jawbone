@@ -11,7 +11,10 @@ for (let i = 1; i < 101; i++) {
   allNotes.push(i)
 }
 
+// `currentList` contains the pages that already have notes
 const currentList = ref(initialList)
+const sortedCurrentList = computed(() => currentList.value.sort((a, b) => a.id - b.id))
+// `unusedList` contains the pages that DON'T have notes
 const unusedList = computed(() =>
   allNotes.filter((pageNumber) => !currentList.value.find((item) => item.id === pageNumber)),
 )
@@ -23,11 +26,14 @@ function addNote() {
 
   // Add page note to currentList, and reorder it by `id`
   currentList.value.push({ id: selectedPageNumber.value, note: '' })
-  currentList.value.sort((a, b) => a.id - b.id)
 
   // Reset
-  // TODO: why doesn't the select field reset?
   selectedPageNumber.value = ''
+}
+
+function deleteNote(pageNumber: number) {
+  // Remove page note from currentList, and reorder it by `id`
+  currentList.value = currentList.value.filter((item) => item.id !== pageNumber)
 }
 
 function exportNotes() {
@@ -48,10 +54,12 @@ function exportNotes() {
       </select>
     </div>
   </div>
-  <details class="note" v-for="item in currentList" :key="item.id" open>
+  <details class="note" v-for="item in sortedCurrentList" :key="item.id" open>
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
-      <Button class="note__delete-button" :iconBefore="trashSvg">Delete</Button>
+      <Button class="note__delete-button" :iconBefore="trashSvg" @click="deleteNote(item.id)"
+        >Delete</Button
+      >
     </summary>
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
