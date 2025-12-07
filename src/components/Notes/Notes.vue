@@ -13,7 +13,7 @@ for (let i = 1; i < 101; i++) {
 
 // `currentList` contains the pages that already have notes
 const currentList = ref(initialList)
-const sortedCurrentList = computed(() => currentList.value.sort((a, b) => a.id - b.id))
+const sortedCurrentList = computed(() => [...currentList.value].sort((a, b) => a.id - b.id))
 // `unusedList` contains the pages that DON'T have notes
 const unusedList = computed(() =>
   allNotes.filter((pageNumber) => !currentList.value.find((item) => item.id === pageNumber)),
@@ -41,6 +41,8 @@ async function addNote() {
 
   // Reset
   selectedPageNumber.value = ''
+
+  console.log(currentList.value)
 }
 function deleteNote(pageNumber: number) {
   // Remove page note from currentList, and reorder it by `id`
@@ -70,17 +72,52 @@ function collapseAll() {
  * IMPORT/EXPORT
  */
 function exportNotes() {
-  console.log(currentList.value)
+  // Transform form into JSON
+  const filename = 'cains-jawbone.json'
+  const jsonStr = JSON.stringify(currentList.value)
 
-  // Transform into JSON
-  // const json = JSON.stringify(currentList.value)
+  // Create download link
+  let element = document.createElement('a')
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr))
+  element.setAttribute('download', filename)
+  element.style.display = 'none'
+  document.body.appendChild(element)
+
+  // Click download link
+  element.click()
+
+  // Remove from DOM
+  document.body.removeChild(element)
+}
+function loadFile(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file) return
+
+  const reader = new FileReader()
+
+  reader.onload = (event) => {
+    try {
+      const text = event.target?.result as string
+      const parsedJson = JSON.parse(text)
+
+      currentList.value = parsedJson
+    } catch (err) {
+      console.error('Invalid JSON file', err)
+    }
+  }
+
+  // Read the file:
+  // This starts the asynchronous process of reading the file as a text string. When the file is fully read, the FileReader triggers the `onload` event above.
+  reader.readAsText(file)
 }
 </script>
 
 <template>
   <div class="notes__header">
+    <input type="file" id="fileUpload" accept="application/json" @change="loadFile" />
+    <Button class="notes__export-button" @click="exportNotes">Export notes</Button>
     <div class="notes__add-page">
-      <label for="add-note">Add a note for page</label>
+      <label for="add-note">Add note for</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
         <option value="">Page number</option>
         <option v-for="item in unusedList" :value="item">{{ item }}</option>
@@ -116,6 +153,8 @@ function exportNotes() {
   flex-direction: column;
   align-items: center;
   margin-bottom: var(--gap-l);
+  /* Necessary for positioning the export button */
+  position: relative;
 }
 
 .notes__add-page {
