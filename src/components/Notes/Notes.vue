@@ -159,10 +159,17 @@ function exportNotes() {
 .note:open .note__summary::before {
   mask-image: url('../../assets/chevron-down-feathericons.svg');
 }
+.note:open {
+  border-bottom: none;
+}
 
 .note__summary:hover .note__delete-button,
 .note__summary:focus .note__delete-button {
   /* Show delete button */
   opacity: 1;
+}
+
+.note__textarea:not(:focus) {
+  background-color: var(--color-background-mute);
 }
 </style>
