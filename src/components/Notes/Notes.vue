@@ -79,7 +79,7 @@ function exportNotes() {
     <div class="notes__add-page">
       <label for="add-note">Add a note for page</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
-        <option disabled value="">Page number</option>
+        <option value="">Page number</option>
         <option v-for="item in unusedList" :value="item">{{ item }}</option>
       </select>
     </div>
