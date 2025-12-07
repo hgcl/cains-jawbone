@@ -21,6 +21,9 @@ const unusedList = computed(() =>
 
 const selectedPageNumber = ref<number | ''>('')
 
+/**
+ * ADD/DELETE NOTES
+ */
 function addNote() {
   if (!selectedPageNumber.value) return
 
@@ -30,12 +33,30 @@ function addNote() {
   // Reset
   selectedPageNumber.value = ''
 }
-
 function deleteNote(pageNumber: number) {
   // Remove page note from currentList, and reorder it by `id`
   currentList.value = currentList.value.filter((item) => item.id !== pageNumber)
 }
 
+/**
+ * EXPAND/COLLAPSE
+ */
+function expandAll() {
+  const detailsEls = document.querySelectorAll('details')
+  for (let detail of detailsEls) {
+    detail.open = true
+  }
+}
+function collapseAll() {
+  const detailsEls = document.querySelectorAll('details')
+  for (let detail of detailsEls) {
+    detail.open = false
+  }
+}
+
+/**
+ * IMPORT/EXPORT
+ */
 function exportNotes() {
   console.log(currentList.value)
 
@@ -53,6 +74,10 @@ function exportNotes() {
         <option v-for="item in unusedList" :value="item">{{ item }}</option>
       </select>
     </div>
+    <div class="notes__expand-buttons">
+      <Button :variant="'secondary'" @click="expandAll">Expand all</Button> /
+      <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
+    </div>
   </div>
   <details class="note" v-for="item in sortedCurrentList" :key="item.id" open>
     <summary class="note__summary">
@@ -69,14 +94,16 @@ function exportNotes() {
 /* ALL NOTES */
 
 .notes__header {
-  display: flex;
-  justify-content: space-between;
   margin-bottom: var(--gap-l);
+}
+.notes__expand-buttons > * {
+  display: inline-block;
 }
 .notes__add-page {
   display: flex;
   gap: var(--gap-s);
   align-items: center;
+  margin-bottom: var(--gap-l);
 }
 .notes__add-page label {
   text-transform: uppercase;
