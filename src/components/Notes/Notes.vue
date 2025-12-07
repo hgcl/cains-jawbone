@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
 import type { Note } from '../../types'
+import trashSvg from '../../assets/trash-feathericons.svg'
 
 const { initialList } = defineProps<{ initialList: Note[] }>()
 
@@ -46,17 +47,19 @@ function exportNotes() {
         <option v-for="item in unusedList" :value="item">{{ item }}</option>
       </select>
     </div>
-    <Button @click="exportNotes">Export notes</Button>
   </div>
   <details class="note" v-for="item in currentList" :key="item.id" open>
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
+      <Button class="note__delete-button" :iconBefore="trashSvg">Delete</Button>
     </summary>
-    <textarea v-model="item.note"></textarea>
+    <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
 </template>
 
 <style scoped>
+/* ALL NOTES */
+
 .notes__header {
   display: flex;
   justify-content: space-between;
@@ -74,35 +77,57 @@ function exportNotes() {
   color: var(--color-accent);
 }
 
+/* ONE NOTE */
+
 .note {
   cursor: pointer;
   width: 100%;
-  /* Necessary for positioning `.note__save-button` */
-  position: relative;
+  margin-top: var(--gap-m);
+  border-bottom: 1px solid var(--color-accent-subtle);
 }
 .note__summary {
-  height: 2rem;
-  margin-bottom: var(--padding-xs);
+  /* Reset styles */
+  list-style: none;
+  /* Custom styles */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap-s);
+  margin-bottom: var(--gap-s);
+}
+.note__summary::before {
+  /* Add custom marker */
+  content: '';
+  width: 1.3em;
+  height: 1.3em;
+  mask: url('../../assets/chevron-right-feathericons.svg') no-repeat center/contain;
+  background-color: var(--color-accent);
 }
 .note__title {
+  width: 100%;
   font-size: var(--font-size-body-s);
   font-weight: bold;
   text-transform: uppercase;
 }
-
-textarea {
-  font-family: var(--font-family-body);
-  width: 100%;
-  padding: var(--padding-xs);
+.note__delete-button {
+  /* Button will be made visible on hover/focus */
+  opacity: 0;
+}
+.note__textarea {
+  max-width: 100%;
+  min-width: 100%;
 }
 
 /* INTERACTIONS */
-.note .note__save-button {
-  display: none;
-  position: absolute;
-  right: 0;
+
+/* Update <details> custom marker */
+.note:open .note__summary::before {
+  mask-image: url('../../assets/chevron-down-feathericons.svg');
 }
-.note:open .note__save-button {
-  display: inline;
+
+.note__summary:hover .note__delete-button,
+.note__summary:focus .note__delete-button {
+  /* Show delete button */
+  opacity: 1;
 }
 </style>
