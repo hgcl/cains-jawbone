@@ -12,10 +12,10 @@ const { page } = defineProps<{
   page: BookPage
 }>()
 const emit = defineEmits<{
-  (e: 'toggleSorted', value: boolean): void
-  (e: 'clickMoveLeft', event: MouseEvent): void
-  (e: 'clickMoveRight', event: MouseEvent): void
-  (e: 'clickOpenDialog', event: MouseEvent): void
+  (e: 'toggle:sorted', value: boolean): void
+  (e: 'click:moveleft', event: MouseEvent): void
+  (e: 'click:moveright', event: MouseEvent): void
+  (e: 'open:dialog', event: MouseEvent): void
 }>()
 </script>
 
@@ -28,21 +28,21 @@ const emit = defineEmits<{
         <span v-html="truncateText(page.content, 'start')"></span>
       </p>
       <div v-if="page.list === 2" class="card__arrows_desktop">
-        <IconButton :icon="chevronsLeft" @click="(e) => emit('clickMoveLeft', e)"
+        <IconButton :icon="chevronsLeft" @click="(e) => emit('click:moveleft', e)"
           >Move left</IconButton
-        ><IconButton :icon="chevronsRight" @click="(e) => emit('clickMoveRight', e)"
+        ><IconButton :icon="chevronsRight" @click="(e) => emit('click:moveright', e)"
           >Move right</IconButton
         >
       </div>
       <div v-if="page.list === 2" class="card__arrows_mobile">
-        <IconButton :icon="chevronsUp" @click="(e) => emit('clickMoveLeft', e)">Move up</IconButton
-        ><IconButton :icon="chevronsDown" @click="(e) => emit('clickMoveRight', e)"
+        <IconButton :icon="chevronsUp" @click="(e) => emit('click:moveleft', e)">Move up</IconButton
+        ><IconButton :icon="chevronsDown" @click="(e) => emit('click:moveright', e)"
           >Move down</IconButton
         >
       </div>
     </div>
     <div class="card__buttons">
-      <Button @click="(e) => emit('clickOpenDialog', e)"
+      <Button @click="(e) => emit('open:dialog', e)"
         >View<span class="visually-hidden"> page {{ page.id }}</span></Button
       >
       <div class="card__checkbox">
@@ -51,7 +51,7 @@ const emit = defineEmits<{
           :id="`sorted${page.id}`"
           :name="`sorted${page.id}`"
           :checked="page.list === 2"
-          @change="emit('toggleSorted', ($event.target as HTMLInputElement).checked)"
+          @change="emit('toggle:sorted', ($event.target as HTMLInputElement).checked)"
         /><label :for="`sorted${page.id}`">Sorted</label>
       </div>
     </div>

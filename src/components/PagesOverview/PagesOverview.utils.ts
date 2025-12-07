@@ -169,12 +169,12 @@ export function useOpenDialog(
 /**
  * INPUT CONTROL
  */
-export function useHandleOrderString(
+export function useUpdateOrderString(
   list1: Ref<BookPage[]>,
   list2: Ref<BookPage[]>,
   bookJson: BookPage[],
 ) {
-  function handleOrderString(pageArray: number[]) {
+  function updateOrderString(pageArray: number[]) {
     let newList1: BookPage[] = []
     let newList2: BookPage[] = []
 
@@ -201,7 +201,7 @@ export function useHandleOrderString(
     list2.value = newList2
   }
 
-  return { handleOrderString }
+  return { updateOrderString }
 }
 
 /**

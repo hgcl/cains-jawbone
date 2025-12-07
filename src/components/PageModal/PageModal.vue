@@ -10,8 +10,8 @@ defineProps<{
   page: BookPage | null
 }>()
 const emit = defineEmits<{
-  (e: 'clickNextPage', event: MouseEvent): void
-  (e: 'clickPreviousPage', event: MouseEvent): void
+  (e: 'click:nextpage', event: MouseEvent): void
+  (e: 'click:previouspage', event: MouseEvent): void
 }>()
 
 const modalRef = ref<InstanceType<typeof Modal> | null>(null)
@@ -31,12 +31,12 @@ defineExpose({
       <Button
         :variant="'secondary'"
         :iconBefore="arrowLeft"
-        @click="(e) => emit('clickPreviousPage', e)"
+        @click="(e) => emit('click:previouspage', e)"
         >Previous page</Button
       ><Button
         :variant="'secondary'"
         :iconAfter="arrowRight"
-        @click="(e) => emit('clickNextPage', e)"
+        @click="(e) => emit('click:nextpage', e)"
         >Next page</Button
       >
     </div>

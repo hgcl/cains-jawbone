@@ -10,7 +10,7 @@ const { orderString } = defineProps<{
   orderString: string
 }>()
 const emit = defineEmits<{
-  (e: 'updateOrderString', value: number[]): void
+  (e: 'update:orderstring', value: number[]): void
 }>()
 
 const localInput = ref<string>(orderString)
@@ -71,7 +71,7 @@ function reviewOrderString() {
 
   // 5. If all is valid, emit safely
   warningRef.value?.hide()
-  emit('updateOrderString', numberArray)
+  emit('update:orderstring', numberArray)
 }
 
 const { copyContent } = useCopyContent(localInput, copyRef)

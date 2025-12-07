@@ -13,7 +13,7 @@ import {
   useNavigateBetweenPages,
   useOpenDialog,
   useSendToList,
-  useHandleOrderString,
+  useUpdateOrderString,
 } from './PagesOverview.utils'
 
 // Initial lists of items
@@ -67,7 +67,7 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 /**
  * INPUT CONTROL
  */
-const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
+const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 
 /**
  * NOTES
@@ -89,8 +89,8 @@ function updateContent(content: string) {
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
             <Card
               :page="item"
-              @clickOpenDialog="openDialog(item, index, sortedList1)"
-              @toggleSorted="toggleSorted(item, $event)"
+              @open:dialog="openDialog(item, index, sortedList1)"
+              @toggle:sorted="toggleSorted(item, $event)"
             />
           </div>
         </div>
@@ -104,7 +104,7 @@ function updateContent(content: string) {
           Reorder the pages of the book by dragging them, using the arrows, or editing the field
           below.
         </p>
-        <PageOrder :orderString="orderString" @updateOrderString="handleOrderString" />
+        <PageOrder :orderString="orderString" @update:orderstring="updateOrderString" />
         <div class="page-array__card-list">
           <div
             v-for="(item, index) in sortedList2"
@@ -116,10 +116,10 @@ function updateContent(content: string) {
           >
             <Card
               :page="item"
-              @clickOpenDialog="openDialog(item, index, sortedList2)"
-              @toggleSorted="toggleSorted(item, $event)"
-              @clickMoveLeft="moveLeft(item, index)"
-              @clickMoveRight="moveRight(item, index)"
+              @open:dialog="openDialog(item, index, sortedList2)"
+              @toggle:sorted="toggleSorted(item, $event)"
+              @click:moveleft="moveLeft(item, index)"
+              @click:moveright="moveRight(item, index)"
             />
           </div>
         </div>
@@ -136,8 +136,8 @@ function updateContent(content: string) {
   <PageModal
     ref="dialogRef"
     :page="modalPage"
-    @clickNextPage="toNextPage(modalIndex, modalList)"
-    @clickPreviousPage="toPreviousPage(modalIndex, modalList)"
+    @click:nextpage="toNextPage(modalIndex, modalList)"
+    @click:previouspage="toPreviousPage(modalIndex, modalList)"
   />
 </template>
 
