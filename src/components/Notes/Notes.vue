@@ -45,6 +45,9 @@ async function addNote() {
 function deleteNote(pageNumber: number) {
   // Remove page note from currentList, and reorder it by `id`
   currentList.value = currentList.value.filter((item) => item.id !== pageNumber)
+
+  // Warning message before deletion
+  confirm(`Are you sure you'd like to delete the note for page ${pageNumber}?`)
 }
 
 /**
