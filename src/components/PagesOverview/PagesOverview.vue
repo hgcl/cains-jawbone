@@ -6,7 +6,7 @@ import Card from '../../components/Card/Card.vue'
 import PageOrder from '../../components/PageOrder/PageOrder.vue'
 import PageModal from '../PageModal/PageModal.vue'
 import Notes from '../Notes/Notes.vue'
-import type { BookPage } from '../../types'
+import type { BookPage, Note } from '../../types'
 import {
   useDragDrop,
   useMovePage,
@@ -72,11 +72,8 @@ const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 /**
  * NOTES
  */
-const contentRef = ref('Add your notes here')
-
-function updateContent(content: string) {
-  contentRef.value = content
-}
+const initialList: Note[] = [{ id: 1, note: '' }]
+const contentRef = ref(initialList)
 </script>
 
 <template>
@@ -128,7 +125,7 @@ function updateContent(content: string) {
 
     <!-- NOTES -->
     <template #tab3>
-      <Notes :initialContent="contentRef" @update:content="updateContent($event)" />
+      <Notes :initialList="contentRef" />
     </template>
   </Tabs>
 
