@@ -68,6 +68,15 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
  * INPUT CONTROL
  */
 const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
+
+/**
+ * NOTES
+ */
+const contentRef = ref('Add your notes here')
+
+function updateContent(content: string) {
+  contentRef.value = content
+}
 </script>
 
 <template>
@@ -119,7 +128,7 @@ const { handleOrderString } = useHandleOrderString(list1, list2, bookJson)
 
     <!-- NOTES -->
     <template #tab3>
-      <Notes />
+      <Notes :initialContent="contentRef" @update:content="updateContent($event)" />
     </template>
   </Tabs>
 
