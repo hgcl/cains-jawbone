@@ -71,7 +71,7 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
   display: block;
   height: 100%;
   padding: var(--padding-s);
-  background-color: var(--color-background-mute);
+  background-color: var(--color-background-alt);
   border: 1px solid var(--color-background);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   text-transform: uppercase;
@@ -80,7 +80,7 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
   position: static;
 }
 [role='tablist'] [aria-selected='true'] {
-  border-color: var(--color-accent-subtle) var(--color-accent-subtle) var(--color-background-mute)
+  border-color: var(--color-accent-subtle) var(--color-accent-subtle) var(--color-background-alt)
     var(--color-accent-subtle);
   /* Necessary to hide the top border of the panel */
   position: relative;
@@ -90,7 +90,7 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
 /* TABPANELS */
 
 [role='tabpanel'] {
-  background: var(--color-background-mute);
+  background: var(--color-background-alt);
   border: 1px solid var(--color-accent-subtle);
   border-radius: var(--border-radius);
   /* Updated through media queries */
