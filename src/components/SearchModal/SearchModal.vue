@@ -34,7 +34,7 @@ type SearchResult = {
   snippet: string
 }
 
-const search = defineModel<string>('')
+const search = ref<string>('')
 
 const searchResults = computed<SearchResult[]>(() => {
   if (!search.value) return []
