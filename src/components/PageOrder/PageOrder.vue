@@ -82,7 +82,7 @@ const { copyContent } = useCopyContent(localInput, copyRef)
     <ShowBox ref="copyRef" class="page-order__copied">Copied!</ShowBox>
     <label class="page-order__label">Page order</label>
     <div class="page-order__input_wrapper">
-      <input v-model="localInput" type="text" />
+      <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
       <Button @click="reviewOrderString">Apply</Button>
       <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg"
         >Copy</Button
