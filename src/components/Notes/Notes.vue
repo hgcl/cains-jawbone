@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import Button from '../Button/Button.vue'
 import type { Note } from '../../types'
 import trashSvg from '../../assets/trash-feathericons.svg'
@@ -24,11 +24,20 @@ const selectedPageNumber = ref<number | ''>('')
 /**
  * ADD/DELETE NOTES
  */
-function addNote() {
+async function addNote() {
   if (!selectedPageNumber.value) return
 
   // Add page note to currentList, and reorder it by `id`
   currentList.value.push({ id: selectedPageNumber.value, note: '' })
+
+  // Scroll into view after waiting for the DOM
+  await nextTick()
+  const noteEl = document.getElementById(`note${selectedPageNumber.value}`)
+  const textAreaEl = noteEl?.querySelector('textarea')
+  noteEl?.scrollIntoView({ behavior: 'smooth' })
+
+  // Focus on textarea
+  setTimeout(() => textAreaEl?.focus(), 600)
 
   // Reset
   selectedPageNumber.value = ''
@@ -79,7 +88,13 @@ function exportNotes() {
       <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
     </div>
   </div>
-  <details class="note" v-for="item in sortedCurrentList" :key="item.id" open>
+  <details
+    v-for="item in sortedCurrentList"
+    :id="`note${item.id}`"
+    class="note"
+    :key="item.id"
+    open
+  >
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
       <Button class="note__delete-button" :iconBefore="trashSvg" @click="deleteNote(item.id)"
