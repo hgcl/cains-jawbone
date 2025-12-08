@@ -77,17 +77,14 @@ function exportNotes() {
   const jsonStr = JSON.stringify(currentList.value)
 
   // Create download link
-  let element = document.createElement('a')
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr))
-  element.setAttribute('download', filename)
-  element.style.display = 'none'
-  document.body.appendChild(element)
+  const blob = new Blob([jsonStr], { type: 'application/json' })
+  const urlForDownload = window.URL.createObjectURL(blob)
+  const linkElement = document.createElement('a')
+  linkElement.href = urlForDownload
+  linkElement.download = filename
+  linkElement.click()
 
-  // Click download link
-  element.click()
-
-  // Remove from DOM
-  document.body.removeChild(element)
+  URL.revokeObjectURL(urlForDownload) // Free memory
 }
 function loadFile(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0]
