@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
-import type { Note } from '../../types'
+import type { Note } from '@/types'
 import trashSvg from '../../assets/trash-feathericons.svg'
+import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
 
 const { initialList } = defineProps<{ initialList: Note[] }>()
 
@@ -12,107 +13,29 @@ for (let i = 1; i < 101; i++) {
 }
 
 // `currentList` contains the pages that already have notes
-const currentList = ref(initialList)
+const currentList = ref<Note[]>(initialList)
 const sortedCurrentList = computed(() => [...currentList.value].sort((a, b) => a.id - b.id))
 // `unusedList` contains the pages that DON'T have notes
 const unusedList = computed(() =>
   allNotes.filter((pageNumber) => !currentList.value.find((item) => item.id === pageNumber)),
 )
 
+/**
+ * ADD/DELETE NOTE
+ */
 const selectedPageNumber = ref<number | ''>('')
-
-/**
- * ADD/DELETE NOTES
- */
-async function addNote() {
-  if (!selectedPageNumber.value) return
-
-  // Add page note to currentList, and reorder it by `id`
-  currentList.value.push({ id: selectedPageNumber.value, note: '' })
-
-  // Scroll into view after waiting for the DOM
-  await nextTick()
-  const noteEl = document.getElementById(`note${selectedPageNumber.value}`)
-  const textAreaEl = noteEl?.querySelector('textarea')
-  noteEl?.scrollIntoView({ behavior: 'smooth' })
-
-  // Focus on textarea
-  setTimeout(() => textAreaEl?.focus(), 600)
-
-  // Reset
-  selectedPageNumber.value = ''
-
-  console.log(currentList.value)
-}
-function deleteNote(pageNumber: number) {
-  // Remove page note from currentList, and reorder it by `id`
-  currentList.value = currentList.value.filter((item) => item.id !== pageNumber)
-
-  // Warning message before deletion
-  confirm(`Are you sure you'd like to delete the note for page ${pageNumber}?`)
-}
-
-/**
- * EXPAND/COLLAPSE
- */
-function expandAll() {
-  const detailsEls = document.querySelectorAll('details')
-  for (let detail of detailsEls) {
-    detail.open = true
-  }
-}
-function collapseAll() {
-  const detailsEls = document.querySelectorAll('details')
-  for (let detail of detailsEls) {
-    detail.open = false
-  }
-}
+const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList)
 
 /**
  * IMPORT/EXPORT
  */
-function exportNotes() {
-  // Transform form into JSON
-  const filename = 'cains-jawbone.json'
-  const jsonStr = JSON.stringify(currentList.value)
-
-  // Create download link
-  const blob = new Blob([jsonStr], { type: 'application/json' })
-  const urlForDownload = window.URL.createObjectURL(blob)
-  const linkElement = document.createElement('a')
-  linkElement.href = urlForDownload
-  linkElement.download = filename
-  linkElement.click()
-
-  URL.revokeObjectURL(urlForDownload) // Free memory
-}
-function loadFile(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (!file) return
-
-  const reader = new FileReader()
-
-  reader.onload = (event) => {
-    try {
-      const text = event.target?.result as string
-      const parsedJson = JSON.parse(text)
-
-      currentList.value = parsedJson
-    } catch (err) {
-      console.error('Invalid JSON file', err)
-    }
-  }
-
-  // Read the file:
-  // This starts the asynchronous process of reading the file as a text string. When the file is fully read, the FileReader triggers the `onload` event above.
-  reader.readAsText(file)
-}
+const { exportFile, loadFile } = useExportFile(currentList)
 </script>
 
 <template>
   <div class="notes__header">
     <input type="file" id="fileUpload" accept="application/json" @change="loadFile" />
-    <Button class="notes__export-button" @click="exportNotes">Export notes</Button>
+    <Button class="notes__export-button" @click="exportFile">Export notes</Button>
     <div class="notes__add-page">
       <label for="add-note">Add note for</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
