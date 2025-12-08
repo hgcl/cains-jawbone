@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
+import Dropdown from '../Dropdown/Dropdown.vue'
 import type { Note } from '@/types'
 import trashSvg from '../../assets/trash-feathericons.svg'
 import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
@@ -30,12 +31,17 @@ const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList)
  * IMPORT/EXPORT
  */
 const { exportFile, loadFile } = useExportFile(currentList)
+
+function openImportModal() {}
 </script>
 
 <template>
   <div class="notes__header">
-    <input type="file" id="fileUpload" accept="application/json" @change="loadFile" />
-    <Button class="notes__export-button" @click="exportFile">Export notes</Button>
+    <!-- <input type="file" id="fileUpload" accept="application/json" @change="loadFile" /> -->
+    <Dropdown :label="'Import/export'">
+      <button @click="openImportModal">Import notes</button>
+      <button @click="exportFile">Export notes</button>
+    </Dropdown>
     <div class="notes__add-page">
       <label for="add-note">Add note for</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
