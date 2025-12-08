@@ -84,6 +84,9 @@ export function useExportFile(currentList: Ref<Note[]>) {
         const parsedJson = JSON.parse(text)
 
         currentList.value = parsedJson
+
+        // Success message
+        // TODO
       } catch (err) {
         console.error('Invalid JSON file', err)
       }

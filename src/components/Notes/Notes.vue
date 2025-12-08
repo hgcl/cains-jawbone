@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
 import Dropdown from '../Dropdown/Dropdown.vue'
+import ImportModal from '../ImportModal/ImportModal.vue'
 import type { Note } from '@/types'
 import trashSvg from '../../assets/trash-feathericons.svg'
 import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
@@ -30,14 +31,18 @@ const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList)
 /**
  * IMPORT/EXPORT
  */
+
+const dialogRef = ref<InstanceType<typeof ImportModal> | null>(null)
+
 const { exportFile, loadFile } = useExportFile(currentList)
 
-function openImportModal() {}
+function openImportModal() {
+  dialogRef.value?.open()
+}
 </script>
 
 <template>
   <div class="notes__header">
-    <!-- <input type="file" id="fileUpload" accept="application/json" @change="loadFile" /> -->
     <Dropdown :label="'Import/export'">
       <button @click="openImportModal">Import notes</button>
       <button @click="exportFile">Export notes</button>
@@ -69,6 +74,8 @@ function openImportModal() {}
     </summary>
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
+
+  <ImportModal ref="dialogRef" @change:loadfile="loadFile" />
 </template>
 
 <style scoped>
