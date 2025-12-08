@@ -37,6 +37,8 @@
 
   --color-background-danger: rgb(255, 219, 219);
   --color-foreground-danger: rgb(163, 35, 35);
+  --color-background-success: rgb(211, 253, 207);
+  --color-foreground-success: rgb(16, 101, 49);
 
   --color-accent: var(--token-blue);
   --color-on-accent: var(--token-yellow);
