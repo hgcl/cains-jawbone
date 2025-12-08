@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Button from '../../components/Button/Button.vue'
-import ShowBox from '../../components/ShowBox/ShowBox.vue'
+import Button from '../Button/Button.vue'
+import ShowElement from '../ShowElement/ShowElement.vue'
 import copySvg from '../../assets/copy-feathericons.svg'
 import alertSvg from '../../assets/alert-triangle-feathericons.svg'
 import { useCopyContent } from './PageOrder.utils'
@@ -14,8 +14,8 @@ const emit = defineEmits<{
 }>()
 
 const localInput = ref<string>(orderString)
-const copyRef = ref<InstanceType<typeof ShowBox> | null>(null)
-const warningRef = ref<InstanceType<typeof ShowBox> | null>(null)
+const copyRef = ref<InstanceType<typeof ShowElement> | null>(null)
+const warningRef = ref<InstanceType<typeof ShowElement> | null>(null)
 const warningMessage = ref<string>()
 
 const warningIcon = computed(() => ({
@@ -79,7 +79,7 @@ const { copyContent } = useCopyContent(localInput, copyRef)
 
 <template>
   <div class="page-order">
-    <ShowBox ref="copyRef" class="page-order__copied">Copied!</ShowBox>
+    <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
     <label class="page-order__label">Page order</label>
     <div class="page-order__input_wrapper">
       <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
@@ -88,9 +88,9 @@ const { copyContent } = useCopyContent(localInput, copyRef)
         >Copy</Button
       >
     </div>
-    <ShowBox ref="warningRef" class="page-order__warning"
+    <ShowElement ref="warningRef" class="page-order__warning"
       ><div :style="warningIcon"></div>
-      {{ warningMessage }}</ShowBox
+      {{ warningMessage }}</ShowElement
     >
   </div>
 </template>
