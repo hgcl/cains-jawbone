@@ -1,5 +1,6 @@
 import type { Note } from '@/types'
 import { nextTick, type Ref } from 'vue'
+import ImportModal from '../ImportModal/ImportModal.vue'
 
 /**
  * EXPAND/COLLAPSE NOTES
@@ -55,7 +56,10 @@ export function useAddNote(selectedPageNumber: Ref<number | ''>, currentList: Re
 /**
  * IMPORT/EXPORT
  */
-export function useExportFile(currentList: Ref<Note[]>) {
+export function useExportFile(
+  currentList: Ref<Note[]>,
+  dialogRef: Ref<InstanceType<typeof ImportModal> | null>,
+) {
   function exportFile() {
     // Transform form into JSON
     const filename = 'cains-jawbone.json'
@@ -74,7 +78,10 @@ export function useExportFile(currentList: Ref<Note[]>) {
 
   function loadFile(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0]
-    if (!file) return
+    if (!file) {
+      dialogRef.value!.status = 'danger'
+      return
+    }
 
     const reader = new FileReader()
 
@@ -86,8 +93,9 @@ export function useExportFile(currentList: Ref<Note[]>) {
         currentList.value = parsedJson
 
         // Success message
-        // TODO
+        dialogRef.value!.status = 'success'
       } catch (err) {
+        dialogRef.value!.status = 'danger'
         console.error('Invalid JSON file', err)
       }
     }

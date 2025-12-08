@@ -34,7 +34,7 @@ const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList)
 
 const dialogRef = ref<InstanceType<typeof ImportModal> | null>(null)
 
-const { exportFile, loadFile } = useExportFile(currentList)
+const { exportFile, loadFile } = useExportFile(currentList, dialogRef)
 
 function openImportModal() {
   dialogRef.value?.open()
