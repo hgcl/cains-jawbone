@@ -152,7 +152,6 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .menu {
-  display: inline-block;
   position: relative;
 }
 .menu__button {
