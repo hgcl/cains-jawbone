@@ -37,6 +37,6 @@ main > div {
 }
 h1 {
   font-size: var(--font-size-heading-xl);
-  color: var(--color-background-mute);
+  color: var(--color-background-alt);
 }
 </style>

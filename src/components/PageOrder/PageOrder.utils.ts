@@ -1,12 +1,12 @@
 import type { Ref } from 'vue'
-import ShowBox from '../ShowBox/ShowBox.vue'
+import ShowElement from '../ShowElement/ShowElement.vue'
 
 /**
  * COPY ORDER TO CLIPBOARD
  */
 export function useCopyContent(
   localInput: Ref<string>,
-  copyRef: Ref<InstanceType<typeof ShowBox> | null>,
+  copyRef: Ref<InstanceType<typeof ShowElement> | null>,
 ) {
   async function copyContent() {
     try {

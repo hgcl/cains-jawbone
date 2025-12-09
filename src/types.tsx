@@ -4,3 +4,5 @@ export type BookPage = {
   content: string
   list: number
 }
+
+export type Note = { id: number; note: string }

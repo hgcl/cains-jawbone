@@ -1,16 +1,27 @@
 @import url('https://fonts.googleapis.com/css?family=Grenze+Gotisch');
 
 /**
+ * RESET
+*/
+
+/* Some older browsers don’t support hidden */
+[hidden] {
+  display: none;
+}
+
+/**
  * TOKENS
 */
 :root {
   /* COLOR TOKENS */
   --token-white: hsl(43, 100%, 99%);
+  --token-white-mute: hsl(210, 29%, 93%);
 
   --token-yellow: hsl(60, 45%, 98%);
   --token-yellow-mute: hsl(29, 42%, 88%);
 
   --token-black: rgb(49, 43, 70);
+  --token-black-mute: rgb(57, 58, 96);
 
   --token-blue: rgb(0, 3, 199);
   --token-blue-no-opacity: 0, 3, 199;
@@ -30,10 +41,13 @@
 :root {
   /* COLOR */
   --color-background: var(--token-yellow);
-  --color-background-mute: var(--token-yellow-mute);
+  --color-background-alt: var(--token-yellow-mute);
+  --color-background-mute: var(--token-white-mute);
 
   --color-background-danger: rgb(255, 219, 219);
   --color-foreground-danger: rgb(163, 35, 35);
+  --color-background-success: rgb(211, 253, 207);
+  --color-foreground-success: rgb(16, 101, 49);
 
   --color-accent: var(--token-blue);
   --color-on-accent: var(--token-yellow);
@@ -82,7 +96,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--token-black);
-    --color-background-mute: var(--token-blue-mute);
+    --color-background-alt: var(--token-blue-mute);
+    --color-background-mute: var(--token-black-mute);
 
     --color-accent: var(--token-blue-dark);
     --color-on-accent: var(--token-black);
@@ -151,12 +166,30 @@ h3 {
 input[type='text'] {
   /* Reset styles */
   border: none;
+  color: var(--color-foreground);
+  background-color: var(--color-background);
   /* Custom styles */
   width: 100%;
-  height: calc(1rem * 2.5);
+  height: 2rem;
   padding: var(--padding-xs);
   border: 1px solid var(--color-accent-subtle);
   border-radius: var(--border-radius);
+}
+textarea {
+  /* Reset styles */
+  border: none;
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+  /* Custom styles */
+  width: 100%;
+  height: 5rem;
+  min-height: 2rem;
+  padding: var(--padding-xs);
+  border: 1px solid var(--color-accent-subtle);
+  border-radius: var(--border-radius);
+}
+select {
+  height: 2rem;
 }
 
 /** 

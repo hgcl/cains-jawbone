@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
 
-import { useNavigateBetweenPages, useOpenDialog } from './PageArrays.utils'
+import { useNavigateBetweenPages, useOpenDialog } from './PagesOverview.utils'
 import type { BookPage } from '@/types'
 import { ref } from 'vue'
 
-describe('PageArrays -- utils', () => {
+describe('PagesOverview -- utils', () => {
   const mockPage: BookPage = {
     id: 1,
     order: 1,
