@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
+
+const { fitContent } = defineProps<{ fitContent?: boolean }>()
+
+const fixedWidthClass = computed(() => (!fitContent ? 'modal__fixed-width' : ''))
 
 const dialog = ref<HTMLDialogElement | null>(null)
 
@@ -16,7 +20,7 @@ defineExpose({ open, close })
 </script>
 
 <template>
-  <dialog ref="dialog" class="modal">
+  <dialog ref="dialog" class="modal" :class="fixedWidthClass">
     <header class="modal__header">
       <h2><slot name="heading"></slot></h2>
       <div class="modal__header__nav-buttons">
@@ -37,24 +41,31 @@ defineExpose({ open, close })
   color: var(--color-foreground);
   margin: auto;
   border-radius: var(--border-radius);
-  width: 100%;
-  max-width: 600px;
   padding: var(--padding-m) var(--padding-m) var(--padding-l) var(--padding-m);
 }
+.modal__fixed-width {
+  width: 100%;
+  max-width: 600px;
+}
+
 .modal > *:not(:last-child) {
+  margin-bottom: var(--gap-m);
+}
+.modal__fixed-width > *:not(:last-child) {
   margin-bottom: var(--gap-l);
 }
+
 .modal::backdrop {
   background-color: var(--color-backdrop);
 }
 .modal__header {
   display: flex;
   flex-direction: column-reverse;
+  margin-bottom: var(--gap-s);
 }
 .modal__header__nav-buttons {
   display: flex;
   justify-content: space-between;
-  margin-bottom: var(--gap-s);
 }
 .modal__header h2 {
   font-size: var(--font-size-heading-m);
