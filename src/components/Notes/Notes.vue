@@ -51,11 +51,11 @@ function openImportModal() {
 
 <template>
   <div class="notes__header">
+    <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
     <Menu :label="'Import/export'">
       <button @click="openImportModal">Import notes</button>
       <button @click="exportFile">Export notes</button>
     </Menu>
-    <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
   </div>
 
   <div class="notes__expand-buttons">
@@ -97,8 +97,9 @@ function openImportModal() {
 
 .notes__header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: var(--gap-m);
+  align-items: start;
+  justify-content: space-between;
   margin-bottom: var(--gap-l);
   /* Necessary for positioning the export button */
   position: relative;
