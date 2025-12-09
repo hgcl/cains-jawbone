@@ -81,7 +81,7 @@ const contentRef = ref(initialList)
     <!-- LIST 1: UNSORTED -->
     <template #tab1>
       <div id="page-array__1">
-        <p>Start ordering the pages by moving them to the "Sorted pages" tab.</p>
+        <p>Start ordering the pages by moving them to the <em>Sorted pages</em> tab.</p>
         <div class="page-array__card-list">
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
             <Card

@@ -13,27 +13,83 @@ function openSearchModal() {
 </script>
 
 <template>
-  <main>
-    <h1>Cain's Jawbone</h1>
+  <main id="main">
+    <div class="header">
+      <h1>Cain's Jawbone</h1>
+      <Button href="#getting-started" :variant="'secondary'">Need help?</Button>
+    </div>
+
     <Button @click="openSearchModal" :iconBefore="searchSvg">Search content</Button>
     <SearchModal ref="dialogRef" />
     <PagesOverview />
   </main>
+  <footer>
+    <h2 id="getting-started">Getting started</h2>
+    <ul class="typography">
+      <li>
+        Write down your thoughts in the <em>Notes</em> tab. You can also use paper and pen if you
+        prefer to go analog!
+      </li>
+      <li>
+        Regularly save your notes with the <em>Export</em> option (in the <em>Notes</em> tab). Once
+        the page is reloaded, your progress will be reset.
+      </li>
+      <li>This website works on mobile, but you will have a better experience on desktop.</li>
+      <li>
+        Find some help among other mystery-seeking people on
+        <a href="https://www.reddit.com/r/CainsJawbone/">Reddit</a>.
+      </li>
+      <li>
+        Learn more about this fascinating book on
+        <a href="https://en.wikipedia.org/wiki/Cain%27s_Jawbone">Wikipedia</a>.
+      </li>
+    </ul>
+
+    <Button href="#main">Back to top</Button>
+  </footer>
 </template>
 
 <style scoped>
-h1 {
-  text-align: center;
-}
+/* Main */
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--gap-l);
+  gap: var(--gap-xl);
   max-width: 1480px;
   background-color: var(--color-background);
   /* Updated through media queries */
   padding: var(--padding-m) var(--padding-xs);
+}
+main .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-l);
+}
+h1 {
+  text-align: center;
+}
+
+/* Footer */
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-l);
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+  /* Updated through media queries */
+  padding: var(--padding-m);
+}
+footer > * {
+  max-width: 608px;
+}
+footer ul {
+  padding-left: var(--padding-s);
+}
+footer li {
+  margin-bottom: var(--gap-s);
 }
 
 /* MEDIA QUERIES */
@@ -43,7 +99,9 @@ main {
   }
   main {
     padding: var(--padding-m);
-    gap: var(--gap-xl);
+  }
+  footer {
+    padding: var(--padding-l);
   }
 }
 @media (width > 800px) {

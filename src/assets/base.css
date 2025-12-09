@@ -163,6 +163,19 @@ h3 {
   line-height: var(--line-height-tight);
 }
 
+a {
+  text-transform: uppercase;
+  font-size: var(--font-size-body-s);
+  color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+
+em {
+  text-transform: uppercase;
+  font-size: var(--font-size-body-s);
+  font-style: normal;
+}
+
 input[type='text'] {
   /* Reset styles */
   border: none;

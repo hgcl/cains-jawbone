@@ -52,6 +52,7 @@ const linkComponent = computed(() => {
   <component
     :is="linkComponent"
     :to="to"
+    :href="href"
     @click="(e: MouseEvent) => emit('click', e)"
     :class="[`button button__${variant} ${invertedClass}`]"
   >
