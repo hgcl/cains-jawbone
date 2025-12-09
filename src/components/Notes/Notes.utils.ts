@@ -1,6 +1,7 @@
 import type { Note } from '@/types'
 import { nextTick, type Ref } from 'vue'
 import ImportModal from '../ImportModal/ImportModal.vue'
+import Modal from '../Modal/Modal.vue'
 
 /**
  * EXPAND/COLLAPSE NOTES
@@ -21,12 +22,19 @@ export function collapseAll() {
 /**
  * ADD/DELETE NOTES
  */
-export function useAddNote(selectedPageNumber: Ref<number | ''>, currentList: Ref<Note[]>) {
+export function useAddNote(
+  selectedPageNumber: Ref<number | ''>,
+  currentList: Ref<Note[]>,
+  addNoteModalRef: Ref<InstanceType<typeof Modal> | null>,
+) {
   async function addNote() {
     if (!selectedPageNumber.value) return
 
     // Add page note to currentList, and reorder it by `id`
     currentList.value.push({ id: selectedPageNumber.value, note: '' })
+
+    // Close modal
+    addNoteModalRef.value?.close()
 
     // Scroll into view after waiting for the DOM
     await nextTick()
@@ -39,8 +47,6 @@ export function useAddNote(selectedPageNumber: Ref<number | ''>, currentList: Re
 
     // Reset
     selectedPageNumber.value = ''
-
-    console.log(currentList.value)
   }
   function deleteNote(pageNumber: number) {
     // Remove page note from currentList, and reorder it by `id`
@@ -58,7 +64,7 @@ export function useAddNote(selectedPageNumber: Ref<number | ''>, currentList: Re
  */
 export function useExportFile(
   currentList: Ref<Note[]>,
-  dialogRef: Ref<InstanceType<typeof ImportModal> | null>,
+  importDialogRef: Ref<InstanceType<typeof ImportModal> | null>,
 ) {
   function exportFile() {
     // Transform form into JSON
@@ -79,7 +85,7 @@ export function useExportFile(
   function loadFile(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0]
     if (!file) {
-      dialogRef.value!.status = 'danger'
+      importDialogRef.value!.status = 'danger'
       return
     }
 
@@ -93,9 +99,9 @@ export function useExportFile(
         currentList.value = parsedJson
 
         // Success message
-        dialogRef.value!.status = 'success'
+        importDialogRef.value!.status = 'success'
       } catch (err) {
-        dialogRef.value!.status = 'danger'
+        importDialogRef.value!.status = 'danger'
         console.error('Invalid JSON file', err)
       }
     }
