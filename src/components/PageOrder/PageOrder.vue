@@ -76,14 +76,16 @@ const { copyContent } = useCopyContent(localInput, copyRef)
 
 <template>
   <div class="page-order">
-    <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
     <label class="page-order__label">Page order</label>
     <div class="page-order__input_wrapper">
       <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
-      <Button @click="reviewOrderString">Apply</Button>
-      <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
-        Copy
-      </Button>
+      <div class="page-order__input__buttons">
+        <Button @click="reviewOrderString">Apply order</Button>
+        <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
+        <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
+          Copy
+        </Button>
+      </div>
     </div>
     <ShowElement ref="showElRef">
       <NotificationInline :status="'danger'">
@@ -105,13 +107,6 @@ const { copyContent } = useCopyContent(localInput, copyRef)
   position: relative;
 }
 
-.page-order__copied {
-  position: absolute;
-  top: calc(-0.25 * 16px);
-  right: calc(0.5 * 16px);
-  color: var(--color-accent);
-}
-
 .page-order__label {
   text-transform: uppercase;
   font-weight: bold;
@@ -121,9 +116,24 @@ const { copyContent } = useCopyContent(localInput, copyRef)
 
 .page-order__input_wrapper {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   gap: var(--gap-s);
   width: 100%;
+}
+.page-order__input__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--gap-s);
+}
+.page-order__input__buttons > * {
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.page-order__copied {
+  position: absolute;
+  top: calc(-0.25 * 16px);
+  right: calc(0.5 * 16px);
+  color: var(--color-accent);
 }
 </style>
