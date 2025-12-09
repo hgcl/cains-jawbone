@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
-import Dropdown from '../Dropdown/Dropdown.vue'
+import Menu from '../Menu/Menu.vue'
+import Modal from '../Modal/Modal.vue'
 import ImportModal from '../ImportModal/ImportModal.vue'
+import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
 import type { Note } from '@/types'
 import trashSvg from '../../assets/trash-feathericons.svg'
-import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
+import plusSvg from '../../assets/plus-feathericons.svg'
 
 const { initialList } = defineProps<{ initialList: Note[] }>()
 
@@ -25,40 +27,43 @@ const unusedList = computed(() =>
 /**
  * ADD/DELETE NOTE
  */
+const addNoteModalRef = ref<InstanceType<typeof Modal> | null>(null)
+
+function openAddNoteModal() {
+  addNoteModalRef.value?.open()
+}
+
 const selectedPageNumber = ref<number | ''>('')
-const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList)
+const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList, addNoteModalRef)
 
 /**
  * IMPORT/EXPORT
  */
 
-const dialogRef = ref<InstanceType<typeof ImportModal> | null>(null)
+const importDialogRef = ref<InstanceType<typeof ImportModal> | null>(null)
 
-const { exportFile, loadFile } = useExportFile(currentList, dialogRef)
+const { exportFile, loadFile } = useExportFile(currentList, importDialogRef)
 
 function openImportModal() {
-  dialogRef.value?.open()
+  importDialogRef.value?.open()
 }
 </script>
 
 <template>
   <div class="notes__header">
-    <Dropdown :label="'Import/export'">
+    <Menu :label="'Import/export'">
       <button @click="openImportModal">Import notes</button>
       <button @click="exportFile">Export notes</button>
-    </Dropdown>
-    <div class="notes__add-page">
-      <label for="add-note">Add note for</label>
-      <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
-        <option value="">Page number</option>
-        <option v-for="item in unusedList" :value="item">{{ item }}</option>
-      </select>
-    </div>
-    <div class="notes__expand-buttons">
-      <Button :variant="'secondary'" @click="expandAll">Expand all</Button> /
-      <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
-    </div>
+    </Menu>
+    <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
   </div>
+
+  <div class="notes__expand-buttons">
+    <Button :variant="'secondary'" @click="expandAll">Expand all</Button> /
+    <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
+  </div>
+
+  <!-- Accordion list of notes -->
   <details
     v-for="item in sortedCurrentList"
     :id="`note${item.id}`"
@@ -75,7 +80,16 @@ function openImportModal() {
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
 
-  <ImportModal ref="dialogRef" @change:loadfile="loadFile" />
+  <Modal ref="addNoteModalRef" fitContent>
+    <div class="notes__add-page">
+      <label for="add-note">Select a page number to add a note for it in the list</label>
+      <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
+        <option value="">Page number</option>
+        <option v-for="item in unusedList" :value="item">{{ item }}</option>
+      </select>
+    </div>
+  </Modal>
+  <ImportModal ref="importDialogRef" @change:loadfile="loadFile" />
 </template>
 
 <style scoped>
@@ -93,15 +107,8 @@ function openImportModal() {
 .notes__add-page {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-s);
+  gap: var(--gap-m);
   align-items: center;
-  margin-bottom: var(--gap-l);
-}
-.notes__add-page label {
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: var(--font-size-body-s);
-  color: var(--color-accent);
 }
 
 .notes__expand-buttons > * {

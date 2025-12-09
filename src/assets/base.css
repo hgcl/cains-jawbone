@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Grenze+Gotisch');
 
 /**
+ * RESET
+*/
+
+/* Some older browsers don’t support hidden */
+[hidden] {
+  display: none;
+}
+
+/**
  * TOKENS
 */
 :root {
@@ -180,7 +189,7 @@ textarea {
   border-radius: var(--border-radius);
 }
 select {
-  height: 1.5rem;
+  height: 2rem;
 }
 
 /** 
