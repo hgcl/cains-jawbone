@@ -134,13 +134,7 @@ onBeforeUnmount(() => {
           <component
             tabindex="-1"
             @keydown="handleKeydownItem($event, index)"
-            :is="
-              cloneVNode(vnode, {
-                onClick: (event: MouseEvent) => {
-                  vnode.props?.onClick?.(event) // call original `@click` used on child
-                },
-              })
-            "
+            :is="cloneVNode(vnode)"
             :key="index"
           >
           </component>
