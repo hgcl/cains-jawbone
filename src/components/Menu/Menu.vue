@@ -36,7 +36,7 @@ function handleKeydownMenu(event: KeyboardEvent) {
 
   // Moves focus to the first menu item
   if (isMenuOpen.value && key === 'ArrowDown') {
-    const firstItem = document.querySelector('#menu__options')?.firstElementChild?.firstElementChild
+    const firstItem = document.querySelector('.menu__options')?.firstElementChild?.firstElementChild
     ;(firstItem as HTMLElement).focus()
   }
 
@@ -57,13 +57,13 @@ function handleKeydownItem(event: KeyboardEvent, index: number) {
 
   // Moves focus to the next menu item, or the first menu item if you’re on the last one
   if (isMenuOpen.value && key === 'ArrowDown') {
-    const listItems = document.querySelectorAll('#menu__options > li')
+    const listItems = document.querySelectorAll('.menu__options > li')
     const nextItem = listItems[index + 1]?.firstElementChild
 
     // Move focus to first item if we are currently on the last one
     if (index + 1 >= listItems.length) {
       const firstItem =
-        document.querySelector('#menu__options')?.firstElementChild?.firstElementChild
+        document.querySelector('.menu__options')?.firstElementChild?.firstElementChild
       ;(firstItem as HTMLElement).focus()
     }
 
@@ -72,12 +72,12 @@ function handleKeydownItem(event: KeyboardEvent, index: number) {
 
   // Moves focus to the previous menu item, or the last menu item if you’re on the first one
   if (isMenuOpen.value && key === 'ArrowUp') {
-    const listItems = document.querySelectorAll('#menu__options > li')
+    const listItems = document.querySelectorAll('.menu__options > li')
     const previousItem = listItems[index - 1]?.firstElementChild
 
     // Move focus to last item if we are currently on the first one
     if (index - 1 <= 0) {
-      const lastItem = document.querySelector('#menu__options')?.lastElementChild?.firstElementChild
+      const lastItem = document.querySelector('.menu__options')?.lastElementChild?.firstElementChild
       ;(lastItem as HTMLElement).focus()
     }
 
@@ -120,13 +120,14 @@ onBeforeUnmount(() => {
     <Button
       aria-controls="menu-options"
       :aria-expanded="isMenuOpen ? 'true' : 'false'"
-      @click="toggleMenu"
+      @click.stop="toggleMenu"
       @keydown="handleKeydownMenu($event)"
       class="menu__button"
       :iconAfter="chevronDownSvg"
       >{{ label }}</Button
     >
-    <ul id="menu__options" v-if="isMenuOpen">
+    <div v-if="isMenuOpen" class="menu-overlay" @click="isMenuOpen = false"></div>
+    <ul class="menu__options" v-if="isMenuOpen">
       <!-- Every child used inside of the default slot will have an `onClick` handler -->
       <template v-if="slots.default">
         <li v-for="(vnode, index) in slots.default()">
@@ -150,24 +151,30 @@ onBeforeUnmount(() => {
 .menu__button {
   margin-bottom: var(--gap-xs);
 }
-#menu__options {
+.menu__options {
   display: flex;
   flex-direction: column;
   position: absolute;
+  right: 0;
   width: 100%;
+  min-width: fit-content;
+  white-space: nowrap;
   background-color: var(--color-background);
   border-radius: var(--border-radius);
   padding: var(--padding-xs);
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
+  /* Keep dropdown above overlay */
+  z-index: 2;
 }
 
-#menu__options > li {
+.menu__options > li {
   /* Reset styles */
   list-style-type: none;
   /* Custom styles */
   font-family: var(--font-family-body);
   font-size: var(--font-size-body-s);
 }
-#menu__options > li > * {
+.menu__options > li > * {
   /* Reset <button> and <a> styles */
   background-color: transparent;
   border: none;
@@ -181,10 +188,21 @@ onBeforeUnmount(() => {
   width: 100%;
 }
 
+/* Overlay to support click outside of menu */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Keep behind the menu */
+  z-index: 1;
+}
+
 /* INTERACTIONS */
 
-#menu__options > li > *:hover,
-#menu__options > li > *:focus {
+.menu__options > li > *:hover,
+.menu__options > li > *:focus {
   background-color: var(--color-background-mute);
 }
 </style>
