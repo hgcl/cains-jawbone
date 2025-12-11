@@ -151,6 +151,7 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   /* Reset styles */
   list-style: none;
   /* Custom styles */
+  color: var(--color-foreground);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -163,7 +164,7 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   width: 1.3em;
   height: 1.3em;
   mask: url('../../assets/chevron-right-feathericons.svg') no-repeat center/contain;
-  background-color: var(--color-accent);
+  background-color: var(--color-foreground);
 }
 .note__title {
   width: 100%;
