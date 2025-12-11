@@ -75,7 +75,7 @@ export function useExportFile(
       '- Here are your notes from cains-jawbone.hgcl.workers.dev\r\n' +
       '- If you want to go on solving the mystery, upload this file back into the website to import your notes.\r\n' +
       '- You can also edit this file directly, but make sure to keep the exact same file structure. DO NOT rename the titles, or use double `#` characters in your notes.\r\n'
-    const outro = `END OF FILE — do not erase`
+    const outro = `## END OF FILE — do not erase\r\n`
     const notes = currentList.value
       .map((item) => `## Page ${item.id}\r\n\n${item.note}`)
       .join('\r\n\n')
