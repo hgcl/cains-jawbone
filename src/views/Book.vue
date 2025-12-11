@@ -82,6 +82,9 @@ footer {
   /* Updated through media queries */
   padding: var(--padding-m);
 }
+footer h2 {
+  color: var(--color-accent);
+}
 footer > * {
   max-width: 608px;
 }
