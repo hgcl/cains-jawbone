@@ -49,11 +49,15 @@ export function useAddNote(
     selectedPageNumber.value = ''
   }
   function deleteNote(pageNumber: number) {
+    // Warning message before deletion
+    const userConfirms = confirm(
+      `Are you sure you'd like to delete the note for page ${pageNumber}?`,
+    )
+
+    if (!userConfirms) return
+
     // Remove page note from currentList, and reorder it by `id`
     currentList.value = currentList.value.filter((item) => item.id !== pageNumber)
-
-    // Warning message before deletion
-    confirm(`Are you sure you'd like to delete the note for page ${pageNumber}?`)
   }
 
   return { addNote, deleteNote }
