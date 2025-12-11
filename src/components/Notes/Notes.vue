@@ -68,8 +68,8 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   <div class="notes__header">
     <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
     <Menu :label="'Import/export'">
-      <button @click="openImportModal">Import notes</button>
-      <button @click="exportFile">Export notes</button>
+      <button @keydown.enter="openImportModal" @click="openImportModal">Import notes</button>
+      <button @keydown.enter="exportFile" @click="exportFile">Export notes</button>
     </Menu>
   </div>
 
@@ -88,14 +88,15 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   >
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
-      <Button
-        class="note__button"
-        @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
-        >View</Button
-      >
-      <Button class="note__button" :iconBefore="trashSvg" @click="deleteNote(item.id)"
-        >Delete</Button
-      >
+      <Menu :label="'More'">
+        <button
+          @keydown.enter="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+          @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+        >
+          View page
+        </button>
+        <button @keydown.enter="deleteNote(item.id)" @click="deleteNote(item.id)">Delete</button>
+      </Menu>
     </summary>
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
@@ -170,10 +171,6 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   font-weight: bold;
   text-transform: uppercase;
 }
-.note__button {
-  /* Button will be made visible on hover/focus */
-  opacity: 0;
-}
 .note__textarea {
   max-width: 100%;
   min-width: 100%;
@@ -188,13 +185,6 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
 .note:open {
   border-bottom: none;
 }
-.note:open .note__button,
-.note__summary:hover .note__button,
-.note__summary:focus .note__button {
-  /* Show delete button */
-  opacity: 1;
-}
-
 .note__textarea:not(:focus) {
   background-color: var(--color-background-mute);
 }
