@@ -8,6 +8,7 @@ import arrowRight from '../../assets/arrow-right-feathericons.svg'
 
 defineProps<{
   page: BookPage | null
+  hasNavigation?: boolean
 }>()
 const emit = defineEmits<{
   (e: 'click:nextpage', event: MouseEvent): void
@@ -27,7 +28,7 @@ defineExpose({
   <Modal ref="modalRef">
     <template #heading>Page {{ page?.id }}</template>
     <p class="page-modal__content" v-html="page?.content"></p>
-    <div class="page-modal__buttons">
+    <div class="page-modal__buttons" v-if="hasNavigation">
       <Button
         :variant="'secondary'"
         :iconBefore="arrowLeft"

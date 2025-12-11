@@ -3,11 +3,14 @@ import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
 import Menu from '../Menu/Menu.vue'
 import Modal from '../Modal/Modal.vue'
+import PageModal from '../PageModal/PageModal.vue'
 import ImportModal from '../ImportModal/ImportModal.vue'
 import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
-import type { Note } from '@/types'
+import type { BookPage, Note } from '@/types'
 import trashSvg from '../../assets/trash-feathericons.svg'
 import plusSvg from '../../assets/plus-feathericons.svg'
+import bookJson from '../../assets/book.json'
+import { useOpenDialog } from '../PagesOverview/PagesOverview.utils'
 
 const { initialList } = defineProps<{ initialList: Note[] }>()
 
@@ -27,6 +30,7 @@ const unusedList = computed(() =>
 /**
  * ADD/DELETE NOTE
  */
+
 const addNoteModalRef = ref<InstanceType<typeof Modal> | null>(null)
 
 function openAddNoteModal() {
@@ -47,6 +51,17 @@ const { exportFile, loadFile } = useExportFile(currentList, importDialogRef)
 function openImportModal() {
   importDialogRef.value?.open()
 }
+
+/**
+ * VIEW PAGE
+ */
+const modalPage = ref<BookPage | null>(null)
+const modalIndex = ref<number>(0)
+const modalList = ref<BookPage[]>([])
+// The dialog component exposes `.open()` through a template ref
+const pageDialogRef = ref<InstanceType<typeof PageModal> | null>(null)
+
+const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef)
 </script>
 
 <template>
@@ -73,7 +88,12 @@ function openImportModal() {
   >
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
-      <Button class="note__delete-button" :iconBefore="trashSvg" @click="deleteNote(item.id)"
+      <Button
+        class="note__button"
+        @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+        >View</Button
+      >
+      <Button class="note__button" :iconBefore="trashSvg" @click="deleteNote(item.id)"
         >Delete</Button
       >
     </summary>
@@ -90,6 +110,8 @@ function openImportModal() {
     </div>
   </Modal>
   <ImportModal ref="importDialogRef" @change:loadfile="loadFile" />
+
+  <PageModal ref="pageDialogRef" :page="modalPage" />
 </template>
 
 <style scoped>
@@ -148,7 +170,7 @@ function openImportModal() {
   font-weight: bold;
   text-transform: uppercase;
 }
-.note__delete-button {
+.note__button {
   /* Button will be made visible on hover/focus */
   opacity: 0;
 }
@@ -166,9 +188,9 @@ function openImportModal() {
 .note:open {
   border-bottom: none;
 }
-
-.note__summary:hover .note__delete-button,
-.note__summary:focus .note__delete-button {
+.note:open .note__button,
+.note__summary:hover .note__button,
+.note__summary:focus .note__button {
   /* Show delete button */
   opacity: 1;
 }

@@ -56,10 +56,10 @@ const modalPage = ref<BookPage | null>(null)
 const modalIndex = ref<number>(0)
 const modalList = ref<BookPage[]>([])
 // The dialog component exposes `.open()` through a template ref
-const dialogRef = ref<InstanceType<typeof PageModal> | null>(null)
+const pageDialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
 // Opens page dialog on click
-const openDialog = useOpenDialog(modalPage, modalIndex, modalList, dialogRef)
+const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef)
 
 // Navigate between pages
 const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex)
@@ -131,8 +131,9 @@ const contentRef = ref(initialList)
 
   <!-- COMMON DIALOG -->
   <PageModal
-    ref="dialogRef"
+    ref="pageDialogRef"
     :page="modalPage"
+    :hasNavigation="true"
     @click:nextpage="toNextPage(modalIndex, modalList)"
     @click:previouspage="toPreviousPage(modalIndex, modalList)"
   />
