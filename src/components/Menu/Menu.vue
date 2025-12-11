@@ -93,7 +93,6 @@ function handleKeydownItem(event: KeyboardEvent, index: number) {
 function toggleMenu() {
   // Toggle the `aria-expanded` state from true to false (and vice-versa)
   isMenuOpen.value = !isMenuOpen.value
-  console.log('>>> MENU OPEN: ', isMenuOpen.value)
 }
 
 // Close menu when click outside of it
