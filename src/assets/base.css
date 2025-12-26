@@ -56,8 +56,6 @@
   --color-foreground-strong: var(--token-blue);
   --color-foreground: var(--token-blue-mute);
 
-  --color-border: var(--token-grey-light);
-
   --color-backdrop: rgba(60, 60, 60, 0.4);
 
   /* SPACING */
@@ -73,7 +71,7 @@
   --gap-xs: calc(0.25 * 16px);
 
   /* BORDER */
-  --border: solid 1px var(--color-border);
+  --border: 1px solid var(--color-accent-subtle);
   --border-radius: 4px;
 
   /* TYPOGRAPHY */
@@ -102,8 +100,6 @@
     --color-accent: var(--token-blue-dark);
     --color-on-accent: var(--token-black);
     --color-accent-subtle: rgba(var(--token-blue-dark-no-opacity), 0.4);
-
-    --color-border: var(--token-grey-dark);
 
     --color-foreground-strong: var(--token-blue-dark);
     --color-foreground: var(--token-white);
@@ -194,7 +190,7 @@ input[type='text'] {
   width: 100%;
   height: 2rem;
   padding: var(--padding-xs);
-  border: 1px solid var(--color-accent-subtle);
+  border: var(--border);
   border-radius: var(--border-radius);
 }
 textarea {
@@ -207,7 +203,7 @@ textarea {
   height: 5rem;
   min-height: 2rem;
   padding: var(--padding-xs);
-  border: 1px solid var(--color-accent-subtle);
+  border: var(--border);
   border-radius: var(--border-radius);
 }
 select {

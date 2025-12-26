@@ -95,7 +95,7 @@ const linkComponent = computed(() => {
   background-color: transparent;
 }
 .button__primary {
-  border: 1px solid var(--color-accent-subtle);
+  border: var(--border);
   padding: var(--padding-xs);
 }
 .button__secondary,

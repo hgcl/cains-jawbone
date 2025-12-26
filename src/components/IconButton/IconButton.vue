@@ -40,7 +40,7 @@ button {
   text-transform: uppercase;
   background: transparent;
   padding: var(--padding-xs);
-  border: 1px solid var(--color-accent-subtle);
+  border: var(--border);
   border-radius: 1000px;
   /* Necessary for .button__label positioning */
   position: relative;
