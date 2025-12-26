@@ -153,7 +153,7 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   border: 1px dashed var(--color-foreground);
   border-radius: var(--border-radius);
   width: 100%;
-  height: 5em;
+  height: 8em;
   margin-top: var(--gap-l);
 }
 
