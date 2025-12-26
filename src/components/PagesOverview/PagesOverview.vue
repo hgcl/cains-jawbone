@@ -44,7 +44,7 @@ const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
 )
 
 // Send pages from "sorted" to "unsorted" list (or back)
-const toggleSorted = useSendToList(list1, list2)
+const { toggleSort } = useSendToList(list1, list2)
 
 // Move item up-down sorted list
 const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
@@ -81,14 +81,13 @@ const contentRef = ref(initialList)
     <!-- LIST 1: UNSORTED -->
     <template #tab1>
       <div id="page-array__1">
-        <p>Start ordering the pages by moving them to the <em>Sorted pages</em> tab.</p>
+        <p>
+          Open a page of the book to read it, and start ordering the pages by moving them to the
+          <em>Sorted pages</em> tab.
+        </p>
         <div class="page-array__card-list">
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
-            <Card
-              :page="item"
-              @open:dialog="openDialog(item, index, sortedList1)"
-              @toggle:sorted="toggleSorted(item, $event)"
-            />
+            <Card :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
           </div>
         </div>
       </div>
@@ -114,7 +113,6 @@ const contentRef = ref(initialList)
             <Card
               :page="item"
               @open:dialog="openDialog(item, index, sortedList2)"
-              @toggle:sorted="toggleSorted(item, $event)"
               @click:moveleft="moveLeft(item, index)"
               @click:moveright="moveRight(item, index)"
             />
@@ -134,6 +132,7 @@ const contentRef = ref(initialList)
     ref="pageDialogRef"
     :page="modalPage"
     :hasNavigation="true"
+    @toggle:sorted="toggleSort(modalPage)"
     @click:nextpage="toNextPage(modalIndex, modalList)"
     @click:previouspage="toPreviousPage(modalIndex, modalList)"
   />

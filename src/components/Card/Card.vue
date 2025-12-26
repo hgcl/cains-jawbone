@@ -3,8 +3,9 @@ import Button from '../Button/Button.vue'
 import IconButton from '../IconButton/IconButton.vue'
 import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
 import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
-import chevronsUp from '../../assets/chevrons-up-feathericons.svg'
-import chevronsDown from '../../assets/chevrons-down-feathericons.svg'
+import chevronsUpSvg from '../../assets/chevrons-up-feathericons.svg'
+import chevronsDownSvg from '../../assets/chevrons-down-feathericons.svg'
+import bookOpenSvg from '../../assets/book-open-feathericons.svg'
 import type { BookPage } from '../../types'
 import { truncateText } from './Card.utils'
 
@@ -12,7 +13,6 @@ const { page } = defineProps<{
   page: BookPage
 }>()
 const emit = defineEmits<{
-  (e: 'toggle:sorted', value: boolean): void
   (e: 'click:moveleft', event: MouseEvent): void
   (e: 'click:moveright', event: MouseEvent): void
   (e: 'open:dialog', event: MouseEvent): void
@@ -24,7 +24,8 @@ const emit = defineEmits<{
     <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
     <div class="card__preview-arrows-wrapper">
       <p class="card__preview">
-        <span v-html="truncateText(page.content, 'end')"></span> [...]
+        <span v-html="truncateText(page.content, 'end')"></span>
+        <span class="card__preview__dots"> [...] </span>
         <span v-html="truncateText(page.content, 'start')"></span>
       </p>
       <div v-if="page.list === 2" class="card__arrows_desktop">
@@ -35,26 +36,19 @@ const emit = defineEmits<{
         >
       </div>
       <div v-if="page.list === 2" class="card__arrows_mobile">
-        <IconButton :icon="chevronsUp" @click="(e) => emit('click:moveleft', e)">Move up</IconButton
-        ><IconButton :icon="chevronsDown" @click="(e) => emit('click:moveright', e)"
+        <IconButton :icon="chevronsUpSvg" @click="(e) => emit('click:moveleft', e)"
+          >Move up</IconButton
+        ><IconButton :icon="chevronsDownSvg" @click="(e) => emit('click:moveright', e)"
           >Move down</IconButton
         >
       </div>
     </div>
-    <div class="card__buttons">
-      <Button @click="(e) => emit('open:dialog', e)"
-        >View<span class="visually-hidden"> page {{ page.id }}</span></Button
-      >
-      <div class="card__checkbox">
-        <input
-          type="checkbox"
-          :id="`sorted${page.id}`"
-          :name="`sorted${page.id}`"
-          :checked="page.list === 2"
-          @change="emit('toggle:sorted', ($event.target as HTMLInputElement).checked)"
-        /><label :for="`sorted${page.id}`">Sorted</label>
-      </div>
-    </div>
+    <Button
+      @click="(e) => emit('open:dialog', e)"
+      class="card__open-page-button"
+      :iconBefore="bookOpenSvg"
+      >Full page<span class="visually-hidden"> page {{ page.id }}</span></Button
+    >
   </article>
 </template>
 
@@ -88,6 +82,14 @@ const emit = defineEmits<{
   /* Updated through media queries */
   display: none;
 }
+.card__preview__dots {
+  opacity: 0.6;
+}
+
+.card__open-page-button {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* Move cards up-down/left-right */
 .card__preview-arrows-wrapper {
@@ -111,22 +113,6 @@ const emit = defineEmits<{
   display: flex;
   gap: var(--gap-m);
   justify-content: center;
-}
-.card__checkbox {
-  /* Reset styles */
-  /* Custom styles -- similar to <Button> */
-  display: flex;
-  gap: var(--gap-xs);
-  border: 1px solid var(--color-accent-subtle);
-  border-radius: var(--border-radius);
-  padding: var(--padding-xs);
-}
-.card__checkbox,
-.card__checkbox > * {
-  cursor: pointer;
-  font-size: var(--font-size-body-s);
-  font-weight: bold;
-  text-transform: uppercase;
 }
 
 /* INTERACTIONS */

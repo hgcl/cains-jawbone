@@ -91,17 +91,19 @@ export function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
   }
 
   /**
-   * Toggle "sorted" checkbox
+   * Toggle pages from "sorted" to "unsorted"
    */
-  function toggleSorted(page: BookPage, checked: boolean) {
-    if (checked) {
+  function toggleSort(page: BookPage | null) {
+    if (!page) return
+
+    if (page.list === 1) {
       sendToSort(page.id)
     } else {
       sendToUnsorted(page.id)
     }
   }
 
-  return toggleSorted
+  return { toggleSort }
 }
 
 /**
