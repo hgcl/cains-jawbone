@@ -24,6 +24,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Vertically center */
+  height: 100vh;
 }
 main > div {
   max-width: 464px;
