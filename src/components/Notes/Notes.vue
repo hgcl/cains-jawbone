@@ -147,7 +147,9 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--padding-m);
   color: var(--color-foreground);
+  text-align: center;
   border: 1px dashed var(--color-foreground);
   border-radius: var(--border-radius);
   width: 100%;

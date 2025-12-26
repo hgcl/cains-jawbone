@@ -162,7 +162,6 @@ const contentRef = ref<Note[]>([])
   display: flex;
   justify-content: center;
   gap: var(--gap-m);
-  border: 2px dashed var(--color-background);
   border-radius: var(--border-radius);
   padding: var(--padding-xs);
   min-height: calc(14 * 16px);
@@ -175,7 +174,9 @@ const contentRef = ref<Note[]>([])
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--padding-m);
   color: var(--color-foreground);
+  text-align: center;
   border: 1px dashed var(--color-foreground);
   border-radius: var(--border-radius);
   width: 100%;
