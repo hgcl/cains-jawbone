@@ -28,6 +28,21 @@ function openSearchModal() {
     <h2 id="getting-started">Getting started</h2>
     <ul class="typography">
       <li>
+        You have two ways of moving pages between the <em>Unsorted</em> and <em>Sorted</em> tabs.
+        <ol>
+          <li>
+            Open a page to read, and click on the <em>Unsort page</em>/<em>Sort page</em> button.
+          </li>
+          <li>
+            Use the
+            <em>Page order</em>
+            field in the
+            <em>Sorted</em>
+            tab to add/remove sorted pages in batch.
+          </li>
+        </ol>
+      </li>
+      <li>
         Write down your thoughts in the <em>Notes</em> tab. You can also use paper and pen if you
         prefer to go analog!
       </li>
