@@ -176,6 +176,15 @@ em {
   font-style: normal;
 }
 
+/* Lists */
+
+ul li > ul,
+ul li > ol,
+ol li > ul,
+ol li > ol {
+  margin-block: 1em;
+}
+
 input[type='text'] {
   /* Reset styles */
   border: none;
