@@ -84,6 +84,8 @@ const contentRef = ref<Note[]>([])
           Open a page of the book to read it, and start ordering the pages by moving them to the
           <em>Sorted pages</em> tab.
         </p>
+
+        <!-- List of cards -->
         <div class="page-array__card-list">
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
             <Card :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
@@ -100,7 +102,18 @@ const contentRef = ref<Note[]>([])
           below.
         </p>
         <PageOrder :orderString="orderString" @update:orderstring="updateOrderString" />
+
+        <!-- List of cards -->
         <div class="page-array__card-list">
+          <!-- If no page yet, show instruction -->
+          <div v-if="sortedList2.length < 1" class="page-array__empty-list-msg">
+            <p>
+              Add your first page to be sorted through the <em>Page order</em> field above, or by
+              clicking on the <em>Sort</em> button inside each page.
+            </p>
+          </div>
+
+          <!-- If pages were already added -->
           <div
             v-for="(item, index) in sortedList2"
             :key="item.id"
@@ -156,6 +169,17 @@ const contentRef = ref<Note[]>([])
   width: 100%;
   /* Updated through media queries */
   flex-direction: column;
+}
+
+.page-array__empty-list-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-foreground);
+  border: 1px dashed var(--color-foreground);
+  border-radius: var(--border-radius);
+  width: 100%;
+  height: 10em;
 }
 
 #page-array__1 p,
