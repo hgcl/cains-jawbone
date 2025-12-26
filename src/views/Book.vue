@@ -28,7 +28,13 @@ function openSearchModal() {
     <h2 id="getting-started">Getting started</h2>
     <ul class="typography">
       <li>
-        You have two ways of moving pages between the <em>Unsorted</em> and <em>Sorted</em> tabs.
+        Here is a 100-page murder mystery... but the pages are all in the wrong order. To solve the
+        puzzle, you must reorder the book, and find the names of the murderers and victims within
+        the story.
+      </li>
+      <li>
+        To reorder pages, you need to move them between the <em>Unsorted</em> and
+        <em>Sorted</em> tabs. There are two ways to do that:
         <ol>
           <li>
             Open a page to read, and click on the <em>Unsort page</em>/<em>Sort page</em> button.
