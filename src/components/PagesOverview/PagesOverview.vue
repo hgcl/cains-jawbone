@@ -72,8 +72,7 @@ const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 /**
  * NOTES
  */
-const initialList: Note[] = [{ id: 1, note: '' }]
-const contentRef = ref(initialList)
+const contentRef = ref<Note[]>([])
 </script>
 
 <template>

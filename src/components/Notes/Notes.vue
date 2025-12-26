@@ -77,6 +77,11 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
     <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
   </div>
 
+  <!-- If no note yet, show instruction -->
+  <div v-if="sortedCurrentList.length < 1" class="notes__empty-list-msg">
+    <p>Click on the <em>+ Add note</em> button to create your first note!</p>
+  </div>
+
   <!-- Accordion list of notes -->
   <details
     v-for="item in sortedCurrentList"
@@ -136,6 +141,18 @@ const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef
 
 .notes__expand-buttons > * {
   display: inline-block;
+}
+
+.notes__empty-list-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-foreground);
+  border: 1px dashed var(--color-foreground);
+  border-radius: var(--border-radius);
+  width: 100%;
+  height: 5em;
+  margin-top: var(--gap-l);
 }
 
 /* ONE NOTE */
