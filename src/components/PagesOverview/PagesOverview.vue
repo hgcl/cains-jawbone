@@ -180,7 +180,6 @@ const contentRef = ref<Note[]>([])
   border: 1px dashed var(--color-foreground);
   border-radius: var(--border-radius);
   width: 100%;
-  height: 8em;
 }
 
 #page-array__1 p,
