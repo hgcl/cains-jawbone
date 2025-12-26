@@ -44,7 +44,7 @@ const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
 )
 
 // Send pages from "sorted" to "unsorted" list (or back)
-const toggleSorted = useSendToList(list1, list2)
+const { toggleSort } = useSendToList(list1, list2)
 
 // Move item up-down sorted list
 const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
@@ -72,8 +72,7 @@ const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 /**
  * NOTES
  */
-const initialList: Note[] = [{ id: 1, note: '' }]
-const contentRef = ref(initialList)
+const contentRef = ref<Note[]>([])
 </script>
 
 <template>
@@ -81,14 +80,15 @@ const contentRef = ref(initialList)
     <!-- LIST 1: UNSORTED -->
     <template #tab1>
       <div id="page-array__1">
-        <p>Start ordering the pages by moving them to the <em>Sorted pages</em> tab.</p>
+        <p>
+          Open a page of the book to read it, and start ordering the pages by moving them to the
+          <em>Sorted pages</em> tab.
+        </p>
+
+        <!-- List of cards -->
         <div class="page-array__card-list">
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
-            <Card
-              :page="item"
-              @open:dialog="openDialog(item, index, sortedList1)"
-              @toggle:sorted="toggleSorted(item, $event)"
-            />
+            <Card :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
           </div>
         </div>
       </div>
@@ -102,7 +102,18 @@ const contentRef = ref(initialList)
           below.
         </p>
         <PageOrder :orderString="orderString" @update:orderstring="updateOrderString" />
+
+        <!-- List of cards -->
         <div class="page-array__card-list">
+          <!-- If no page yet, show instruction -->
+          <div v-if="sortedList2.length < 1" class="page-array__empty-list-msg">
+            <p>
+              Add your first page to be sorted through the <em>Page order</em> field above, or by
+              clicking on the <em>Sort</em> button inside each page.
+            </p>
+          </div>
+
+          <!-- If pages were already added -->
           <div
             v-for="(item, index) in sortedList2"
             :key="item.id"
@@ -114,7 +125,6 @@ const contentRef = ref(initialList)
             <Card
               :page="item"
               @open:dialog="openDialog(item, index, sortedList2)"
-              @toggle:sorted="toggleSorted(item, $event)"
               @click:moveleft="moveLeft(item, index)"
               @click:moveright="moveRight(item, index)"
             />
@@ -134,6 +144,7 @@ const contentRef = ref(initialList)
     ref="pageDialogRef"
     :page="modalPage"
     :hasNavigation="true"
+    @toggle:sorted="toggleSort(modalPage)"
     @click:nextpage="toNextPage(modalIndex, modalList)"
     @click:previouspage="toPreviousPage(modalIndex, modalList)"
   />
@@ -151,13 +162,24 @@ const contentRef = ref(initialList)
   display: flex;
   justify-content: center;
   gap: var(--gap-m);
-  border: 2px dashed var(--color-background);
   border-radius: var(--border-radius);
   padding: var(--padding-xs);
   min-height: calc(14 * 16px);
   width: 100%;
   /* Updated through media queries */
   flex-direction: column;
+}
+
+.page-array__empty-list-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-m);
+  color: var(--color-foreground);
+  text-align: center;
+  border: 1px dashed var(--color-foreground);
+  border-radius: var(--border-radius);
+  width: 100%;
 }
 
 #page-array__1 p,

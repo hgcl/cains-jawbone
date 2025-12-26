@@ -85,7 +85,7 @@ const linkComponent = computed(() => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: var(--gap-xs);
+  gap: var(--gap-s);
   width: fit-content;
   text-transform: uppercase;
   font-weight: bold;
@@ -95,7 +95,7 @@ const linkComponent = computed(() => {
   background-color: transparent;
 }
 .button__primary {
-  border: 1px solid var(--color-accent-subtle);
+  border: var(--border);
   padding: var(--padding-xs);
 }
 .button__secondary,

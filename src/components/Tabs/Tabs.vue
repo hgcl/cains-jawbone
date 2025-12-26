@@ -91,7 +91,7 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
 
 [role='tabpanel'] {
   background: var(--color-background-alt);
-  border: 1px solid var(--color-accent-subtle);
+  border: var(--border);
   border-radius: var(--border-radius);
   /* Updated through media queries */
   padding: var(--padding-m) var(--padding-s);

@@ -28,6 +28,27 @@ function openSearchModal() {
     <h2 id="getting-started">Getting started</h2>
     <ul class="typography">
       <li>
+        Here is a 100-page murder mystery... but the pages are all in the wrong order. To solve the
+        puzzle, you must reorder the book, and find the names of the murderers and victims within
+        the story.
+      </li>
+      <li>
+        To reorder pages, you need to move them between the <em>Unsorted</em> and
+        <em>Sorted</em> tabs. There are two ways to do that:
+        <ol>
+          <li>
+            Open a page to read, and click on the <em>Unsort page</em>/<em>Sort page</em> button.
+          </li>
+          <li>
+            Use the
+            <em>Page order</em>
+            field in the
+            <em>Sorted</em>
+            tab to add/remove sorted pages in batch.
+          </li>
+        </ol>
+      </li>
+      <li>
         Write down your thoughts in the <em>Notes</em> tab. You can also use paper and pen if you
         prefer to go analog!
       </li>
