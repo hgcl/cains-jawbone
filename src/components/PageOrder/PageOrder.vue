@@ -25,7 +25,7 @@ import ShowElement from '../ShowElement/ShowElement.vue'
 import NotificationInline from '../NotificationInline/NotificationInline.vue'
 import copySvg from '../../assets/copy-feathericons.svg'
 import { useCopyContent } from './PageOrder.utils'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const { orderString } = defineProps<{
   orderString: string
@@ -40,6 +40,8 @@ const errorMessage = ref<string>()
 // Exposes functions from `ShowElement`
 const showElRef = ref<InstanceType<typeof ShowElement> | null>(null)
 
+// If the parent updates orderString (e.g. drag & drop, arrows, modal actions)
+// The watcher: 1) updates localInput 2) keeps the input field in sync
 watch(
   () => orderString,
   (val) => {
@@ -49,6 +51,10 @@ watch(
   },
 )
 
+// reviewOrderString() is only called when the user clicks on "Apply order". It does:
+// - character validation
+// - converts the localInput string to an array of numbers
+// - emits the new order string (now an array of numbers) to the parent
 function reviewOrderString() {
   // 1. Check if string only contains valid characters
 

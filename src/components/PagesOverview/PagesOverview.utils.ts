@@ -181,7 +181,6 @@ export function useUpdateOrderString(
     let newList2: BookPage[] = []
 
     bookJson.forEach((el, index) => {
-      // const isInList2 = findPageInList(newList2, el.id)
       const indexInList2 = pageArray.indexOf(el.id)
       const pageObject = el
 

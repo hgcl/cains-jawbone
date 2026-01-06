@@ -142,6 +142,8 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 /**
  * INPUT CONTROL
  */
+// updateOrderString() is called by `@update:orderstring="updateOrderString"` (emitted by PageOrder.vue)
+// It causes sortedList1, sortedList2, and orderString to be recomputed
 const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 
 /**
