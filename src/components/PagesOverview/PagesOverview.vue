@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import bookJson from '../../assets/book.json'
 import Tabs from '../../components/Tabs/Tabs.vue'
 import Card from '../../components/Card/Card.vue'
@@ -142,9 +142,32 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 /**
  * INPUT CONTROL
  */
-// updateOrderString() is called by `@update:orderstring="updateOrderString"` (emitted by PageOrder.vue)
-// It causes sortedList1, sortedList2, and orderString to be recomputed
+// 1. updateOrderString() is called by `@update:orderstring="updateOrderString"` (emitted by PageOrder.vue)
+// 2. It causes sortedList1, sortedList2, and orderString to be recomputed
 const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
+
+/**
+ * LOCAL STORAGE
+ */
+// 1a. If user updates `orderString` (e.g. drag & drop, arrows, modal actions)
+// 1b. If user updates page order input, updateOrderString() is called and `orderString` is recomputed
+// 2. If `orderString` is updated, watcher updates the `pageOrder` local storage variable
+// 3. On mount, updateOrderString() is called with the (parsed) local storage value => `orderString` is recomputed
+const ORDER_STORAGE_KEY = 'pageOrder'
+
+watch(orderString, (newVal) => {
+  localStorage.setItem(ORDER_STORAGE_KEY, newVal)
+})
+
+onMounted(() => {
+  const savedOrder = localStorage.getItem(ORDER_STORAGE_KEY)
+  if (!savedOrder) return
+
+  // Transform string into array of numbers
+  const parsed = savedOrder.split(',').map(Number)
+
+  updateOrderString(parsed)
+})
 
 /**
  * NOTES
