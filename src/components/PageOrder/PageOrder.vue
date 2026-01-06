@@ -1,3 +1,24 @@
+<template>
+  <div class="page-order">
+    <label class="page-order__label">Page order</label>
+    <div class="page-order__input_wrapper">
+      <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
+      <div class="page-order__input__buttons">
+        <Button @click="reviewOrderString">Apply order</Button>
+        <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
+        <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
+          Copy
+        </Button>
+      </div>
+    </div>
+    <ShowElement ref="showElRef">
+      <NotificationInline :status="'danger'">
+        {{ errorMessage }}
+      </NotificationInline>
+    </ShowElement>
+  </div>
+</template>
+
 <script setup lang="ts">
 import Button from '../Button/Button.vue'
 import ShowElement from '../ShowElement/ShowElement.vue'
@@ -73,27 +94,6 @@ function reviewOrderString() {
 
 const { copyContent } = useCopyContent(localInput, copyRef)
 </script>
-
-<template>
-  <div class="page-order">
-    <label class="page-order__label">Page order</label>
-    <div class="page-order__input_wrapper">
-      <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
-      <div class="page-order__input__buttons">
-        <Button @click="reviewOrderString">Apply order</Button>
-        <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
-        <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
-          Copy
-        </Button>
-      </div>
-    </div>
-    <ShowElement ref="showElRef">
-      <NotificationInline :status="'danger'">
-        {{ errorMessage }}
-      </NotificationInline>
-    </ShowElement>
-  </div>
-</template>
 
 <style scoped>
 .page-order {

@@ -1,3 +1,28 @@
+<template>
+  <Modal ref="modalRef">
+    <template #heading>Import notes</template>
+    <p>
+      If you have previously exported your notes, you can import that <code>.md</code>
+      file back into the app.
+    </p>
+    <input
+      type="file"
+      id="fileUpload"
+      accept=".md, text/markdown"
+      @change="(e) => emit('change:loadfile', e)"
+    />
+    <ShowElement ref="showElRef">
+      <NotificationInline v-if="status === 'danger'" :status="'danger'"
+        >There was an error while trying to import your notes. Are you uploading a .md file with the
+        correct structure?</NotificationInline
+      >
+      <NotificationInline v-if="status === 'success'" :status="'success'">
+        Your notes were successfully imported. You can get back to solving the mystery!
+      </NotificationInline>
+    </ShowElement>
+  </Modal>
+</template>
+
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import Modal from '../Modal/Modal.vue'
@@ -34,30 +59,5 @@ defineExpose({
   status,
 })
 </script>
-
-<template>
-  <Modal ref="modalRef">
-    <template #heading>Import notes</template>
-    <p>
-      If you have previously exported your notes, you can import that <code>.md</code>
-      file back into the app.
-    </p>
-    <input
-      type="file"
-      id="fileUpload"
-      accept=".md, text/markdown"
-      @change="(e) => emit('change:loadfile', e)"
-    />
-    <ShowElement ref="showElRef">
-      <NotificationInline v-if="status === 'danger'" :status="'danger'"
-        >There was an error while trying to import your notes. Are you uploading a .md file with the
-        correct structure?</NotificationInline
-      >
-      <NotificationInline v-if="status === 'success'" :status="'success'">
-        Your notes were successfully imported. You can get back to solving the mystery!
-      </NotificationInline>
-    </ShowElement>
-  </Modal>
-</template>
 
 <style scoped></style>

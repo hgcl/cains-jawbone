@@ -1,32 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import type { BookPage } from '../../types'
-import Modal from '../Modal/Modal.vue'
-import Button from '../Button/Button.vue'
-import arrowLeftSvg from '../../assets/arrow-left-feathericons.svg'
-import arrowRightSvg from '../../assets/arrow-right-feathericons.svg'
-import checkSvg from '../../assets/x-feathericons.svg'
-import plusSvg from '../../assets/plus-feathericons.svg'
-
-defineProps<{
-  page: BookPage | null
-  hasNavigation?: boolean
-}>()
-const emit = defineEmits<{
-  (e: 'toggle:sorted', event: MouseEvent): void
-  (e: 'click:nextpage', event: MouseEvent): void
-  (e: 'click:previouspage', event: MouseEvent): void
-}>()
-
-const modalRef = ref<InstanceType<typeof Modal> | null>(null)
-
-// Forward exposed methods from Modal.vue
-defineExpose({
-  open: () => modalRef.value?.open(),
-  close: () => modalRef.value?.close(),
-})
-</script>
-
 <template>
   <Modal ref="modalRef">
     <template #heading>Page {{ page?.id }}</template>
@@ -60,6 +31,35 @@ defineExpose({
     </div>
   </Modal>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { BookPage } from '../../types'
+import Modal from '../Modal/Modal.vue'
+import Button from '../Button/Button.vue'
+import arrowLeftSvg from '../../assets/arrow-left-feathericons.svg'
+import arrowRightSvg from '../../assets/arrow-right-feathericons.svg'
+import checkSvg from '../../assets/x-feathericons.svg'
+import plusSvg from '../../assets/plus-feathericons.svg'
+
+defineProps<{
+  page: BookPage | null
+  hasNavigation?: boolean
+}>()
+const emit = defineEmits<{
+  (e: 'toggle:sorted', event: MouseEvent): void
+  (e: 'click:nextpage', event: MouseEvent): void
+  (e: 'click:previouspage', event: MouseEvent): void
+}>()
+
+const modalRef = ref<InstanceType<typeof Modal> | null>(null)
+
+// Forward exposed methods from Modal.vue
+defineExpose({
+  open: () => modalRef.value?.open(),
+  close: () => modalRef.value?.close(),
+})
+</script>
 
 <style scoped>
 .page-modal__sort-button {

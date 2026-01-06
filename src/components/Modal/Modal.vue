@@ -1,3 +1,16 @@
+<template>
+  <dialog ref="dialog" class="modal" :class="fixedWidthClass">
+    <header class="modal__header">
+      <h2><slot name="heading"></slot></h2>
+      <div class="modal__header__nav-buttons">
+        <slot name="back"></slot>
+        <Button class="modal__header__close-button" @click="close">Close</Button>
+      </div>
+    </header>
+    <slot></slot>
+  </dialog>
+</template>
+
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
@@ -18,19 +31,6 @@ function close() {
 
 defineExpose({ open, close })
 </script>
-
-<template>
-  <dialog ref="dialog" class="modal" :class="fixedWidthClass">
-    <header class="modal__header">
-      <h2><slot name="heading"></slot></h2>
-      <div class="modal__header__nav-buttons">
-        <slot name="back"></slot>
-        <Button class="modal__header__close-button" @click="close">Close</Button>
-      </div>
-    </header>
-    <slot></slot>
-  </dialog>
-</template>
 
 <style scoped>
 .modal {

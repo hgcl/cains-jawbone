@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import Button from '../components/Button/Button.vue'
-</script>
-
 <template>
   <main>
     <div>
@@ -18,6 +14,10 @@ import Button from '../components/Button/Button.vue'
     </div>
   </main>
 </template>
+
+<script setup lang="ts">
+import Button from '../components/Button/Button.vue'
+</script>
 
 <style scoped>
 main {

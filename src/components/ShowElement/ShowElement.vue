@@ -1,3 +1,11 @@
+<template>
+  <transition name="fade">
+    <div v-if="visible">
+      <slot></slot>
+    </div>
+  </transition>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -25,14 +33,6 @@ function hide() {
 
 defineExpose({ show, showAndHide, hide })
 </script>
-
-<template>
-  <transition name="fade">
-    <div v-if="visible">
-      <slot></slot>
-    </div>
-  </transition>
-</template>
 
 <style>
 .fade-enter-active,

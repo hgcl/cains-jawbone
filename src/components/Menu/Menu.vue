@@ -1,3 +1,34 @@
+<!-- ACCESSIBLE MENU -->
+<!-- Source: https://inclusive-components.design/menus-menu-buttons/ -->
+<template>
+  <div class="menu">
+    <Button
+      aria-controls="menu-options"
+      :aria-expanded="isMenuOpen ? 'true' : 'false'"
+      @click.stop="toggleMenu"
+      @keydown="handleKeydownMenu($event)"
+      class="menu__button"
+      :iconAfter="chevronDownSvg"
+      >{{ label }}</Button
+    >
+    <div v-if="isMenuOpen" class="menu-overlay" @click="isMenuOpen = false"></div>
+    <ul class="menu__options" v-if="isMenuOpen">
+      <!-- Every child used inside of the default slot will have an `onClick` handler -->
+      <template v-if="slots.default">
+        <li v-for="(vnode, index) in slots.default()">
+          <component
+            tabindex="-1"
+            @keydown="handleKeydownItem($event, index)"
+            :is="cloneVNode(vnode)"
+            :key="index"
+          >
+          </component>
+        </li>
+      </template>
+    </ul>
+  </div>
+</template>
+
 <script setup lang="ts">
 import Button from '../Button/Button.vue'
 import chevronDownSvg from '../../assets/chevron-down-feathericons.svg'
@@ -112,37 +143,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 </script>
-
-<!-- ACCESSIBLE MENU -->
-<!-- Source: https://inclusive-components.design/menus-menu-buttons/ -->
-<template>
-  <div class="menu">
-    <Button
-      aria-controls="menu-options"
-      :aria-expanded="isMenuOpen ? 'true' : 'false'"
-      @click.stop="toggleMenu"
-      @keydown="handleKeydownMenu($event)"
-      class="menu__button"
-      :iconAfter="chevronDownSvg"
-      >{{ label }}</Button
-    >
-    <div v-if="isMenuOpen" class="menu-overlay" @click="isMenuOpen = false"></div>
-    <ul class="menu__options" v-if="isMenuOpen">
-      <!-- Every child used inside of the default slot will have an `onClick` handler -->
-      <template v-if="slots.default">
-        <li v-for="(vnode, index) in slots.default()">
-          <component
-            tabindex="-1"
-            @keydown="handleKeydownItem($event, index)"
-            :is="cloneVNode(vnode)"
-            :key="index"
-          >
-          </component>
-        </li>
-      </template>
-    </ul>
-  </div>
-</template>
 
 <style scoped>
 .menu {

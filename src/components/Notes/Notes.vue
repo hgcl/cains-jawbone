@@ -1,3 +1,59 @@
+<template>
+  <div class="notes__header">
+    <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
+    <Menu :label="'Import/export'">
+      <button @keydown.enter="openImportModal" @click="openImportModal">Import notes</button>
+      <button @keydown.enter="exportFile" @click="exportFile">Export notes</button>
+    </Menu>
+  </div>
+
+  <div class="notes__expand-buttons">
+    <Button :variant="'secondary'" @click="expandAll">Expand all</Button> /
+    <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
+  </div>
+
+  <!-- If no note yet, show instruction -->
+  <div v-if="sortedCurrentList.length < 1" class="notes__empty-list-msg">
+    <p>Click on the <em>+ Add note</em> button to create your first note!</p>
+  </div>
+
+  <!-- Accordion list of notes -->
+  <details
+    v-for="item in sortedCurrentList"
+    :id="`note${item.id}`"
+    class="note"
+    :key="item.id"
+    open
+  >
+    <summary class="note__summary">
+      <span class="note__title">Page {{ item.id }}</span>
+      <Menu :label="'More'">
+        <button
+          @keydown.enter="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+          @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+        >
+          View page
+        </button>
+        <button @keydown.enter="deleteNote(item.id)" @click="deleteNote(item.id)">Delete</button>
+      </Menu>
+    </summary>
+    <textarea class="note__textarea" v-model="item.note"></textarea>
+  </details>
+
+  <Modal ref="addNoteModalRef" fitContent>
+    <div class="notes__add-page">
+      <label for="add-note">Select a page number to add a note for it in the list</label>
+      <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
+        <option value="">Page number</option>
+        <option v-for="item in unusedList" :value="item">{{ item }}</option>
+      </select>
+    </div>
+  </Modal>
+  <ImportModal ref="importDialogRef" @change:loadfile="loadFile" />
+
+  <PageModal ref="pageDialogRef" :page="modalPage" />
+</template>
+
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Button from '../Button/Button.vue'
@@ -62,62 +118,6 @@ const pageDialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
 const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef)
 </script>
-
-<template>
-  <div class="notes__header">
-    <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
-    <Menu :label="'Import/export'">
-      <button @keydown.enter="openImportModal" @click="openImportModal">Import notes</button>
-      <button @keydown.enter="exportFile" @click="exportFile">Export notes</button>
-    </Menu>
-  </div>
-
-  <div class="notes__expand-buttons">
-    <Button :variant="'secondary'" @click="expandAll">Expand all</Button> /
-    <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
-  </div>
-
-  <!-- If no note yet, show instruction -->
-  <div v-if="sortedCurrentList.length < 1" class="notes__empty-list-msg">
-    <p>Click on the <em>+ Add note</em> button to create your first note!</p>
-  </div>
-
-  <!-- Accordion list of notes -->
-  <details
-    v-for="item in sortedCurrentList"
-    :id="`note${item.id}`"
-    class="note"
-    :key="item.id"
-    open
-  >
-    <summary class="note__summary">
-      <span class="note__title">Page {{ item.id }}</span>
-      <Menu :label="'More'">
-        <button
-          @keydown.enter="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
-          @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
-        >
-          View page
-        </button>
-        <button @keydown.enter="deleteNote(item.id)" @click="deleteNote(item.id)">Delete</button>
-      </Menu>
-    </summary>
-    <textarea class="note__textarea" v-model="item.note"></textarea>
-  </details>
-
-  <Modal ref="addNoteModalRef" fitContent>
-    <div class="notes__add-page">
-      <label for="add-note">Select a page number to add a note for it in the list</label>
-      <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
-        <option value="">Page number</option>
-        <option v-for="item in unusedList" :value="item">{{ item }}</option>
-      </select>
-    </div>
-  </Modal>
-  <ImportModal ref="importDialogRef" @change:loadfile="loadFile" />
-
-  <PageModal ref="pageDialogRef" :page="modalPage" />
-</template>
 
 <style scoped>
 /* ALL NOTES */

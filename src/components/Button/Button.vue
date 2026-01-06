@@ -1,3 +1,27 @@
+<template>
+  <component
+    :is="linkComponent"
+    :to="to"
+    :href="href"
+    @click="(e: MouseEvent) => emit('click', e)"
+    :class="[`button button__${variant} ${invertedClass}`]"
+  >
+    <div
+      v-if="iconBefore"
+      :style="iconBeforeStyles"
+      class="button__icon button__icon_before"
+      aria-hidden="true"
+    ></div>
+    <slot>Label needed</slot>
+    <div
+      v-if="iconAfter"
+      :style="iconAfterStyles"
+      class="button__icon button__icon_after"
+      aria-hidden="true"
+    ></div>
+  </component>
+</template>
+
 <script setup lang="ts">
 import { computed } from 'vue'
 
@@ -47,30 +71,6 @@ const linkComponent = computed(() => {
   return 'button'
 })
 </script>
-
-<template>
-  <component
-    :is="linkComponent"
-    :to="to"
-    :href="href"
-    @click="(e: MouseEvent) => emit('click', e)"
-    :class="[`button button__${variant} ${invertedClass}`]"
-  >
-    <div
-      v-if="iconBefore"
-      :style="iconBeforeStyles"
-      class="button__icon button__icon_before"
-      aria-hidden="true"
-    ></div>
-    <slot>Label needed</slot>
-    <div
-      v-if="iconAfter"
-      :style="iconAfterStyles"
-      class="button__icon button__icon_after"
-      aria-hidden="true"
-    ></div>
-  </component>
-</template>
 
 <style scoped>
 .button {

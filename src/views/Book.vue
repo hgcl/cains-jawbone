@@ -1,18 +1,3 @@
-<script setup lang="ts">
-import Button from '../components/Button/Button.vue'
-import SearchModal from '../components/SearchModal/SearchModal.vue'
-import PagesOverview from '../components/PagesOverview/PagesOverview.vue'
-import searchSvg from '../assets/search-feathericons.svg'
-import chevronsUpSvg from '../assets/chevrons-up-feathericons.svg'
-import { ref } from 'vue'
-
-const dialogRef = ref<InstanceType<typeof SearchModal> | null>(null)
-
-function openSearchModal() {
-  dialogRef.value?.open()
-}
-</script>
-
 <template>
   <main id="main">
     <div class="header">
@@ -70,6 +55,21 @@ function openSearchModal() {
     <Button href="#main" :iconAfter="chevronsUpSvg">Back to top</Button>
   </footer>
 </template>
+
+<script setup lang="ts">
+import Button from '../components/Button/Button.vue'
+import SearchModal from '../components/SearchModal/SearchModal.vue'
+import PagesOverview from '../components/PagesOverview/PagesOverview.vue'
+import searchSvg from '../assets/search-feathericons.svg'
+import chevronsUpSvg from '../assets/chevrons-up-feathericons.svg'
+import { ref } from 'vue'
+
+const dialogRef = ref<InstanceType<typeof SearchModal> | null>(null)
+
+function openSearchModal() {
+  dialogRef.value?.open()
+}
+</script>
 
 <style scoped>
 /* Main */

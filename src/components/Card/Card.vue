@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import Button from '../Button/Button.vue'
-import IconButton from '../IconButton/IconButton.vue'
-import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
-import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
-import chevronsUpSvg from '../../assets/chevrons-up-feathericons.svg'
-import chevronsDownSvg from '../../assets/chevrons-down-feathericons.svg'
-import bookOpenSvg from '../../assets/book-open-feathericons.svg'
-import type { BookPage } from '../../types'
-import { truncateText } from './Card.utils'
-
-const { page } = defineProps<{
-  page: BookPage
-}>()
-const emit = defineEmits<{
-  (e: 'click:moveleft', event: MouseEvent): void
-  (e: 'click:moveright', event: MouseEvent): void
-  (e: 'open:dialog', event: MouseEvent): void
-}>()
-</script>
-
 <template>
   <article class="card">
     <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
@@ -51,6 +30,27 @@ const emit = defineEmits<{
     >
   </article>
 </template>
+
+<script setup lang="ts">
+import Button from '../Button/Button.vue'
+import IconButton from '../IconButton/IconButton.vue'
+import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
+import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
+import chevronsUpSvg from '../../assets/chevrons-up-feathericons.svg'
+import chevronsDownSvg from '../../assets/chevrons-down-feathericons.svg'
+import bookOpenSvg from '../../assets/book-open-feathericons.svg'
+import type { BookPage } from '../../types'
+import { truncateText } from './Card.utils'
+
+const { page } = defineProps<{
+  page: BookPage
+}>()
+const emit = defineEmits<{
+  (e: 'click:moveleft', event: MouseEvent): void
+  (e: 'click:moveright', event: MouseEvent): void
+  (e: 'open:dialog', event: MouseEvent): void
+}>()
+</script>
 
 <style scoped>
 #page-array__2 .card {

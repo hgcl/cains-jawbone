@@ -1,3 +1,78 @@
+<template>
+  <Tabs>
+    <!-- LIST 1: UNSORTED -->
+    <template #tab1>
+      <div id="page-array__1">
+        <p>
+          Open a page of the book to read it, and start ordering the pages by moving them to the
+          <em>Sorted pages</em> tab.
+        </p>
+
+        <!-- List of cards -->
+        <div class="page-array__card-list">
+          <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
+            <Card :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- LIST 2: SORTED -->
+    <template #tab2>
+      <div id="page-array__2" @dragover.prevent @dragenter.prevent @drop.prevent="onDropList2">
+        <p>
+          Reorder the pages of the book by dragging them, using the arrows, or editing the field
+          below.
+        </p>
+        <PageOrder :orderString="orderString" @update:orderstring="updateOrderString" />
+
+        <!-- List of cards -->
+        <div class="page-array__card-list">
+          <!-- If no page yet, show instruction -->
+          <div v-if="sortedList2.length < 1" class="page-array__empty-list-msg">
+            <p>
+              Add your first page to be sorted through the <em>Page order</em> field above, or by
+              clicking on the <em>Sort</em> button inside each page.
+            </p>
+          </div>
+
+          <!-- If pages were already added -->
+          <div
+            v-for="(item, index) in sortedList2"
+            :key="item.id"
+            class="card"
+            draggable="true"
+            @dragstart="onDragStart(item)"
+            @dragover.prevent="onDragOverList2(index)"
+          >
+            <Card
+              :page="item"
+              @open:dialog="openDialog(item, index, sortedList2)"
+              @click:moveleft="moveLeft(item, index)"
+              @click:moveright="moveRight(item, index)"
+            />
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- NOTES -->
+    <template #tab3>
+      <Notes :initialList="contentRef" />
+    </template>
+  </Tabs>
+
+  <!-- COMMON DIALOG -->
+  <PageModal
+    ref="pageDialogRef"
+    :page="modalPage"
+    :hasNavigation="true"
+    @toggle:sorted="toggleSort(modalPage)"
+    @click:nextpage="toNextPage(modalIndex, modalList)"
+    @click:previouspage="toPreviousPage(modalIndex, modalList)"
+  />
+</template>
+
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import bookJson from '../../assets/book.json'
@@ -74,81 +149,6 @@ const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
  */
 const contentRef = ref<Note[]>([])
 </script>
-
-<template>
-  <Tabs>
-    <!-- LIST 1: UNSORTED -->
-    <template #tab1>
-      <div id="page-array__1">
-        <p>
-          Open a page of the book to read it, and start ordering the pages by moving them to the
-          <em>Sorted pages</em> tab.
-        </p>
-
-        <!-- List of cards -->
-        <div class="page-array__card-list">
-          <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
-            <Card :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <!-- LIST 2: SORTED -->
-    <template #tab2>
-      <div id="page-array__2" @dragover.prevent @dragenter.prevent @drop.prevent="onDropList2">
-        <p>
-          Reorder the pages of the book by dragging them, using the arrows, or editing the field
-          below.
-        </p>
-        <PageOrder :orderString="orderString" @update:orderstring="updateOrderString" />
-
-        <!-- List of cards -->
-        <div class="page-array__card-list">
-          <!-- If no page yet, show instruction -->
-          <div v-if="sortedList2.length < 1" class="page-array__empty-list-msg">
-            <p>
-              Add your first page to be sorted through the <em>Page order</em> field above, or by
-              clicking on the <em>Sort</em> button inside each page.
-            </p>
-          </div>
-
-          <!-- If pages were already added -->
-          <div
-            v-for="(item, index) in sortedList2"
-            :key="item.id"
-            class="card"
-            draggable="true"
-            @dragstart="onDragStart(item)"
-            @dragover.prevent="onDragOverList2(index)"
-          >
-            <Card
-              :page="item"
-              @open:dialog="openDialog(item, index, sortedList2)"
-              @click:moveleft="moveLeft(item, index)"
-              @click:moveright="moveRight(item, index)"
-            />
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <!-- NOTES -->
-    <template #tab3>
-      <Notes :initialList="contentRef" />
-    </template>
-  </Tabs>
-
-  <!-- COMMON DIALOG -->
-  <PageModal
-    ref="pageDialogRef"
-    :page="modalPage"
-    :hasNavigation="true"
-    @toggle:sorted="toggleSort(modalPage)"
-    @click:nextpage="toNextPage(modalIndex, modalList)"
-    @click:previouspage="toPreviousPage(modalIndex, modalList)"
-  />
-</template>
 
 <style scoped>
 #page-array__1,

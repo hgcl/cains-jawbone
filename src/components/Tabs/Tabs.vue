@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useSelectTab } from './Tabs.utils'
-
-/**
- * TABS
- */
-const selectedIndex = ref(0)
-const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }, { title: 'Notes' }]
-
-const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
-</script>
-
 <template>
   <div class="tabs__wrapper">
     <!-- TABLIST -->
@@ -45,6 +32,19 @@ const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
     </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useSelectTab } from './Tabs.utils'
+
+/**
+ * TABS
+ */
+const selectedIndex = ref(0)
+const tabs = [{ title: 'Unsorted pages' }, { title: 'Sorted pages' }, { title: 'Notes' }]
+
+const { selectTab, switchTab } = useSelectTab(selectedIndex, tabs)
+</script>
 
 <style scoped>
 .tabs__wrapper {

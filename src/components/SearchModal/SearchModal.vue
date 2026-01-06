@@ -1,3 +1,37 @@
+<template>
+  <Modal ref="modalRef">
+    <template #back
+      ><Button
+        v-if="!searchVisible"
+        :variant="'secondary'"
+        @click="backToSearch()"
+        :iconBefore="chevronLeftSvg"
+        >Back to search</Button
+      ></template
+    >
+    <template #heading>{{ heading }}</template>
+    <div v-if="searchVisible">
+      <input
+        class="search-modal__input"
+        type="text"
+        v-model="search"
+        placeholder="Search the pages"
+      />
+      <p v-if="!searchResults.length">No results</p>
+      <ul class="search-modal__result-list" v-if="searchResults.length">
+        <li class="search-modal__result-item" v-for="result in searchResults" :key="result.page.id">
+          <Button :variant="'secondary'" @click="showPage(result.page)"
+            >Page {{ result.page.id }}</Button
+          >
+          <p v-html="result.snippet"></p>
+        </li>
+      </ul>
+    </div>
+    <div v-if="!searchVisible" class="search-modal__page-list">{{ pageList }}</div>
+    <p v-if="!searchVisible">{{ pageContent }}</p>
+  </Modal>
+</template>
+
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Modal from '../Modal/Modal.vue'
@@ -56,40 +90,6 @@ const heading = computed(() => (searchVisible.value ? 'Search' : `Page ${pageNum
 
 const { showPage, backToSearch } = useShowPage(searchVisible, pageNumber, pageContent, pageList)
 </script>
-
-<template>
-  <Modal ref="modalRef">
-    <template #back
-      ><Button
-        v-if="!searchVisible"
-        :variant="'secondary'"
-        @click="backToSearch()"
-        :iconBefore="chevronLeftSvg"
-        >Back to search</Button
-      ></template
-    >
-    <template #heading>{{ heading }}</template>
-    <div v-if="searchVisible">
-      <input
-        class="search-modal__input"
-        type="text"
-        v-model="search"
-        placeholder="Search the pages"
-      />
-      <p v-if="!searchResults.length">No results</p>
-      <ul class="search-modal__result-list" v-if="searchResults.length">
-        <li class="search-modal__result-item" v-for="result in searchResults" :key="result.page.id">
-          <Button :variant="'secondary'" @click="showPage(result.page)"
-            >Page {{ result.page.id }}</Button
-          >
-          <p v-html="result.snippet"></p>
-        </li>
-      </ul>
-    </div>
-    <div v-if="!searchVisible" class="search-modal__page-list">{{ pageList }}</div>
-    <p v-if="!searchVisible">{{ pageContent }}</p>
-  </Modal>
-</template>
 
 <style scoped>
 .search-modal__input {

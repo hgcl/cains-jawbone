@@ -1,3 +1,11 @@
+<template>
+  <button @click="(e) => emit('click', e)">
+    <div v-if="icon" :style="iconStyles" class="button__icon"></div>
+    <!-- The label displays as a tooltip on hover -->
+    <span class="button__label"><slot>Label needed</slot></span>
+  </button>
+</template>
+
 <script setup lang="ts">
 import { computed } from 'vue'
 
@@ -16,14 +24,6 @@ const iconStyles = computed(() => ({
   mask: icon ? `url("${icon}") no-repeat center` : '',
 }))
 </script>
-
-<template>
-  <button @click="(e) => emit('click', e)">
-    <div v-if="icon" :style="iconStyles" class="button__icon"></div>
-    <!-- The label displays as a tooltip on hover -->
-    <span class="button__label"><slot>Label needed</slot></span>
-  </button>
-</template>
 
 <style scoped>
 button {

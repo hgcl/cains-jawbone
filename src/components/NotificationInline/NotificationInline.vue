@@ -1,13 +1,13 @@
-<script setup lang="ts">
-const { status } = defineProps<{ status: 'danger' | 'success' }>()
-</script>
-
 <template>
   <div :class="[`notification notification__${status}`]">
     <div class="notification__icon" aria-hidden="true"></div>
     <slot></slot>
   </div>
 </template>
+
+<script setup lang="ts">
+const { status } = defineProps<{ status: 'danger' | 'success' }>()
+</script>
 
 <style scoped>
 .notification {
