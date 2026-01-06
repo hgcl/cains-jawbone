@@ -1,19 +1,13 @@
 <template>
   <Modal ref="modalRef">
     <template #heading>Page {{ page?.id }}</template>
-    <Button
-      v-if="page?.list === 1"
-      class="page-modal__sort-button"
-      :iconBefore="plusSvg"
-      @click="(e) => emit('toggle:sorted', e)"
-      >Sort page</Button
-    >
-    <Button
-      v-if="page?.list === 2"
-      class="page-modal__sort-button"
-      :iconBefore="checkSvg"
-      @click="(e) => emit('toggle:sorted', e)"
-      >Unsort page</Button
+    <Toggle
+      :isChecked="isSorted"
+      @update:isChecked="updateToggle"
+      :iconUnchecked="starSvg"
+      :iconChecked="starFillSvg"
+      class="page-modal__sort-toggle"
+      >Sorted</Toggle
     >
     <p class="page-modal__content" v-html="page?.content"></p>
     <div class="page-modal__nav-buttons" v-if="hasNavigation">
@@ -33,25 +27,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { BookPage } from '../../types'
 import Modal from '../Modal/Modal.vue'
 import Button from '../Button/Button.vue'
+import Toggle from '../Toggle/Toggle.vue'
 import arrowLeftSvg from '../../assets/arrow-left-feathericons.svg'
 import arrowRightSvg from '../../assets/arrow-right-feathericons.svg'
-import checkSvg from '../../assets/x-feathericons.svg'
-import plusSvg from '../../assets/plus-feathericons.svg'
+import starSvg from '../../assets/star-feathericons.svg'
+import starFillSvg from '../../assets/star-fill-feathericons.svg'
 
-defineProps<{
+const props = defineProps<{
   page: BookPage | null
   hasNavigation?: boolean
 }>()
 const emit = defineEmits<{
-  (e: 'toggle:sorted', event: MouseEvent): void
+  (e: 'toggle:sorted', value: boolean): void
   (e: 'click:nextpage', event: MouseEvent): void
   (e: 'click:previouspage', event: MouseEvent): void
 }>()
 
+/**
+ * TOGGLE SORT/UNSORTED
+ */
+
+const isSorted = computed({
+  get: () => props.page?.list === 2,
+  set: (value: boolean) => emit('toggle:sorted', value),
+})
+
+function updateToggle(newValue: boolean) {
+  isSorted.value = newValue
+}
+
+/**
+ * MODAL
+ */
 const modalRef = ref<InstanceType<typeof Modal> | null>(null)
 
 // Forward exposed methods from Modal.vue
@@ -62,7 +73,8 @@ defineExpose({
 </script>
 
 <style scoped>
-.page-modal__sort-button {
+.page-modal__sort-toggle {
+  width: fit-content;
   margin-left: auto;
   margin-right: auto;
 }
