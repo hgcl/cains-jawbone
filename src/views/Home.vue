@@ -24,6 +24,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--color-accent);
   /* Vertically center */
   height: 100vh;
 }
