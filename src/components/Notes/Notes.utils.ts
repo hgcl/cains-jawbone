@@ -48,6 +48,7 @@ export function useAddNote(
     // Reset
     selectedPageNumber.value = ''
   }
+
   function deleteNote(pageNumber: number) {
     // Warning message before deletion
     const userConfirms = confirm(

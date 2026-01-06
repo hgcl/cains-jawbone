@@ -58,7 +58,7 @@
 
     <!-- NOTES -->
     <template #tab3>
-      <Notes :initialList="contentRef" />
+      <Notes :notesList="notesList" @update:notesList="updateNotesList" />
     </template>
   </Tabs>
 
@@ -147,8 +147,20 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 
 /**
+ * NOTES
+ */
+const notesList = ref<Note[]>([])
+const notesListString = computed(() => JSON.stringify(notesList.value))
+
+function updateNotesList(newNotesList: Note[]) {
+  notesList.value = newNotesList
+}
+
+/**
  * LOCAL STORAGE
  */
+
+// Local storage: pageOrder
 // 1a. If user updates `orderString` (e.g. drag & drop, arrows, modal actions)
 // 1b. If user updates page order input, updateOrderString() is called and `orderString` is recomputed
 // 2. If `orderString` is updated, watcher updates the `pageOrder` local storage variable
@@ -163,16 +175,28 @@ onMounted(() => {
   const savedOrder = localStorage.getItem(ORDER_STORAGE_KEY)
   if (!savedOrder) return
 
-  // Transform string into array of numbers
+  // Transform string into type number[]
   const parsed = savedOrder.split(',').map(Number)
 
   updateOrderString(parsed)
 })
 
-/**
- * NOTES
- */
-const contentRef = ref<Note[]>([])
+// Local storage: notes
+const NOTES_STORAGE_KEY = 'notes'
+
+watch(notesListString, (newVal) => {
+  localStorage.setItem(NOTES_STORAGE_KEY, newVal)
+})
+
+onMounted(() => {
+  const savedNotes = localStorage.getItem(NOTES_STORAGE_KEY)
+  if (!savedNotes) return
+
+  // Transform string into type Note[]
+  const parsed = JSON.parse(savedNotes)
+
+  updateNotesList(parsed)
+})
 </script>
 
 <style scoped>

@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Button from '../Button/Button.vue'
 import Menu from '../Menu/Menu.vue'
 import Modal from '../Modal/Modal.vue'
@@ -67,7 +67,10 @@ import plusSvg from '../../assets/plus-feathericons.svg'
 import bookJson from '../../assets/book.json'
 import { useOpenDialog } from '../PagesOverview/PagesOverview.utils'
 
-const { initialList } = defineProps<{ initialList: Note[] }>()
+const { notesList } = defineProps<{ notesList: Note[] }>()
+const emit = defineEmits<{
+  (e: 'update:notesList', value: Note[]): void
+}>()
 
 const allNotes: number[] = []
 for (let i = 1; i < 101; i++) {
@@ -75,11 +78,21 @@ for (let i = 1; i < 101; i++) {
 }
 
 // `currentList` contains the pages that already have notes
-const currentList = ref<Note[]>(initialList)
+const currentList = ref<Note[]>(notesList)
 const sortedCurrentList = computed(() => [...currentList.value].sort((a, b) => a.id - b.id))
 // `unusedList` contains the pages that DON'T have notes
 const unusedList = computed(() =>
   allNotes.filter((pageNumber) => !currentList.value.find((item) => item.id === pageNumber)),
+)
+
+// 1. Watcher detects if currentList (or nested prop inside currentList) changes
+// 2. New `notesList` value is emitted to parent
+watch(
+  currentList,
+  (val) => {
+    emit('update:notesList', val)
+  },
+  { deep: true },
 )
 
 /**
