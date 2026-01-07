@@ -1,15 +1,17 @@
 <template>
-  <main id="main">
-    <div class="header">
-      <h1>Cain's Jawbone</h1>
-      <Button href="#getting-started" :variant="'secondary'">Getting started</Button>
-    </div>
+  <div>
+    <main id="main">
+      <div class="header">
+        <h1>Cain's Jawbone</h1>
+        <Button href="#getting-started" :variant="'secondary'">Getting started</Button>
+      </div>
 
-    <Button @click="openSearchModal" :iconBefore="searchSvg">Search content</Button>
-    <SearchModal ref="dialogRef" />
-    <PagesOverview />
-  </main>
-  <Footer></Footer>
+      <Button @click="openSearchModal" :iconBefore="searchSvg">Search content</Button>
+      <SearchModal ref="dialogRef" />
+      <PagesOverview />
+    </main>
+    <Footer></Footer>
+  </div>
 </template>
 
 <script setup lang="ts">
