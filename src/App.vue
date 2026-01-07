@@ -6,6 +6,19 @@
   </router-view>
 </template>
 
+<script>
+// Integrate Boost Toad feedback system
+export default {
+  mounted() {
+    const script = document.createElement('script')
+    script.src =
+      'https://www.boosttoad.com/api/widget/bundle?projectId=10c326b0-a71e-474c-bd87-a0024559fadf'
+    script.async = true
+    document.body.appendChild(script)
+  },
+}
+</script>
+
 <style>
 #app {
   display: flex;
