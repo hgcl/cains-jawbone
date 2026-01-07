@@ -26,10 +26,10 @@ main {
   justify-content: center;
   background-color: var(--color-accent);
   /* Vertically center */
-  height: 100vh;
+  min-height: 100vh;
 }
 main > div {
-  max-width: 464px;
+  max-width: 544px;
   display: flex;
   flex-direction: column;
   gap: var(--gap-l);
