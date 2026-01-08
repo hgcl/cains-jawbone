@@ -20,13 +20,22 @@ import Button from '../components/Button/Button.vue'
 import SearchModal from '../components/SearchModal/SearchModal.vue'
 import PagesOverview from '../components/PagesOverview/PagesOverview.vue'
 import searchSvg from '../assets/search-feathericons.svg'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const dialogRef = ref<InstanceType<typeof SearchModal> | null>(null)
 
 function openSearchModal() {
   dialogRef.value?.open()
 }
+
+// Integrate Boost Toad feedback system
+onMounted(() => {
+  const script = document.createElement('script')
+  script.src =
+    'https://www.boosttoad.com/api/widget/bundle?projectId=10c326b0-a71e-474c-bd87-a0024559fadf'
+  script.async = true
+  document.body.appendChild(script)
+})
 </script>
 
 <style>
