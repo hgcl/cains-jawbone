@@ -3,9 +3,9 @@
     <h3 class="card__page" v-if="page">Page {{ page.id }}</h3>
     <div class="card__preview-arrows-wrapper">
       <p class="card__preview">
-        <span v-html="truncateText(page.content, 'end')"></span>
+        <span v-html="sanitizeHtml(truncateText(page.content, 'end'))"></span>
         <span class="card__preview__dots"> [...] </span>
-        <span v-html="truncateText(page.content, 'start')"></span>
+        <span v-html="sanitizeHtml(truncateText(page.content, 'start'))"></span>
       </p>
       <div v-if="page.list === 2" class="card__arrows_desktop">
         <IconButton :icon="chevronsLeft" @click="(e) => emit('click:moveleft', e)"
@@ -32,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+import sanitizeHtml from 'sanitize-html'
+
 import Button from '../Button/Button.vue'
 import IconButton from '../IconButton/IconButton.vue'
 import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'

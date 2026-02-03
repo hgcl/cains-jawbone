@@ -1,4 +1,4 @@
-export function truncateText(string: string, truncatePosition: 'start' | 'end') {
+export const truncateText = (string: string, truncatePosition: 'start' | 'end'): string => {
   let subString = string
 
   // String is truncated at 60 chars (last word that is cut is removed)
@@ -12,4 +12,6 @@ export function truncateText(string: string, truncatePosition: 'start' | 'end') 
     subString = string.slice(string.length - 55)
     return string.slice(subString.indexOf(' ') - 55).trimStart()
   }
+
+  return ''
 }

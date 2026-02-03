@@ -23,16 +23,18 @@
           <Button :variant="'secondary'" @click="showPage(result.page)"
             >Page {{ result.page.id }}</Button
           >
-          <p v-html="result.snippet"></p>
+          <p v-html="sanitizeHtml(result.snippet)"></p>
         </li>
       </ul>
     </div>
     <div v-if="!searchVisible" class="search-modal__page-list">{{ pageList }}</div>
-    <p v-if="!searchVisible">{{ pageContent }}</p>
+    <p v-if="!searchVisible" v-html="sanitizeHtml(pageContent)"></p>
   </Modal>
 </template>
 
 <script setup lang="ts">
+import sanitizeHtml from 'sanitize-html'
+
 import { computed, ref } from 'vue'
 import Modal from '../Modal/Modal.vue'
 import Button from '../Button/Button.vue'

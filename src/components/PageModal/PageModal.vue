@@ -9,7 +9,7 @@
       class="page-modal__sort-toggle"
       >Sorted</Toggle
     >
-    <p class="page-modal__content" v-html="page?.content"></p>
+    <p class="page-modal__content" v-if="page" v-html="sanitizeHtml(page.content)"></p>
     <div class="page-modal__nav-buttons" v-if="hasNavigation">
       <Button
         :variant="'secondary'"
@@ -27,6 +27,8 @@
 </template>
 
 <script setup lang="ts">
+import sanitizeHtml from 'sanitize-html'
+
 import { computed, ref } from 'vue'
 import type { BookPage } from '../../types'
 import Modal from '../Modal/Modal.vue'

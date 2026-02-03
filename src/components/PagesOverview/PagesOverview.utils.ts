@@ -177,8 +177,8 @@ export function useUpdateOrderString(
   bookJson: BookPage[],
 ) {
   function updateOrderString(pageArray: number[]) {
-    let newList1: BookPage[] = []
-    let newList2: BookPage[] = []
+    const newList1: BookPage[] = []
+    const newList2: BookPage[] = []
 
     bookJson.forEach((el, index) => {
       const indexInList2 = pageArray.indexOf(el.id)
