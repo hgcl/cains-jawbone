@@ -1,15 +1,15 @@
 <template>
   <div class="notes__header">
-    <Button :iconBefore="plusSvg" @click="openAddNoteModal">Add note</Button>
-    <Menu :label="'Import/export'">
+    <ButtonElement :iconBefore="plusSvg" @click="openAddNoteModal">Add note</ButtonElement>
+    <MenuElement :label="'Import/export'">
       <button @keydown.enter="openImportModal" @click="openImportModal">Import notes</button>
       <button @keydown.enter="exportFile" @click="exportFile">Export notes</button>
-    </Menu>
+    </MenuElement>
   </div>
 
   <div class="notes__expand-buttons">
-    <Button :variant="'secondary'" @click="expandAll">Expand all</Button> /
-    <Button :variant="'secondary'" @click="collapseAll">Collapse all</Button>
+    <ButtonElement :variant="'secondary'" @click="expandAll">Expand all</ButtonElement> /
+    <ButtonElement :variant="'secondary'" @click="collapseAll">Collapse all</ButtonElement>
   </div>
 
   <!-- If no note yet, show instruction -->
@@ -27,7 +27,7 @@
   >
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
-      <Menu :label="'More'">
+      <MenuElement :label="'More'">
         <button
           @keydown.enter="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
           @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
@@ -35,12 +35,12 @@
           View page
         </button>
         <button @keydown.enter="deleteNote(item.id)" @click="deleteNote(item.id)">Delete</button>
-      </Menu>
+      </MenuElement>
     </summary>
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
 
-  <Modal ref="addNoteModalRef" fitContent>
+  <ModalElement ref="addNoteModalRef" fitContent>
     <div class="notes__add-page">
       <label for="add-note">Select a page number to add a note for it in the list</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
@@ -48,7 +48,7 @@
         <option v-for="item in unusedList" :value="item">{{ item }}</option>
       </select>
     </div>
-  </Modal>
+  </ModalElement>
   <ImportModal ref="importDialogRef" @change:loadfile="loadFile" />
 
   <PageModal ref="pageDialogRef" :page="modalPage" />
@@ -56,12 +56,12 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import Button from '../Button/Button.vue'
-import Menu from '../Menu/Menu.vue'
-import Modal from '../Modal/Modal.vue'
+import ButtonElement from '../ButtonElement/ButtonElement.vue'
+import MenuElement from '../MenuElement/MenuElement.vue'
+import ModalElement from '../ModalElement/ModalElement.vue'
 import PageModal from '../PageModal/PageModal.vue'
 import ImportModal from '../ImportModal/ImportModal.vue'
-import { expandAll, collapseAll, useAddNote, useExportFile } from './Notes.utils'
+import { expandAll, collapseAll, useAddNote, useExportFile } from './NotesView.utils'
 import type { BookPage, Note } from '@/types'
 import plusSvg from '../../assets/plus-feathericons.svg'
 import bookJson from '../../assets/book.json'
@@ -99,7 +99,7 @@ watch(
  * ADD/DELETE NOTE
  */
 
-const addNoteModalRef = ref<InstanceType<typeof Modal> | null>(null)
+const addNoteModalRef = ref<InstanceType<typeof ModalElement> | null>(null)
 
 function openAddNoteModal() {
   addNoteModalRef.value?.open()

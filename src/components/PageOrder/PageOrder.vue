@@ -4,11 +4,11 @@
     <div class="page-order__input_wrapper">
       <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
       <div class="page-order__input__buttons">
-        <Button @click="reviewOrderString">Apply order</Button>
+        <ButtonElement @click="reviewOrderString">Apply order</ButtonElement>
         <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
-        <Button class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
+        <ButtonElement class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
           Copy
-        </Button>
+        </ButtonElement>
       </div>
     </div>
     <ShowElement ref="showElRef">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from '../Button/Button.vue'
+import ButtonElement from '../ButtonElement/ButtonElement.vue'
 import ShowElement from '../ShowElement/ShowElement.vue'
 import NotificationInline from '../NotificationInline/NotificationInline.vue'
 import copySvg from '../../assets/copy-feathericons.svg'

@@ -22,19 +22,19 @@
         >
       </div>
     </div>
-    <Button
+    <ButtonElement
       @click="(e) => emit('open:dialog', e)"
       class="card__open-page-button"
       :iconBefore="bookOpenSvg"
-      >Full page<span class="visually-hidden"> page {{ page.id }}</span></Button
-    >
+      >Full page<span class="visually-hidden"> page {{ page.id }}</span>
+    </ButtonElement>
   </article>
 </template>
 
 <script setup lang="ts">
 import sanitizeHtml from 'sanitize-html'
 
-import Button from '../Button/Button.vue'
+import ButtonElement from '../ButtonElement/ButtonElement.vue'
 import IconButton from '../IconButton/IconButton.vue'
 import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
 import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
@@ -42,7 +42,7 @@ import chevronsUpSvg from '../../assets/chevrons-up-feathericons.svg'
 import chevronsDownSvg from '../../assets/chevrons-down-feathericons.svg'
 import bookOpenSvg from '../../assets/book-open-feathericons.svg'
 import type { BookPage } from '../../types'
-import { truncateText } from './Card.utils'
+import { truncateText } from './CardPreview.utils'
 
 const { page } = defineProps<{
   page: BookPage

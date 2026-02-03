@@ -1,5 +1,5 @@
 <template>
-  <Tabs>
+  <TabsElement>
     <!-- LIST 1: UNSORTED -->
     <template #tab1>
       <div id="page-array__1">
@@ -11,7 +11,7 @@
         <!-- List of cards -->
         <div class="page-array__card-list">
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
-            <Card :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
+            <CardPreview :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@
             @dragstart="onDragStart(item)"
             @dragover.prevent="onDragOverList2(index)"
           >
-            <Card
+            <CardPreview
               :page="item"
               @open:dialog="openDialog(item, index, sortedList2)"
               @click:moveleft="moveLeft(item, index)"
@@ -58,9 +58,9 @@
 
     <!-- NOTES -->
     <template #tab3>
-      <Notes :notesList="notesList" @update:notesList="updateNotesList" />
+      <NotesView :notesList="notesList" @update:notesList="updateNotesList" />
     </template>
-  </Tabs>
+  </TabsElement>
 
   <!-- COMMON DIALOG -->
   <PageModal
@@ -76,11 +76,11 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import bookJson from '../../assets/book.json'
-import Tabs from '../../components/Tabs/Tabs.vue'
-import Card from '../../components/Card/Card.vue'
+import TabsElement from '../TabsElement/TabsElement.vue'
+import CardPreview from '../CardPreview/CardPreview.vue'
 import PageOrder from '../../components/PageOrder/PageOrder.vue'
 import PageModal from '../PageModal/PageModal.vue'
-import Notes from '../Notes/Notes.vue'
+import NotesView from '../NotesView/NotesView.vue'
 import type { BookPage, Note } from '../../types'
 import {
   useDragDrop,

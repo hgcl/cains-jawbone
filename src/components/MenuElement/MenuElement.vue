@@ -2,15 +2,15 @@
 <!-- Source: https://inclusive-components.design/menus-menu-buttons/ -->
 <template>
   <div class="menu">
-    <Button
+    <ButtonElement
       aria-controls="menu-options"
       :aria-expanded="isMenuOpen ? 'true' : 'false'"
       @click.stop="toggleMenu"
       @keydown="handleKeydownMenu($event)"
       class="menu__button"
       :iconAfter="chevronDownSvg"
-      >{{ label }}</Button
-    >
+      >{{ label }}
+    </ButtonElement>
     <div v-if="isMenuOpen" class="menu-overlay" @click="isMenuOpen = false"></div>
     <ul class="menu__options" v-if="isMenuOpen">
       <!-- Every child used inside of the default slot will have an `onClick` handler -->
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import Button from '../Button/Button.vue'
+import ButtonElement from '../ButtonElement/ButtonElement.vue'
 import chevronDownSvg from '../../assets/chevron-down-feathericons.svg'
 import { useSlots, cloneVNode, ref, onMounted, onBeforeUnmount } from 'vue'
 

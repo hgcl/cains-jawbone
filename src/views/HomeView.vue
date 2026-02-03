@@ -10,13 +10,13 @@
         Can you find the correct page order, uncover the secrets hidden within, and solve the
         chilling murders?
       </p>
-      <Button :to="'/book'" :inverted="true">Open the book</Button>
+      <ButtonElement :to="'/book'" :inverted="true">Open the book</ButtonElement>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import Button from '../components/Button/Button.vue'
+import ButtonElement from '../components/ButtonElement/ButtonElement.vue'
 </script>
 
 <style scoped>

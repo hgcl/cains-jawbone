@@ -3,20 +3,22 @@
     <main id="main">
       <div class="header">
         <h1>Cain's Jawbone</h1>
-        <Button href="#getting-started" :variant="'secondary'">Getting started</Button>
+        <ButtonElement href="#getting-started" :variant="'secondary'"
+          >Getting started</ButtonElement
+        >
       </div>
 
-      <Button @click="openSearchModal" :iconBefore="searchSvg">Search content</Button>
+      <ButtonElement @click="openSearchModal" :iconBefore="searchSvg">Search content</ButtonElement>
       <SearchModal ref="dialogRef" />
       <PagesOverview />
     </main>
-    <Footer></Footer>
+    <FooterElement></FooterElement>
   </div>
 </template>
 
 <script setup lang="ts">
-import Footer from '../components/Footer/Footer.vue'
-import Button from '../components/Button/Button.vue'
+import FooterElement from '../components/FooterElement/FooterElement.vue'
+import ButtonElement from '../components/ButtonElement/ButtonElement.vue'
 import SearchModal from '../components/SearchModal/SearchModal.vue'
 import PagesOverview from '../components/PagesOverview/PagesOverview.vue'
 import searchSvg from '../assets/search-feathericons.svg'

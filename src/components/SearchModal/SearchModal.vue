@@ -1,12 +1,12 @@
 <template>
-  <Modal ref="modalRef">
+  <ModalElement ref="modalRef">
     <template #back
-      ><Button
+      ><ButtonElement
         v-if="!searchVisible"
         :variant="'secondary'"
         @click="backToSearch()"
         :iconBefore="chevronLeftSvg"
-        >Back to search</Button
+        >Back to search</ButtonElement
       ></template
     >
     <template #heading>{{ heading }}</template>
@@ -20,8 +20,8 @@
       <p v-if="!searchResults.length">No results</p>
       <ul class="search-modal__result-list" v-if="searchResults.length">
         <li class="search-modal__result-item" v-for="result in searchResults" :key="result.page.id">
-          <Button :variant="'secondary'" @click="showPage(result.page)"
-            >Page {{ result.page.id }}</Button
+          <ButtonElement :variant="'secondary'" @click="showPage(result.page)"
+            >Page {{ result.page.id }}</ButtonElement
           >
           <p v-html="sanitizeHtml(result.snippet)"></p>
         </li>
@@ -29,15 +29,15 @@
     </div>
     <div v-if="!searchVisible" class="search-modal__page-list">{{ pageList }}</div>
     <p v-if="!searchVisible" v-html="sanitizeHtml(pageContent)"></p>
-  </Modal>
+  </ModalElement>
 </template>
 
 <script setup lang="ts">
 import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
-import Modal from '../Modal/Modal.vue'
-import Button from '../Button/Button.vue'
+import ModalElement from '../ModalElement/ModalElement.vue'
+import ButtonElement from '../ButtonElement/ButtonElement.vue'
 import chevronLeftSvg from '../../assets/chevron-left-feathericons.svg'
 import type { BookPage } from '@/types'
 import { filterResultsByQuery, useShowPage } from './SearchModal.utils'
@@ -45,9 +45,9 @@ import { filterResultsByQuery, useShowPage } from './SearchModal.utils'
 /**
  * MODAL RELATED
  */
-const modalRef = ref<InstanceType<typeof Modal> | null>(null)
+const modalRef = ref<InstanceType<typeof ModalElement> | null>(null)
 
-// Forward exposed methods from Modal.vue
+// Forward exposed methods from ModalElement.vue
 defineExpose({
   open: () => {
     resetModal()

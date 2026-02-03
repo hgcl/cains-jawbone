@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import Button from './Button.vue'
+import ButtonElement from './ButtonElement.vue'
 
-describe('Button', () => {
+describe('ButtonElement', () => {
   it('renders label properly', async () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(ButtonElement, {
       slots: {
         default: 'some content',
       },
@@ -15,7 +15,7 @@ describe('Button', () => {
   })
 
   it('renders icon (before label) properly', async () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(ButtonElement, {
       attachTo: document.body,
       props: {
         iconBefore: 'icon-path-exists',
@@ -26,7 +26,7 @@ describe('Button', () => {
   })
 
   it('renders icon (after label) properly', async () => {
-    const wrapper = mount(Button, {
+    const wrapper = mount(ButtonElement, {
       attachTo: document.body,
       props: {
         iconAfter: 'icon-path-exists',
@@ -37,7 +37,7 @@ describe('Button', () => {
   })
 
   it('button component emits action to parent', () => {
-    const wrapper = mount(Button)
+    const wrapper = mount(ButtonElement)
 
     wrapper.find('button').trigger('click')
 

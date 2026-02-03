@@ -1,7 +1,7 @@
 import type { Note } from '@/types'
 import { nextTick, type Ref } from 'vue'
 import ImportModal from '../ImportModal/ImportModal.vue'
-import Modal from '../Modal/Modal.vue'
+import ModalElement from '../ModalElement/ModalElement.vue'
 
 /**
  * EXPAND/COLLAPSE NOTES
@@ -25,7 +25,7 @@ export function collapseAll() {
 export function useAddNote(
   selectedPageNumber: Ref<number | ''>,
   currentList: Ref<Note[]>,
-  addNoteModalRef: Ref<InstanceType<typeof Modal> | null>,
+  addNoteModalRef: Ref<InstanceType<typeof ModalElement> | null>,
 ) {
   async function addNote() {
     if (!selectedPageNumber.value) return

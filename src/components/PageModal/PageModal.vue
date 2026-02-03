@@ -1,29 +1,29 @@
 <template>
-  <Modal ref="modalRef">
+  <ModalElement ref="modalRef">
     <template #heading>Page {{ page?.id }}</template>
-    <Toggle
+    <ToggleElement
       :isChecked="isSorted"
       @update:isChecked="updateToggle"
       :iconUnchecked="starSvg"
       :iconChecked="starFillSvg"
       class="page-modal__sort-toggle"
-      >Sorted</Toggle
+      >Sorted</ToggleElement
     >
     <p class="page-modal__content" v-if="page" v-html="sanitizeHtml(page.content)"></p>
     <div class="page-modal__nav-buttons" v-if="hasNavigation">
-      <Button
+      <ButtonElement
         :variant="'secondary'"
         :iconBefore="arrowLeftSvg"
         @click="(e) => emit('click:previouspage', e)"
-        >Previous page</Button
-      ><Button
+        >Previous page</ButtonElement
+      ><ButtonElement
         :variant="'secondary'"
         :iconAfter="arrowRightSvg"
         @click="(e) => emit('click:nextpage', e)"
-        >Next page</Button
+        >Next page</ButtonElement
       >
     </div>
-  </Modal>
+  </ModalElement>
 </template>
 
 <script setup lang="ts">
@@ -31,9 +31,9 @@ import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
 import type { BookPage } from '../../types'
-import Modal from '../Modal/Modal.vue'
-import Button from '../Button/Button.vue'
-import Toggle from '../Toggle/Toggle.vue'
+import ModalElement from '../ModalElement/ModalElement.vue'
+import ButtonElement from '../ButtonElement/ButtonElement.vue'
+import ToggleElement from '../ToggleElement/ToggleElement.vue'
 import arrowLeftSvg from '../../assets/arrow-left-feathericons.svg'
 import arrowRightSvg from '../../assets/arrow-right-feathericons.svg'
 import starSvg from '../../assets/star-feathericons.svg'
@@ -65,7 +65,7 @@ function updateToggle(newValue: boolean) {
 /**
  * MODAL
  */
-const modalRef = ref<InstanceType<typeof Modal> | null>(null)
+const modalRef = ref<InstanceType<typeof ModalElement> | null>(null)
 
 // Forward exposed methods from Modal.vue
 defineExpose({
