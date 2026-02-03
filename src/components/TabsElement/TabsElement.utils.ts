@@ -3,7 +3,7 @@ import { type Ref } from 'vue'
 /**
  * TABS
  */
-export function useSelectTab(selectedIndex: Ref<number>, tabs: {}[]) {
+export function useSelectTab(selectedIndex: Ref<number>, tabs: { title: string }[]) {
   function selectTab(index: number) {
     selectedIndex.value = index
 

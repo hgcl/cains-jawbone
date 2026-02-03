@@ -1,6 +1,5 @@
 import { type Ref } from 'vue'
 import type { BookPage } from '../../types'
-import PageModal from '../PageModal/PageModal.vue'
 
 /**
  * DRAG AND DROP FEATURE
@@ -154,11 +153,14 @@ export function useNavigateBetweenPages(modalPage: Ref<BookPage | null>, modalIn
 /**
  * OPENING PAGE MODAL
  */
+export type DialogType = {
+  open: () => void
+}
 export function useOpenDialog(
   modalPage: Ref<BookPage | null>,
   modalIndex: Ref<number>,
   modalList: Ref<BookPage[]>,
-  dialogRef: Ref<InstanceType<typeof PageModal> | null>,
+  dialogRef: Ref<DialogType | null>,
 ) {
   return function openDialog(initialPage: BookPage, initialIndex: number, list: BookPage[]) {
     modalPage.value = initialPage

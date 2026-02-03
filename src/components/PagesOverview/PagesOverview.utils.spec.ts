@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 
-import { useNavigateBetweenPages, useOpenDialog } from './PagesOverview.utils'
+import { useNavigateBetweenPages, useOpenDialog, type DialogType } from './PagesOverview.utils'
 import type { BookPage } from '@/types'
 import { ref } from 'vue'
 
@@ -62,7 +62,7 @@ describe('PagesOverview -- utils', () => {
 
   it('dialog opens on click', () => {
     const openMock = vi.fn()
-    const dialogRef = ref<any>({ open: openMock })
+    const dialogRef = ref<DialogType>({ open: openMock })
 
     const openDialog = useOpenDialog(modalPage, modalIndex, modalList, dialogRef)
 

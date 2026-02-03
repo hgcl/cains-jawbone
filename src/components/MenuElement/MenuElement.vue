@@ -15,12 +15,11 @@
     <ul class="menu__options" v-if="isMenuOpen">
       <!-- Every child used inside of the default slot will have an `onClick` handler -->
       <template v-if="slots.default">
-        <li v-for="(vnode, index) in slots.default()">
+        <li v-for="(vnode, index) in slots.default()" :key="vnode.key ?? index">
           <component
             tabindex="-1"
             @keydown="handleKeydownItem($event, index)"
             :is="cloneVNode(vnode)"
-            :key="index"
           >
           </component>
         </li>
@@ -35,10 +34,6 @@ import chevronDownSvg from '../../assets/chevron-down-feathericons.svg'
 import { useSlots, cloneVNode, ref, onMounted, onBeforeUnmount } from 'vue'
 
 const { label } = defineProps<{ label: string }>()
-
-const emit = defineEmits<{
-  (e: 'click', event: MouseEvent): void
-}>()
 
 const slots = useSlots()
 

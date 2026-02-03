@@ -45,7 +45,7 @@
       <label for="add-note">Select a page number to add a note for it in the list</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
         <option value="">Page number</option>
-        <option v-for="item in unusedList" :value="item">{{ item }}</option>
+        <option v-for="item in unusedList" :value="item" :key="item">{{ item }}</option>
       </select>
     </div>
   </ModalElement>
