@@ -71,7 +71,7 @@ function reviewOrderString() {
   }
 
   // 2. Transform into array of numbers (= pages)
-  let numberArray = localInput.value
+  const numberArray = localInput.value
     .split(',')
     .map(Number)
     // When there are 2 consecutive commas, a `0` is added to the array

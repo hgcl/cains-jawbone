@@ -13,7 +13,7 @@ export function useSelectTab(selectedIndex: Ref<number>, tabs: {}[]) {
   }
 
   function switchTab(event: KeyboardEvent, index: number) {
-    let direction = event.key
+    const direction = event.key
 
     if (direction === 'ArrowLeft') {
       event.preventDefault()

@@ -8,13 +8,13 @@ import Modal from '../Modal/Modal.vue'
  */
 export function expandAll() {
   const detailsEls = document.querySelectorAll('details')
-  for (let detail of detailsEls) {
+  for (const detail of detailsEls) {
     detail.open = true
   }
 }
 export function collapseAll() {
   const detailsEls = document.querySelectorAll('details')
-  for (let detail of detailsEls) {
+  for (const detail of detailsEls) {
     detail.open = false
   }
 }

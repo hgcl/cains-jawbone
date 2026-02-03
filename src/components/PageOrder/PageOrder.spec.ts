@@ -11,7 +11,7 @@ describe('PageOrder', () => {
   })
 
   it('correct value is copied to clipboard', async () => {
-    let spy = vi.spyOn(navigator.clipboard, 'writeText')
+    const spy = vi.spyOn(navigator.clipboard, 'writeText')
 
     const wrapper = mount(PageOrder, {
       props: {

@@ -45,7 +45,7 @@ const slots = useSlots()
 /**
  * MENU NAVIGATION
  */
-let isMenuOpen = ref<boolean>(false)
+const isMenuOpen = ref<boolean>(false)
 
 // Keyboard interactions for menu button
 function handleKeydownMenu(event: KeyboardEvent) {
