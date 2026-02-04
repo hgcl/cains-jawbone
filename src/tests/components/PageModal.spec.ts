@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import PageModal from './PageModal.vue'
+import PageModal from '@/components/PageModal.vue'
 
 describe('PageModal', () => {
   // Mock dialog API since jsdom doesn't support it

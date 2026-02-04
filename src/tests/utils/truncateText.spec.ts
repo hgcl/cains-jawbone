@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 
-import { truncateText } from './CardPreview.utils'
+import truncateText from '@/utils/truncateText'
 
-describe('CardPreview -- utils', () => {
-  it('truncates content correctly', () => {
+describe('truncateText()', () => {
+  it('truncates card preview content correctly', () => {
     const string = 'Hello there, this is a pretty long string to be truncated at both ends'
     const stringCutStart = 'Hello there, this is a pretty long string to be truncated'
     const stringCutEnd = 'is a pretty long string to be truncated at both ends'

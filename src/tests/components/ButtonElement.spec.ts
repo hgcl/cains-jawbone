@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import ButtonElement from './ButtonElement.vue'
+import ButtonElement from '@/components/ButtonElement.vue'
 
 describe('ButtonElement', () => {
   it('renders label properly', async () => {

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import CardPreview from './CardPreview.vue'
+import CardPreview from '@/components/CardPreview.vue'
 import type { BookPage } from '@/types'
 
 describe('CardPreview', () => {

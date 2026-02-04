@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import PageOrder from './PageOrder.vue'
+import PageOrder from '@/components/PageOrder.vue'
 
 describe('PageOrder', () => {
   Object.assign(navigator, {
