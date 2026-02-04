@@ -8,34 +8,34 @@
         <span v-html="sanitizeHtml(truncateText(page.content, 'start'))"></span>
       </p>
       <div v-if="page.list === 2" class="card__arrows_desktop">
-        <IconButton :icon="chevronsLeft" @click="(e) => emit('click:moveleft', e)"
-          >Move left</IconButton
-        ><IconButton :icon="chevronsRight" @click="(e) => emit('click:moveright', e)"
-          >Move right</IconButton
+        <BaseButtonIcon :icon="chevronsLeft" @click="(e) => emit('click:moveleft', e)"
+          >Move left</BaseButtonIcon
+        ><BaseButtonIcon :icon="chevronsRight" @click="(e) => emit('click:moveright', e)"
+          >Move right</BaseButtonIcon
         >
       </div>
       <div v-if="page.list === 2" class="card__arrows_mobile">
-        <IconButton :icon="chevronsUpSvg" @click="(e) => emit('click:moveleft', e)"
-          >Move up</IconButton
-        ><IconButton :icon="chevronsDownSvg" @click="(e) => emit('click:moveright', e)"
-          >Move down</IconButton
+        <BaseButtonIcon :icon="chevronsUpSvg" @click="(e) => emit('click:moveleft', e)"
+          >Move up</BaseButtonIcon
+        ><BaseButtonIcon :icon="chevronsDownSvg" @click="(e) => emit('click:moveright', e)"
+          >Move down</BaseButtonIcon
         >
       </div>
     </div>
-    <ButtonElement
+    <BaseButton
       @click="(e) => emit('open:dialog', e)"
       class="card__open-page-button"
       :iconBefore="bookOpenSvg"
       >Full page<span class="visually-hidden"> page {{ page.id }}</span>
-    </ButtonElement>
+    </BaseButton>
   </article>
 </template>
 
 <script setup lang="ts">
 import sanitizeHtml from 'sanitize-html'
 
-import ButtonElement from './ButtonElement.vue'
-import IconButton from './IconButton.vue'
+import BaseButton from './base/BaseButton.vue'
+import BaseButtonIcon from './base/BaseButtonIcon.vue'
 import chevronsLeft from '../assets/chevrons-left-feathericons.svg'
 import chevronsRight from '../assets/chevrons-right-feathericons.svg'
 import chevronsUpSvg from '../assets/chevrons-up-feathericons.svg'

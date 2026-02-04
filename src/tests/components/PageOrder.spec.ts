@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import PageOrder from '@/components/PageOrder.vue'
+import PageOrderInput from '@/components/PageOrderInput.vue'
 
-describe('PageOrder', () => {
+describe('PageOrderInput', () => {
   Object.assign(navigator, {
     clipboard: {
       writeText: () => {},
@@ -13,7 +13,7 @@ describe('PageOrder', () => {
   it('correct value is copied to clipboard', async () => {
     const spy = vi.spyOn(navigator.clipboard, 'writeText')
 
-    const wrapper = mount(PageOrder, {
+    const wrapper = mount(PageOrderInput, {
       props: {
         orderString: '1, 2, 3, 4',
       },

@@ -4,7 +4,7 @@
       <h2><slot name="heading"></slot></h2>
       <div class="modal__header__nav-buttons">
         <slot name="back"></slot>
-        <ButtonElement class="modal__header__close-button" @click="close">Close</ButtonElement>
+        <BaseButton class="modal__header__close-button" @click="close">Close</BaseButton>
       </div>
     </header>
     <slot></slot>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import ButtonElement from './ButtonElement.vue'
+import BaseButton from './BaseButton.vue'
 
 const { fitContent } = defineProps<{ fitContent?: boolean }>()
 

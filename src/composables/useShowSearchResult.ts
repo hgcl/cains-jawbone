@@ -1,16 +1,15 @@
 import type { BookPage } from '@/types'
 import type { Ref } from 'vue'
 
-export function useShowPage(
+export function useShowSearchResult(
   searchVisible: Ref<boolean>,
   pageNumber: Ref<number | null>,
   pageContent: Ref<string>,
   pageList: Ref<string>,
 ) {
-  function showPage(page: BookPage) {
-    // Hide search (and show page)
+  // Hide search (and show selected page)
+  function showSearchResult(page: BookPage) {
     searchVisible.value = false
-
     pageNumber.value = page.id
     pageContent.value = page.content
     pageList.value = page.list === 1 ? 'Unsorted page' : 'Sorted page'
@@ -20,5 +19,5 @@ export function useShowPage(
     searchVisible.value = true
   }
 
-  return { showPage, backToSearch }
+  return { showSearchResult, backToSearch }
 }

@@ -1,5 +1,5 @@
 <template>
-  <TabsElement>
+  <TabsWrapper>
     <!-- LIST 1: UNSORTED -->
     <template #tab1>
       <div id="page-array__1">
@@ -11,7 +11,7 @@
         <!-- List of cards -->
         <div class="page-array__card-list">
           <div v-for="(item, index) in sortedList1" :key="item.id" class="card">
-            <CardPreview :page="item" @open:dialog="openDialog(item, index, sortedList1)" />
+            <PagePreview :page="item" @open:dialog="openPageDialog(item, index, sortedList1)" />
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@
           Reorder the pages of the book by dragging them, using the arrows, or editing the field
           below.
         </p>
-        <PageOrder :orderString="orderString" @update:orderstring="updateOrderString" />
+        <PageOrderInput :orderString="orderString" @update:orderstring="updateOrderString" />
 
         <!-- List of cards -->
         <div class="page-array__card-list">
@@ -45,9 +45,9 @@
             @dragstart="onDragStart(item)"
             @dragover.prevent="onDragOverList2(index)"
           >
-            <CardPreview
+            <PagePreview
               :page="item"
-              @open:dialog="openDialog(item, index, sortedList2)"
+              @open:dialog="openPageDialog(item, index, sortedList2)"
               @click:moveleft="moveLeft(item, index)"
               @click:moveright="moveRight(item, index)"
             />
@@ -60,7 +60,7 @@
     <template #tab3>
       <NotesView :notesList="notesList" @update:notesList="updateNotesList" />
     </template>
-  </TabsElement>
+  </TabsWrapper>
 
   <!-- COMMON DIALOG -->
   <PageModal
@@ -77,16 +77,16 @@
 import { ref, computed, watch, onMounted } from 'vue'
 
 import useMovePage from '../composables/useMovePages'
-import useDragDrop from '../composables/useDragDrop'
-import useSendToList from '../composables/useSendToList'
+import useDragDropPages from '../composables/useDragDropPages'
+import useSendPageToList from '../composables/useSendPageToList'
 import useNavigateBetweenPages from '../composables/useNavigateBetweenPages'
-import useOpenDialog from '../composables/useOpenDialog'
+import useOpenPageDialog from '../composables/useOpenPageDialog'
 import useUpdateOrderString from '../composables/useUpdateOrderString'
 
 import bookJson from '../assets/book.json'
-import TabsElement from './TabsElement.vue'
-import CardPreview from './CardPreview.vue'
-import PageOrder from './PageOrder.vue'
+import TabsWrapper from './TabsWrapper.vue'
+import PagePreview from './PagePreview.vue'
+import PageOrderInput from './PageOrderInputInput.vue'
 import PageModal from './PageModal.vue'
 import NotesView from './NotesView.vue'
 import type { BookPage, Note } from '../types'
@@ -112,14 +112,14 @@ const sortedList2 = computed(() => [...list2.value].sort((a, b) => a.order - b.o
 const orderString = computed(() => sortedList2.value.map((el) => el.id).join(', '))
 
 // Drag and drop feature within list 2
-const { onDragStart, onDragOverList2, onDropList2 } = useDragDrop(
+const { onDragStart, onDragOverList2, onDropList2 } = useDragDropPages(
   list2,
   draggedOverIndex,
   draggingItem,
 )
 
 // Send pages from "sorted" to "unsorted" list (or back)
-const { toggleSort } = useSendToList(list1, list2)
+const { toggleSort } = useSendPageToList(list1, list2)
 
 // Move item up-down sorted list
 const { moveLeft, moveRight } = useMovePage(list2, draggedOverIndex, draggingItem, onDropList2)
@@ -134,7 +134,7 @@ const modalList = ref<BookPage[]>([])
 const pageDialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
 // Opens page dialog on click
-const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef)
+const openPageDialog = useOpenPageDialog(modalPage, modalIndex, modalList, pageDialogRef)
 
 // Navigate between pages
 const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex, modalList)
@@ -142,7 +142,7 @@ const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalI
 /**
  * INPUT CONTROL
  */
-// 1. updateOrderString() is called by `@update:orderstring="updateOrderString"` (emitted by PageOrder.vue)
+// 1. updateOrderString() is called by `@update:orderstring="updateOrderString"` (emitted by PageOrderInput.vue)
 // 2. It causes sortedList1, sortedList2, and orderString to be recomputed
 const { updateOrderString } = useUpdateOrderString(list1, list2, bookJson)
 

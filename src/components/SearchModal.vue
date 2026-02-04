@@ -1,12 +1,12 @@
 <template>
   <ModalElement ref="modalRef">
     <template #back
-      ><ButtonElement
+      ><BaseButton
         v-if="!searchVisible"
         :variant="'secondary'"
         @click="backToSearch()"
         :iconBefore="chevronLeftSvg"
-        >Back to search</ButtonElement
+        >Back to search</BaseButton
       ></template
     >
     <template #heading>{{ heading }}</template>
@@ -20,8 +20,8 @@
       <p v-if="!searchResults.length">No results</p>
       <ul class="search-modal__result-list" v-if="searchResults.length">
         <li class="search-modal__result-item" v-for="result in searchResults" :key="result.page.id">
-          <ButtonElement :variant="'secondary'" @click="showPage(result.page)"
-            >Page {{ result.page.id }}</ButtonElement
+          <BaseButton :variant="'secondary'" @click="showSearchResult(result.page)"
+            >Page {{ result.page.id }}</BaseButton
           >
           <p v-html="sanitizeHtml(result.snippet)"></p>
         </li>
@@ -36,12 +36,12 @@
 import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
-import ModalElement from './ModalElement.vue'
-import ButtonElement from './ButtonElement.vue'
+import ModalElement from './base/BaseModal.vue'
+import BaseButton from './base/BaseButton.vue'
 import chevronLeftSvg from '../assets/chevron-left-feathericons.svg'
 import type { BookPage } from '../types'
 import filterResultsByQuery from '../utils/filterResultsByQuery'
-import { useShowPage } from '../composables/useShowPage'
+import { useShowSearchResult } from '../composables/useShowSearchResult'
 
 /**
  * MODAL RELATED
@@ -91,7 +91,12 @@ const pageContent = ref('')
 const pageList = ref<string>('')
 const heading = computed(() => (searchVisible.value ? 'Search' : `Page ${pageNumber.value}`))
 
-const { showPage, backToSearch } = useShowPage(searchVisible, pageNumber, pageContent, pageList)
+const { showSearchResult, backToSearch } = useShowSearchResult(
+  searchVisible,
+  pageNumber,
+  pageContent,
+  pageList,
+)
 </script>
 
 <style scoped>

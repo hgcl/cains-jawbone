@@ -4,11 +4,11 @@
 
 import type { Note } from '@/types'
 import type { Ref } from 'vue'
-import ImportModal from '@/components/ImportModal.vue'
+import NotesImportModal from '@/components/NotesImportModal.vue'
 
 export default function useExportFile(
   currentList: Ref<Note[]>,
-  importDialogRef: Ref<InstanceType<typeof ImportModal> | null>,
+  importDialogRef: Ref<InstanceType<typeof NotesImportModal> | null>,
 ) {
   function exportFile() {
     // Transform form into Markdown

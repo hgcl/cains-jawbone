@@ -3,7 +3,7 @@
  */
 
 import type { Ref } from 'vue'
-import ShowElement from '@/components/ShowElement.vue'
+import ShowElement from '@/components/base/ShowElement.vue'
 
 export default function useCopyContent(
   localInput: Ref<string>,

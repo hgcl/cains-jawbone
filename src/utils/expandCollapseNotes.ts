@@ -1,5 +1,5 @@
 /**
- * Expand or collapse all notes
+ * Expand or collapse all notes (recognized by ".details" class)
  */
 
 export function expandAll() {

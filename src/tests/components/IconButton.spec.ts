@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import IconButton from '@/components/IconButton.vue'
+import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 
-describe('IconButton', () => {
+describe('BaseButtonIcon', () => {
   it('renders label properly', async () => {
-    const wrapper = mount(IconButton, {
+    const wrapper = mount(BaseButtonIcon, {
       props: {
         icon: 'icon-path-exists',
       },
@@ -18,7 +18,7 @@ describe('IconButton', () => {
   })
 
   it('renders icon properly', async () => {
-    const wrapper = mount(IconButton, {
+    const wrapper = mount(BaseButtonIcon, {
       attachTo: document.body,
       props: {
         icon: 'icon-path-exists',
@@ -29,7 +29,7 @@ describe('IconButton', () => {
   })
 
   it('button component emits action to parent', () => {
-    const wrapper = mount(IconButton, {
+    const wrapper = mount(BaseButtonIcon, {
       props: {
         icon: 'icon-path-exists',
       },

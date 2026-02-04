@@ -4,9 +4,9 @@
 
 import type { Ref } from 'vue'
 import type { BookPage } from '@/types'
-import { filterPageFromList, findPageInList, reorderList } from '@/utils/editLists'
+import { filterPageFromList, findPageInList, reorderList } from '@/utils/handlePageLists'
 
-export default function useSendToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
+export default function useSendPageToList(list1: Ref<BookPage[]>, list2: Ref<BookPage[]>) {
   /**
    * Send page from unsorted list to sorted list (1 -> 2)
    */

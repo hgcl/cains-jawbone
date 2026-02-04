@@ -12,22 +12,22 @@
       @change="(e) => emit('change:loadfile', e)"
     />
     <ShowElement ref="showElRef">
-      <NotificationInline v-if="status === 'danger'" :status="'danger'"
+      <WarningInline v-if="status === 'danger'" :status="'danger'"
         >There was an error while trying to import your notes. Are you uploading a .md file with the
-        correct structure?</NotificationInline
+        correct structure?</WarningInline
       >
-      <NotificationInline v-if="status === 'success'" :status="'success'">
+      <WarningInline v-if="status === 'success'" :status="'success'">
         Your notes were successfully imported. You can get back to solving the mystery!
-      </NotificationInline>
+      </WarningInline>
     </ShowElement>
   </ModalElement>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import ModalElement from './ModalElement.vue'
-import ShowElement from './ShowElement.vue'
-import NotificationInline from './NotificationInline.vue'
+import ModalElement from './base/BaseModal.vue'
+import ShowElement from './base/ShowElement.vue'
+import WarningInline from './base/WarningInline.vue'
 
 const emit = defineEmits<{
   (e: 'change:loadfile', event: Event): void

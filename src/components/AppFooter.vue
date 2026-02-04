@@ -33,12 +33,12 @@
       </li>
     </ul>
     <p>© {{ currentYear }} Cain's Jawbone. All Rights Reserved.</p>
-    <ButtonElement href="#main" :iconAfter="chevronsUpSvg">Back to top</ButtonElement>
+    <BaseButton href="#main" :iconAfter="chevronsUpSvg">Back to top</BaseButton>
   </footer>
 </template>
 
 <script setup lang="ts">
-import ButtonElement from './ButtonElement.vue'
+import BaseButton from './base/BaseButton.vue'
 import chevronsUpSvg from '../assets/chevrons-up-feathericons.svg'
 
 const currentYear = new Date().getFullYear()

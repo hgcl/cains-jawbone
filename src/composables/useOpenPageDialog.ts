@@ -9,13 +9,13 @@ export type DialogType = {
   open: () => void
 }
 
-export default function useOpenDialog(
+export default function useOpenPageDialog(
   modalPage: Ref<BookPage | null>,
   modalIndex: Ref<number>,
   modalList: Ref<BookPage[]>,
   dialogRef: Ref<DialogType | null>,
 ) {
-  return function openDialog(initialPage: BookPage, initialIndex: number, list: BookPage[]) {
+  return function openPageDialog(initialPage: BookPage, initialIndex: number, list: BookPage[]) {
     modalPage.value = initialPage
     modalIndex.value = initialIndex
     modalList.value = list

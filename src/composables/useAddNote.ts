@@ -1,6 +1,6 @@
 import type { Note } from '@/types'
 import { nextTick, type Ref } from 'vue'
-import ModalElement from '@/components/ModalElement.vue'
+import BaseModal from '@/components/base/BaseModal.vue'
 
 /**
  * Add or delete note from list
@@ -9,7 +9,7 @@ import ModalElement from '@/components/ModalElement.vue'
 export default function useAddNote(
   selectedPageNumber: Ref<number | ''>,
   currentList: Ref<Note[]>,
-  addNoteModalRef: Ref<InstanceType<typeof ModalElement> | null>,
+  addNoteModalRef: Ref<InstanceType<typeof BaseModal> | null>,
 ) {
   async function addNote() {
     if (!selectedPageNumber.value) return

@@ -1,15 +1,15 @@
 <template>
   <div class="notes__header">
-    <ButtonElement :iconBefore="plusSvg" @click="openAddNoteModal">Add note</ButtonElement>
-    <MenuElement :label="'Import/export'">
+    <BaseButton :iconBefore="plusSvg" @click="openAddNoteModal">Add note</BaseButton>
+    <BaseDropdown :label="'Import/export'">
       <button @keydown.enter="openImportModal" @click="openImportModal">Import notes</button>
       <button @keydown.enter="exportFile" @click="exportFile">Export notes</button>
-    </MenuElement>
+    </BaseDropdown>
   </div>
 
   <div class="notes__expand-buttons">
-    <ButtonElement :variant="'secondary'" @click="expandAll">Expand all</ButtonElement> /
-    <ButtonElement :variant="'secondary'" @click="collapseAll">Collapse all</ButtonElement>
+    <BaseButton :variant="'secondary'" @click="expandAll">Expand all</BaseButton> /
+    <BaseButton :variant="'secondary'" @click="collapseAll">Collapse all</BaseButton>
   </div>
 
   <!-- If no note yet, show instruction -->
@@ -27,15 +27,15 @@
   >
     <summary class="note__summary">
       <span class="note__title">Page {{ item.id }}</span>
-      <MenuElement :label="'More'">
+      <BaseDropdown :label="'More'">
         <button
-          @keydown.enter="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
-          @click="openDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+          @keydown.enter="openPageDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
+          @click="openPageDialog(bookJson[item.id - 1] as BookPage, item.id - 1, bookJson)"
         >
           View page
         </button>
         <button @keydown.enter="deleteNote(item.id)" @click="deleteNote(item.id)">Delete</button>
-      </MenuElement>
+      </BaseDropdown>
     </summary>
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
@@ -49,25 +49,25 @@
       </select>
     </div>
   </ModalElement>
-  <ImportModal ref="importDialogRef" @change:loadfile="loadFile" />
+  <NotesImportModal ref="importDialogRef" @change:loadfile="loadFile" />
 
   <PageModal ref="pageDialogRef" :page="modalPage" />
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import ButtonElement from './ButtonElement.vue'
-import MenuElement from './MenuElement.vue'
-import ModalElement from './ModalElement.vue'
+import BaseButton from './base/BaseButton.vue'
+import BaseDropdown from './base/BaseDropdown.vue'
+import ModalElement from './base/BaseModal.vue'
 import PageModal from './PageModal.vue'
-import ImportModal from './ImportModal.vue'
+import NotesImportModal from './NotesImportModal.vue'
 import { expandAll, collapseAll } from '../utils/expandCollapseNotes'
 import useAddNote from '../composables/useAddNote'
 import useExportFile from '../composables/useExportFile'
 import type { BookPage, Note } from '@/types'
 import plusSvg from '../assets/plus-feathericons.svg'
 import bookJson from '../assets/book.json'
-import useOpenDialog from '../composables/useOpenDialog'
+import useOpenPageDialog from '../composables/useOpenPageDialog'
 
 const { notesList } = defineProps<{ notesList: Note[] }>()
 const emit = defineEmits<{
@@ -114,7 +114,7 @@ const { addNote, deleteNote } = useAddNote(selectedPageNumber, currentList, addN
  * IMPORT/EXPORT
  */
 
-const importDialogRef = ref<InstanceType<typeof ImportModal> | null>(null)
+const importDialogRef = ref<InstanceType<typeof NotesImportModal> | null>(null)
 
 const { exportFile, loadFile } = useExportFile(currentList, importDialogRef)
 
@@ -131,7 +131,7 @@ const modalList = ref<BookPage[]>([])
 // The dialog component exposes `.open()` through a template ref
 const pageDialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 
-const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef)
+const openPageDialog = useOpenPageDialog(modalPage, modalIndex, modalList, pageDialogRef)
 </script>
 
 <style scoped>

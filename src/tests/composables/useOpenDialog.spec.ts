@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import { createSharedMocks } from '@/tests/useSharedMocks'
-import useOpenDialog, { type DialogType } from '@/composables/useOpenDialog'
+import useOpenPageDialog, { type DialogType } from '@/composables/useOpenPageDialog'
 import { ref } from 'vue'
 
-describe.only('useOpenDialog', () => {
+describe.only('useOpenPageDialog', () => {
   const { mockPage, modalIndex, mockList, modalPage, modalList } = createSharedMocks()
 
   it('dialog opens on click', () => {
@@ -12,11 +12,11 @@ describe.only('useOpenDialog', () => {
     const dialogRef = ref<DialogType>({ open: openMock })
 
     // Init refs
-    const openDialog = useOpenDialog(modalPage, modalIndex, modalList, dialogRef)
+    const openPageDialog = useOpenPageDialog(modalPage, modalIndex, modalList, dialogRef)
 
     // Update refs values
-    // openDialog(initialPage: BookPage, initialIndex: number, list: BookPage[])
-    openDialog(mockPage, 0, mockList)
+    // openPageDialog(initialPage: BookPage, initialIndex: number, list: BookPage[])
+    openPageDialog(mockPage, 0, mockList)
 
     // `modal*` vars are defined correctly
     expect(modalPage.value).toStrictEqual(mockPage)

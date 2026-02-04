@@ -5,9 +5,9 @@
 
 import type { Ref } from 'vue'
 import type { BookPage } from '@/types'
-import { filterPageFromList, reorderList } from '@/utils/editLists'
+import { filterPageFromList, reorderList } from '@/utils/handlePageLists'
 
-export default function useDragDrop(
+export default function useDragDropPages(
   list2: Ref<BookPage[]>,
   draggedOverIndex: Ref<number | null>,
   draggingItem: Ref<BookPage | null>,

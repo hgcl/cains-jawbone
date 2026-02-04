@@ -4,25 +4,25 @@
     <div class="page-order__input_wrapper">
       <input v-model="localInput" type="text" @keydown.enter="reviewOrderString" />
       <div class="page-order__input__buttons">
-        <ButtonElement @click="reviewOrderString">Apply order</ButtonElement>
+        <BaseButton @click="reviewOrderString">Apply order</BaseButton>
         <ShowElement ref="copyRef" class="page-order__copied">Copied!</ShowElement>
-        <ButtonElement class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
+        <BaseButton class="page-order__copy-button" @click="copyContent" :iconBefore="copySvg">
           Copy
-        </ButtonElement>
+        </BaseButton>
       </div>
     </div>
     <ShowElement ref="showElRef">
-      <NotificationInline :status="'danger'">
+      <WarningInline :status="'danger'">
         {{ errorMessage }}
-      </NotificationInline>
+      </WarningInline>
     </ShowElement>
   </div>
 </template>
 
 <script setup lang="ts">
-import ButtonElement from './ButtonElement.vue'
-import ShowElement from './ShowElement.vue'
-import NotificationInline from './NotificationInline.vue'
+import BaseButton from './base/BaseButton.vue'
+import ShowElement from './base/ShowElement.vue'
+import WarningInline from './base/WarningInline.vue'
 import copySvg from '../assets/copy-feathericons.svg'
 import useCopyContent from '../composables/useCopyContent'
 import { ref, watch } from 'vue'

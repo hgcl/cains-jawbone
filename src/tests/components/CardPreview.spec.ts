@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import CardPreview from '@/components/CardPreview.vue'
+import PagePreview from '@/components/PagePreview.vue'
 import type { BookPage } from '@/types'
 
-describe('CardPreview', () => {
+describe('PagePreview', () => {
   const mockPage: BookPage = {
     id: 2,
     order: 1,
@@ -13,7 +13,7 @@ describe('CardPreview', () => {
   }
 
   it('renders properly', () => {
-    const wrapper = mount(CardPreview, { props: { page: mockPage } })
+    const wrapper = mount(PagePreview, { props: { page: mockPage } })
 
     // `page.id` gives the page number
     expect(wrapper.find('.card__page').text().toLowerCase()).toContain('page 2')

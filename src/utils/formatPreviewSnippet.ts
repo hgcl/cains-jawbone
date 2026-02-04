@@ -1,9 +1,9 @@
 /**
- * Format page content snippet preview
+ * Format page content snippet preview to "truncate" the middle
  * e.g. At my meeting with Clement [...] of mine takes his ease in my chair.
  */
 
-export function formatSnippet(content: string, queryIndex: number, query: string) {
+export default function formatPreviewSnippet(content: string, queryIndex: number, query: string) {
   const snippetLength = 30
 
   const start = Math.max(0, queryIndex - snippetLength)

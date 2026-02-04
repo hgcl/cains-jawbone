@@ -1,26 +1,26 @@
 <template>
   <ModalElement ref="modalRef">
     <template #heading>Page {{ page?.id }}</template>
-    <ToggleElement
+    <BaseToggle
       :isChecked="isSorted"
       @update:isChecked="updateToggle"
       :iconUnchecked="starSvg"
       :iconChecked="starFillSvg"
       class="page-modal__sort-toggle"
-      >Sorted</ToggleElement
+      >Sorted</BaseToggle
     >
     <p class="page-modal__content" v-if="page" v-html="sanitizeHtml(page.content)"></p>
     <div class="page-modal__nav-buttons" v-if="hasNavigation">
-      <ButtonElement
+      <BaseButton
         :variant="'secondary'"
         :iconBefore="arrowLeftSvg"
         @click="(e) => emit('click:previouspage', e)"
-        >Previous page</ButtonElement
-      ><ButtonElement
+        >Previous page</BaseButton
+      ><BaseButton
         :variant="'secondary'"
         :iconAfter="arrowRightSvg"
         @click="(e) => emit('click:nextpage', e)"
-        >Next page</ButtonElement
+        >Next page</BaseButton
       >
     </div>
   </ModalElement>
@@ -31,9 +31,9 @@ import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
 import type { BookPage } from '../types'
-import ModalElement from './ModalElement.vue'
-import ButtonElement from './ButtonElement.vue'
-import ToggleElement from './ToggleElement.vue'
+import ModalElement from './base/BaseModal.vue'
+import BaseButton from './base/BaseButton.vue'
+import BaseToggle from './base/BaseToggle.vue'
 import arrowLeftSvg from '../assets/arrow-left-feathericons.svg'
 import arrowRightSvg from '../assets/arrow-right-feathericons.svg'
 import starSvg from '../assets/star-feathericons.svg'
