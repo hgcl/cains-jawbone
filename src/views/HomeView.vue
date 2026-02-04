@@ -16,7 +16,20 @@
 </template>
 
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
 import BaseButton from '../components/base/BaseButton.vue'
+import { APP_DESCRIPTION, APP_NAME } from '@/constants/seo'
+
+// SEO
+useHead({
+  title: APP_NAME,
+  meta: [
+    { name: 'description', content: APP_DESCRIPTION },
+    { property: 'og:title', content: APP_NAME },
+    { property: 'og:description', content: APP_DESCRIPTION },
+  ],
+  link: [{ rel: 'canonical', href: 'https://cains-jawbone.hgcl.workers.dev/' }],
+})
 </script>
 
 <style scoped>
