@@ -1,23 +1,23 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  createMemoryHistory,
+  type RouteRecordRaw,
+} from 'vue-router'
+
 import HomeView from '@/views/HomeView.vue'
 import BookView from '@/views/BookView.vue'
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomeView,
-  },
-  {
-    path: '/book',
-    name: 'Book',
-    component: BookView,
-  },
+export const routes: RouteRecordRaw[] = [
+  { path: '/', name: 'Home', component: HomeView },
+  { path: '/book', name: 'Book', component: BookView },
 ]
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
+export function createAppRouter() {
+  const history = typeof window === 'undefined' ? createMemoryHistory() : createWebHistory()
 
-export default router
+  return createRouter({
+    history,
+    routes,
+  })
+}
