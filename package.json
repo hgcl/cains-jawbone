@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "run-p typecheck \"build-only {@}\" --",
     "preview": "vite preview",
-    "test:unit": "vitest",
+    "test": "vitest",
     "build-only": "vite build",
     "typecheck": "vue-tsc --build",
     "lint": "eslint . --cache",
