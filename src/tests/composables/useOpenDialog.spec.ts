@@ -4,7 +4,7 @@ import { createSharedMocks } from '@/tests/useSharedMocks'
 import useOpenPageDialog, { type DialogType } from '@/composables/useOpenPageDialog'
 import { ref } from 'vue'
 
-describe.only('useOpenPageDialog', () => {
+describe('useOpenPageDialog', () => {
   const { mockPage, modalIndex, mockList, modalPage, modalList } = createSharedMocks()
 
   it('dialog opens on click', () => {
