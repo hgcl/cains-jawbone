@@ -25,9 +25,9 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import ModalElement from '../ModalElement/ModalElement.vue'
-import ShowElement from '../ShowElement/ShowElement.vue'
-import NotificationInline from '../NotificationInline/NotificationInline.vue'
+import ModalElement from './ModalElement.vue'
+import ShowElement from './ShowElement.vue'
+import NotificationInline from './NotificationInline.vue'
 
 const emit = defineEmits<{
   (e: 'change:loadfile', event: Event): void

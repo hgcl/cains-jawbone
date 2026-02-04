@@ -37,11 +37,11 @@ const { status } = defineProps<{ status: 'danger' | 'success' }>()
 }
 
 .notification__danger .notification__icon {
-  mask: url('../../assets/alert-triangle-feathericons.svg') no-repeat center;
+  mask: url('../assets/alert-triangle-feathericons.svg') no-repeat center;
   background-color: var(--color-foreground-danger);
 }
 .notification__success .notification__icon {
-  mask: url('../../assets/check-circle-feathericons.svg') no-repeat center;
+  mask: url('../assets/check-circle-feathericons.svg') no-repeat center;
   background-color: var(--color-foreground-success);
 }
 </style>

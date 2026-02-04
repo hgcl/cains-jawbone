@@ -36,11 +36,12 @@
 import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
-import ModalElement from '../ModalElement/ModalElement.vue'
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import chevronLeftSvg from '../../assets/chevron-left-feathericons.svg'
-import type { BookPage } from '@/types'
-import { filterResultsByQuery, useShowPage } from './SearchModal.utils'
+import ModalElement from './ModalElement.vue'
+import ButtonElement from './ButtonElement.vue'
+import chevronLeftSvg from '../assets/chevron-left-feathericons.svg'
+import type { BookPage } from '../types'
+import filterResultsByQuery from '../utils/filterResultsByQuery'
+import { useShowPage } from '../composables/useShowPage'
 
 /**
  * MODAL RELATED

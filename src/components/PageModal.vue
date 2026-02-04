@@ -30,14 +30,14 @@
 import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
-import type { BookPage } from '../../types'
-import ModalElement from '../ModalElement/ModalElement.vue'
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import ToggleElement from '../ToggleElement/ToggleElement.vue'
-import arrowLeftSvg from '../../assets/arrow-left-feathericons.svg'
-import arrowRightSvg from '../../assets/arrow-right-feathericons.svg'
-import starSvg from '../../assets/star-feathericons.svg'
-import starFillSvg from '../../assets/star-fill-feathericons.svg'
+import type { BookPage } from '../types'
+import ModalElement from './ModalElement.vue'
+import ButtonElement from './ButtonElement.vue'
+import ToggleElement from './ToggleElement.vue'
+import arrowLeftSvg from '../assets/arrow-left-feathericons.svg'
+import arrowRightSvg from '../assets/arrow-right-feathericons.svg'
+import starSvg from '../assets/star-feathericons.svg'
+import starFillSvg from '../assets/star-fill-feathericons.svg'
 
 const props = defineProps<{
   page: BookPage | null

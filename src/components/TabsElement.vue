@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useSelectTab } from './TabsElement.utils'
+import { useSelectTab } from '../composables/useSelectTab'
 
 /**
  * TABS

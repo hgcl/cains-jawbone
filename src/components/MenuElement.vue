@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import chevronDownSvg from '../../assets/chevron-down-feathericons.svg'
+import ButtonElement from './ButtonElement.vue'
+import chevronDownSvg from '../assets/chevron-down-feathericons.svg'
 import { useSlots, cloneVNode, ref, onMounted, onBeforeUnmount } from 'vue'
 
 const { label } = defineProps<{ label: string }>()

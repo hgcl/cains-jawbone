@@ -1,8 +1,9 @@
-import { type Ref } from 'vue'
-
 /**
- * TABS
+ * Handle switching to selected tab
  */
+
+import type { Ref } from 'vue'
+
 export function useSelectTab(selectedIndex: Ref<number>, tabs: { title: string }[]) {
   function selectTab(index: number) {
     selectedIndex.value = index

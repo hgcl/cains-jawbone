@@ -56,16 +56,18 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import MenuElement from '../MenuElement/MenuElement.vue'
-import ModalElement from '../ModalElement/ModalElement.vue'
-import PageModal from '../PageModal/PageModal.vue'
-import ImportModal from '../ImportModal/ImportModal.vue'
-import { expandAll, collapseAll, useAddNote, useExportFile } from './NotesView.utils'
+import ButtonElement from './ButtonElement.vue'
+import MenuElement from './MenuElement.vue'
+import ModalElement from './ModalElement.vue'
+import PageModal from './PageModal.vue'
+import ImportModal from './ImportModal.vue'
+import { expandAll, collapseAll } from '../utils/expandCollapseNotes'
+import useAddNote from '../composables/useAddNote'
+import useExportFile from '../composables/useExportFile'
 import type { BookPage, Note } from '@/types'
-import plusSvg from '../../assets/plus-feathericons.svg'
-import bookJson from '../../assets/book.json'
-import { useOpenDialog } from '../PagesOverview/PagesOverview.utils'
+import plusSvg from '../assets/plus-feathericons.svg'
+import bookJson from '../assets/book.json'
+import useOpenDialog from '../composables/useOpenDialog'
 
 const { notesList } = defineProps<{ notesList: Note[] }>()
 const emit = defineEmits<{

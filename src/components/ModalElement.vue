@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
+import ButtonElement from './ButtonElement.vue'
 
 const { fitContent } = defineProps<{ fitContent?: boolean }>()
 

@@ -1,10 +1,11 @@
-import type { Ref } from 'vue'
-import ShowElement from '../ShowElement/ShowElement.vue'
-
 /**
- * COPY ORDER TO CLIPBOARD
+ * Copy page order field to clipboard
  */
-export function useCopyContent(
+
+import type { Ref } from 'vue'
+import ShowElement from '@/components/ShowElement.vue'
+
+export default function useCopyContent(
   localInput: Ref<string>,
   copyRef: Ref<InstanceType<typeof ShowElement> | null>,
 ) {

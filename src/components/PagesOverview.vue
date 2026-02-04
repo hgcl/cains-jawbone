@@ -68,28 +68,28 @@
     :page="modalPage"
     :hasNavigation="true"
     @toggle:sorted="toggleSort(modalPage)"
-    @click:nextpage="toNextPage(modalIndex, modalList)"
-    @click:previouspage="toPreviousPage(modalIndex, modalList)"
+    @click:nextpage="toNextPage"
+    @click:previouspage="toPreviousPage"
   />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import bookJson from '../../assets/book.json'
-import TabsElement from '../TabsElement/TabsElement.vue'
-import CardPreview from '../CardPreview/CardPreview.vue'
-import PageOrder from '../../components/PageOrder/PageOrder.vue'
-import PageModal from '../PageModal/PageModal.vue'
-import NotesView from '../NotesView/NotesView.vue'
-import type { BookPage, Note } from '../../types'
-import {
-  useDragDrop,
-  useMovePage,
-  useNavigateBetweenPages,
-  useOpenDialog,
-  useSendToList,
-  useUpdateOrderString,
-} from './PagesOverview.utils'
+
+import useMovePage from '../composables/useMovePages'
+import useDragDrop from '../composables/useDragDrop'
+import useSendToList from '../composables/useSendToList'
+import useNavigateBetweenPages from '../composables/useNavigateBetweenPages'
+import useOpenDialog from '../composables/useOpenDialog'
+import useUpdateOrderString from '../composables/useUpdateOrderString'
+
+import bookJson from '../assets/book.json'
+import TabsElement from './TabsElement.vue'
+import CardPreview from './CardPreview.vue'
+import PageOrder from './PageOrder.vue'
+import PageModal from './PageModal.vue'
+import NotesView from './NotesView.vue'
+import type { BookPage, Note } from '../types'
 
 // Initial lists of items
 const list1 = ref<BookPage[]>(bookJson.filter((i) => i.list === 1))
@@ -137,7 +137,7 @@ const pageDialogRef = ref<InstanceType<typeof PageModal> | null>(null)
 const openDialog = useOpenDialog(modalPage, modalIndex, modalList, pageDialogRef)
 
 // Navigate between pages
-const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex)
+const { toPreviousPage, toNextPage } = useNavigateBetweenPages(modalPage, modalIndex, modalList)
 
 /**
  * INPUT CONTROL

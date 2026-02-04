@@ -34,15 +34,15 @@
 <script setup lang="ts">
 import sanitizeHtml from 'sanitize-html'
 
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import IconButton from '../IconButton/IconButton.vue'
-import chevronsLeft from '../../assets/chevrons-left-feathericons.svg'
-import chevronsRight from '../../assets/chevrons-right-feathericons.svg'
-import chevronsUpSvg from '../../assets/chevrons-up-feathericons.svg'
-import chevronsDownSvg from '../../assets/chevrons-down-feathericons.svg'
-import bookOpenSvg from '../../assets/book-open-feathericons.svg'
-import type { BookPage } from '../../types'
-import { truncateText } from './CardPreview.utils'
+import ButtonElement from './ButtonElement.vue'
+import IconButton from './IconButton.vue'
+import chevronsLeft from '../assets/chevrons-left-feathericons.svg'
+import chevronsRight from '../assets/chevrons-right-feathericons.svg'
+import chevronsUpSvg from '../assets/chevrons-up-feathericons.svg'
+import chevronsDownSvg from '../assets/chevrons-down-feathericons.svg'
+import bookOpenSvg from '../assets/book-open-feathericons.svg'
+import type { BookPage } from '../types'
+import truncateText from '../utils/truncateText'
 
 const { page } = defineProps<{
   page: BookPage

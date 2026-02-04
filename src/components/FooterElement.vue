@@ -38,8 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import chevronsUpSvg from '../../assets/chevrons-up-feathericons.svg'
+import ButtonElement from './ButtonElement.vue'
+import chevronsUpSvg from '../assets/chevrons-up-feathericons.svg'
 
 const currentYear = new Date().getFullYear()
 </script>

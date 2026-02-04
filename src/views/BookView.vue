@@ -12,15 +12,15 @@
       <SearchModal ref="dialogRef" />
       <PagesOverview />
     </main>
-    <FooterElement></FooterElement>
+    <FooterElement />
   </div>
 </template>
 
 <script setup lang="ts">
-import FooterElement from '../components/FooterElement/FooterElement.vue'
-import ButtonElement from '../components/ButtonElement/ButtonElement.vue'
-import SearchModal from '../components/SearchModal/SearchModal.vue'
-import PagesOverview from '../components/PagesOverview/PagesOverview.vue'
+import FooterElement from '../components/FooterElement.vue'
+import ButtonElement from '../components/ButtonElement.vue'
+import SearchModal from '../components/SearchModal.vue'
+import PagesOverview from '../components/PagesOverview.vue'
 import searchSvg from '../assets/search-feathericons.svg'
 import { ref, onMounted } from 'vue'
 

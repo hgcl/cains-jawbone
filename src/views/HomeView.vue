@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import ButtonElement from '../components/ButtonElement/ButtonElement.vue'
+import ButtonElement from '../components/ButtonElement.vue'
 </script>
 
 <style scoped>

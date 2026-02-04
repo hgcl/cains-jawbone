@@ -20,11 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import ButtonElement from '../ButtonElement/ButtonElement.vue'
-import ShowElement from '../ShowElement/ShowElement.vue'
-import NotificationInline from '../NotificationInline/NotificationInline.vue'
-import copySvg from '../../assets/copy-feathericons.svg'
-import { useCopyContent } from './PageOrder.utils'
+import ButtonElement from './ButtonElement.vue'
+import ShowElement from './ShowElement.vue'
+import NotificationInline from './NotificationInline.vue'
+import copySvg from '../assets/copy-feathericons.svg'
+import useCopyContent from '../composables/useCopyContent'
 import { ref, watch } from 'vue'
 
 const { orderString } = defineProps<{

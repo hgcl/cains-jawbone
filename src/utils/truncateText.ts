@@ -1,4 +1,8 @@
-export const truncateText = (string: string, truncatePosition: 'start' | 'end'): string => {
+/**
+ * truncateText() can truncate the start or end of a long string
+ */
+
+export default function truncateText(string: string, truncatePosition: 'start' | 'end'): string {
   let subString = string
 
   // String is truncated at 60 chars (last word that is cut is removed)
