@@ -1,5 +1,5 @@
 <template>
-  <ModalElement ref="modalRef">
+  <BaseModal ref="modalRef">
     <template #back
       ><BaseButton
         v-if="!searchVisible"
@@ -29,14 +29,14 @@
     </div>
     <div v-if="!searchVisible" class="search-modal__page-list">{{ pageList }}</div>
     <p v-if="!searchVisible" v-html="sanitizeHtml(pageContent)"></p>
-  </ModalElement>
+  </BaseModal>
 </template>
 
 <script setup lang="ts">
 import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
-import ModalElement from './base/BaseModal.vue'
+import BaseModal from './base/BaseModal.vue'
 import BaseButton from './base/BaseButton.vue'
 import chevronLeftSvg from '../assets/chevron-left-feathericons.svg'
 import type { BookPage } from '../types'
@@ -46,9 +46,9 @@ import { useShowSearchResult } from '../composables/useShowSearchResult'
 /**
  * MODAL RELATED
  */
-const modalRef = ref<InstanceType<typeof ModalElement> | null>(null)
+const modalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 
-// Forward exposed methods from ModalElement.vue
+// Forward exposed methods from BaseModal.vue
 defineExpose({
   open: () => {
     resetModal()

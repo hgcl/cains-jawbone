@@ -40,7 +40,7 @@
     <textarea class="note__textarea" v-model="item.note"></textarea>
   </details>
 
-  <ModalElement ref="addNoteModalRef" fitContent>
+  <BaseModal ref="addNoteModalRef" fitContent>
     <div class="notes__add-page">
       <label for="add-note">Select a page number to add a note for it in the list</label>
       <select name="add-note" id="add-note" @change="addNote" v-model="selectedPageNumber">
@@ -48,7 +48,7 @@
         <option v-for="item in unusedList" :value="item" :key="item">{{ item }}</option>
       </select>
     </div>
-  </ModalElement>
+  </BaseModal>
   <NotesImportModal ref="importDialogRef" @change:loadfile="loadFile" />
 
   <PageModal ref="pageDialogRef" :page="modalPage" />
@@ -58,7 +58,7 @@
 import { computed, ref, watch } from 'vue'
 import BaseButton from './base/BaseButton.vue'
 import BaseDropdown from './base/BaseDropdown.vue'
-import ModalElement from './base/BaseModal.vue'
+import BaseModal from './base/BaseModal.vue'
 import PageModal from './PageModal.vue'
 import NotesImportModal from './NotesImportModal.vue'
 import { expandAll, collapseAll } from '../utils/expandCollapseNotes'
@@ -101,7 +101,7 @@ watch(
  * ADD/DELETE NOTE
  */
 
-const addNoteModalRef = ref<InstanceType<typeof ModalElement> | null>(null)
+const addNoteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 
 function openAddNoteModal() {
   addNoteModalRef.value?.open()

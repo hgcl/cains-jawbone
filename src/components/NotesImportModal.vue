@@ -1,5 +1,5 @@
 <template>
-  <ModalElement ref="modalRef">
+  <BaseModal ref="modalRef">
     <template #heading>Import notes</template>
     <p>
       If you have previously exported your notes, you can import that <code>.md</code>
@@ -20,12 +20,12 @@
         Your notes were successfully imported. You can get back to solving the mystery!
       </WarningInline>
     </ShowElement>
-  </ModalElement>
+  </BaseModal>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import ModalElement from './base/BaseModal.vue'
+import BaseModal from './base/BaseModal.vue'
 import ShowElement from './base/ShowElement.vue'
 import WarningInline from './base/WarningInline.vue'
 
@@ -36,7 +36,7 @@ const emit = defineEmits<{
 /**
  * MODAL RELATED
  */
-const modalRef = ref<InstanceType<typeof ModalElement> | null>(null)
+const modalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 
 /**
  * NOTIFICATION RELATED
@@ -52,7 +52,7 @@ watch(status, (newStatus) => {
   }
 })
 
-// Forward exposed methods from ModalElement.vue
+// Forward exposed methods from BaseModal.vue
 defineExpose({
   open: () => modalRef.value?.open(),
   close: () => modalRef.value?.close(),

@@ -1,5 +1,5 @@
 <template>
-  <ModalElement ref="modalRef">
+  <BaseModal ref="modalRef">
     <template #heading>Page {{ page?.id }}</template>
     <BaseToggle
       :isChecked="isSorted"
@@ -23,7 +23,7 @@
         >Next page</BaseButton
       >
     </div>
-  </ModalElement>
+  </BaseModal>
 </template>
 
 <script setup lang="ts">
@@ -31,7 +31,7 @@ import sanitizeHtml from 'sanitize-html'
 
 import { computed, ref } from 'vue'
 import type { BookPage } from '../types'
-import ModalElement from './base/BaseModal.vue'
+import BaseModal from './base/BaseModal.vue'
 import BaseButton from './base/BaseButton.vue'
 import BaseToggle from './base/BaseToggle.vue'
 import arrowLeftSvg from '../assets/arrow-left-feathericons.svg'
@@ -65,7 +65,7 @@ function updateToggle(newValue: boolean) {
 /**
  * MODAL
  */
-const modalRef = ref<InstanceType<typeof ModalElement> | null>(null)
+const modalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 
 // Forward exposed methods from Modal.vue
 defineExpose({
